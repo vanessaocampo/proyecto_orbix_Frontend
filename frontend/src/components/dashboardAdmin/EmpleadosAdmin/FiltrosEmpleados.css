@@ -1,0 +1,73 @@
+.filtros-empleados {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-top: 26px;
+  margin-bottom: 26px;
+}
+
+.busqueda-empleados {
+  width: 360px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  box-sizing: border-box;
+
+  background-color: #ffffff;
+  border: 1px solid #d9e0e8;
+  border-radius: 9px;
+
+  color: #58708c;
+}
+
+.busqueda-empleados input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+
+  color: #071b2f;
+  font-size: 13px;
+}
+
+.busqueda-empleados input::placeholder {
+  color: #71859c;
+}
+
+.botones-filtro-empleados {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.botones-filtro-empleados button {
+  height: 38px;
+  padding: 0 18px;
+
+  border: 1px solid #d9e0e8;
+  border-radius: 20px;
+
+  background-color: #ffffff;
+  color: #58708c;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.botones-filtro-empleados button:hover {
+  border-color: #087c9c;
+  color: #087c9c;
+}
+
+.botones-filtro-empleados button.filtro-activo {
+  background-color: #087c9c;
+  border-color: #087c9c;
+  color: #ffffff;
+  font-weight: 600;
+}

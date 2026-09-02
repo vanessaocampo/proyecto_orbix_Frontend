@@ -1,0 +1,149 @@
+.empleados-main {
+  min-height: 100vh;
+  background-color: #f0f4f8;
+  display: flow-root;
+}
+
+.empleados-contenido {
+  margin-left: 230px;
+  min-width: 0;
+  min-height: 100vh;
+  margin-top: 18px;
+  padding: 0 40px;
+}
+
+.empleados-orbix {
+  color: #757e87;
+}
+
+.empleados-admin {
+  color: #087c9c;
+  font-weight: 800;
+}
+
+.empleados-fecha {
+  color: #757e87;
+}
+
+.empleados-titulo {
+  font-weight: bold;
+}
+
+/* BARRA SUPERIOR */
+
+.empleados-barra-superior {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0 15px 0;
+  border-bottom: 1px solid #d9e0e8;
+  gap: 40px;
+  margin-top: 0;
+}
+
+.empleados-barra-superior p {
+  margin: 0;
+  padding: 5px 0;
+  font-size: 15px;
+}
+
+/* ACCIONES SUPERIORES */
+
+.empleados-acciones-superiores {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.empleados-buscar {
+  position: relative;
+}
+
+.empleados-buscar input {
+  width: 285px;
+  height: 35px;
+  padding: 10px 15px 10px 40px;
+  box-sizing: border-box;
+  border: 1px solid #d9e0e8;
+  border-radius: 10px;
+  outline: none;
+  font-size: 13px;
+}
+
+.empleados-buscar input:focus {
+  border-color: #087c9c;
+}
+
+.empleados-buscar svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* NOTIFICACIONES */
+
+.empleados-notifi {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* USUARIO */
+
+.empleados-usuario {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #087c9c;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+/* ENCABEZADO */
+
+.empleados-encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 0;
+}
+
+.empleados-encabezado h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.empleados-fecha {
+  color: #757e87;
+  font-size: 13px;
+}
+
+/* BOTÓN NUEVO EMPLEADO*/
+
+.empleados-button-agregar {
+  width: 170px;
+  height: 36px;
+  border: none;
+  border-radius: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  color: white;
+  background-color: #087c9c;
+  font-size: 13px;
+}
+
+.empleados-button-agregar:hover {
+  filter: brightness(1.30);
+}

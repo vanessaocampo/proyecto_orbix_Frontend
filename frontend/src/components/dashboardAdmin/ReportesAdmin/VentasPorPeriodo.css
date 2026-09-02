@@ -1,0 +1,35 @@
+.ventas-por-periodo {
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid #d9e0e8;
+  border-radius: 16px;
+  padding: 28px 30px 22px;
+  box-sizing: border-box;
+  margin-bottom: 35px;
+}
+
+.ventas-por-periodo-titulo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.ventas-por-periodo-titulo h3 {
+  margin: 0;
+  color: #071b2f;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.ventas-por-periodo-titulo p {
+  margin: 8px 0 0;
+  color: #58708c;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.ventas-por-periodo-grafica {
+  width: 100%;
+  margin-top: 20px;
+}

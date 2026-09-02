@@ -1,0 +1,69 @@
+.participacion-categoria {
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid #d9e0e8;
+  border-radius: 16px;
+  padding: 28px 30px 20px;
+  box-sizing: border-box;
+}
+
+.participacion-categoria-titulo h3 {
+  margin: 0;
+  color: #071b2f;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.participacion-categoria-titulo p {
+  margin: 8px 0 0;
+  color: #58708c;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.participacion-categoria-lista {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.participacion-categoria-item {
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+.participacion-categoria-item:last-child {
+  margin-bottom: 0;
+}
+
+.participacion-categoria-info {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 7px;
+}
+
+.participacion-categoria-nombre {
+  color: #071b2f;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.participacion-categoria-porcentaje {
+  color: #58708c;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.participacion-categoria-barra-fondo {
+  width: 100%;
+  height: 12px;
+  background-color: #e5eaf0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.participacion-categoria-barra {
+  height: 100%;
+  border-radius: 8px;
+}

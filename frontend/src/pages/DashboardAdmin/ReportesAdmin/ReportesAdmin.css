@@ -1,0 +1,157 @@
+.reportes-main {
+  min-height: 100vh;
+  background-color: #f0f4f8;
+  display: flow-root;
+}
+
+.reportes-contenido {
+  margin-left: 230px;
+  min-width: 0;
+  min-height: 100vh;
+  margin-top: 18px;
+  padding: 0 40px;
+}
+
+/* BARRA SUPERIOR */
+
+.reportes-barra-superior {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0 15px 0;
+  border-bottom: 1px solid #d9e0e8;
+  gap: 40px;
+  margin-top: 0;
+}
+
+.reportes-barra-superior p {
+  margin: 0;
+  padding: 5px 0;
+  font-size: 15px;
+}
+
+.reportes-orbix {
+  color: #757e87;
+}
+
+.reportes-admin {
+  color: #087c9c;
+  font-weight: 800;
+}
+
+.reportes-titulo {
+  font-weight: bold;
+}
+
+/* ACCIONES SUPERIORES */
+
+.reportes-acciones-superiores {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.reportes-buscar {
+  position: relative;
+}
+
+.reportes-buscar input {
+  width: 285px;
+  height: 35px;
+  padding: 10px 15px 10px 40px;
+  box-sizing: border-box;
+  border: 1px solid #d9e0e8;
+  border-radius: 10px;
+  outline: none;
+}
+
+.reportes-buscar input:focus {
+  border-color: #087c9c;
+}
+
+.reportes-buscar svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* NOTIFICACIONES */
+
+.reportes-notifi {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* USUARIO */
+
+.reportes-usuario {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #087c9c;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* ENCABEZADO */
+
+.reportes-encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px 0;
+}
+
+.reportes-encabezado h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.reportes-fecha {
+  margin: 4px 0 0;
+  color: #757e87;
+  font-size: 13px;
+}
+
+/* BOTÓN NUEVO PROVEEDOR */
+
+.reportes-button-agregar {
+  width: 170px;
+  height: 40px;
+  border: none;
+  border-radius: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  cursor: pointer;
+  color: white;
+  background-color: #087c9c;
+  font-size: 13px;
+}
+
+.reportes-button-agregar:hover {
+  filter: brightness(1.30);
+}
+
+.reportes-resumen {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 18px;
+
+  width: 100%;
+
+  margin-top: 18px;
+  margin-bottom: 30px;
+}

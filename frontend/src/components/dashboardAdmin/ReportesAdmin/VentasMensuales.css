@@ -1,0 +1,27 @@
+.ventas-mensuales {
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid #d9e0e8;
+  border-radius: 16px;
+  padding: 28px 30px 20px;
+  box-sizing: border-box;
+}
+
+.ventas-mensuales-titulo h3 {
+  margin: 0;
+  color: #071b2f;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.ventas-mensuales-titulo p {
+  margin: 8px 0 0;
+  color: #58708c;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.ventas-mensuales-grafica {
+  width: 100%;
+  margin-top: 18px;
+}

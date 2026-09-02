@@ -1,0 +1,59 @@
+.cards-empleados {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 18px;
+  margin-bottom: 22px;
+  padding: 0;
+}
+
+.card-empleado {
+  background-color: white;
+  border: 1px solid #d9e0e8;
+  border-radius: 15px;
+  padding: 18px;
+  min-height: 95px;
+  box-sizing: border-box;
+}
+
+.card-empleado-titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #58708c;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.card-empleado h3 {
+  margin: 8px 0 0;
+  color: #071b2f;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.punto-verde,
+.punto-morado,
+.punto-azul,
+.punto-gris {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.punto-verde {
+  background-color: #087c9c;
+}
+
+.punto-morado {
+  background-color: #8B5CF6;
+}
+
+.punto-azul {
+  background-color: #3c7ba5;
+}
+
+.punto-gris {
+  background-color: gray;
+}

@@ -5,6 +5,7 @@ import {
   Users,
   Truck,
   ChartNoAxesCombined,
+  IdCard
 } from "lucide-react";
 import LogoutButton from "../LogoutButton";
 
@@ -44,8 +45,12 @@ const Sidebar = () => {
           <ChartNoAxesCombined size={22} />
           <span>Reportes</span>
         </a>
+        <a href="/dashboard/admin/empleados">
+          <IdCard size={22} />
+          <span>Empleados</span>
+        </a>
       </nav>
-      <LogoutButton/>
+      <LogoutButton />
     </aside>
   );
 };
