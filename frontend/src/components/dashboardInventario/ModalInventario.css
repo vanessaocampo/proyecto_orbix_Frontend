@@ -1,0 +1,111 @@
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 23, 42, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  padding: 24px 28px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #0f172a;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #ef4444;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group-inv {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group-inv label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.form-group-inv input, 
+.form-group-inv select, 
+.form-group-inv textarea {
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  outline: none;
+  font-family: inherit;
+  font-size: 14px;
+  color: #0f172a;
+  transition: border-color 0.2s;
+}
+
+.form-group-inv input:focus, 
+.form-group-inv select:focus, 
+.form-group-inv textarea:focus {
+  border-color: #10b981;
+}
+
+.form-group-inv input::placeholder, 
+.form-group-inv textarea::placeholder {
+  color: #94a3b8;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.form-row .form-group-inv {
+  flex: 1;
+}
+
+.modal-footer {
+  margin-top: 28px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}

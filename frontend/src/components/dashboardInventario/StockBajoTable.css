@@ -1,93 +1,93 @@
-.table-container {
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
-  border: 1px solid #f1f5f9;
-  margin-bottom: 25px;
-  overflow: hidden;
-}
-
-.table-header-alert {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 25px;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.alert-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 600;
-  color: #0f172a;
-  font-size: 16px;
-}
-
-.alert-icon {
-  color: #f59e0b;
-}
-
-.alert-badge {
-  background-color: #fef3c7;
-  color: #b45309;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.stock-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.stock-table th {
-  text-align: left;
-  padding: 15px 25px;
-  font-size: 12px;
-  color: #64748b;
-  font-weight: 600;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.stock-table td {
-  padding: 18px 25px;
-  font-size: 14px;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.stock-table tr:last-child td {
-  border-bottom: none;
-}
-
-.product-name {
-  color: #0f172a;
-  font-weight: 500;
-}
-
-.stock-actual {
-  color: #f59e0b;
-  font-weight: bold;
-}
-
-.stock-min {
-  color: #64748b;
-}
-
-.deficit {
-  color: #ef4444;
-  font-weight: bold;
-}
-
-.proveedor {
-  color: #64748b;
-}
-
-/* Responsive Design */
-.table-container {
-  overflow-x: auto;
-}
-.stock-table {
-  min-width: 600px; /* Asegura que la tabla no se aplaste en movil */
-}
+.table-container {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+  border: 1px solid #f1f5f9;
+  margin-bottom: 25px;
+  overflow: hidden;
+}
+
+.table-header-alert {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.alert-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: #0f172a;
+  font-size: 16px;
+}
+
+.alert-icon {
+  color: #f59e0b;
+}
+
+.alert-badge {
+  background-color: #fef3c7;
+  color: #b45309;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.stock-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.stock-table th {
+  text-align: left;
+  padding: 15px 25px;
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.stock-table td {
+  padding: 18px 25px;
+  font-size: 14px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.stock-table tr:last-child td {
+  border-bottom: none;
+}
+
+.product-name {
+  color: #0f172a;
+  font-weight: 500;
+}
+
+.stock-actual {
+  color: #f59e0b;
+  font-weight: bold;
+}
+
+.stock-min {
+  color: #64748b;
+}
+
+.deficit {
+  color: #ef4444;
+  font-weight: bold;
+}
+
+.proveedor {
+  color: #64748b;
+}
+
+/* Responsive Design */
+.table-container {
+  overflow-x: auto;
+}
+.stock-table {
+  min-width: 600px; /* Asegura que la tabla no se aplaste en movil */
+}

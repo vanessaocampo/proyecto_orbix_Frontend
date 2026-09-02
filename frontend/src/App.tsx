@@ -19,6 +19,9 @@ import VendedorClientes from "./pages/Vendedor/VendedorClientes";
 import VendedorVentas from "./pages/Vendedor/VendedorVentas";
 
 import DashboardInventario from "./pages/DashboardInventario/DashboardInventario";
+import LayoutInventario from "./components/dashboardInventario/LayoutInventario";
+import ProductosInventario from "./pages/DashboardInventario/ProductosInventario";
+import MovimientosInventario from "./pages/DashboardInventario/MovimientosInventario";
 import InventarioAdmin from "./pages/DashboardAdmin/InventarioAdmin/InventarioAdmin";
 import VentasAdmin from "./pages/DashboardAdmin/VentasAdmin/VentasAdmin";
 import ClientesAdmin from "./pages/DashboardAdmin/ClientesAdmin/ClientesAdmin";
@@ -133,14 +136,19 @@ function App() {
 
         {/* Dashboards para el inventario*/}
 
+        {/* Módulo de Inventario con Layout y Subrutas */}
         <Route
           path="/dashboard/inventario"
           element={
             <ProtectedRoute roles={["inventario"]}>
-              <DashboardInventario />
+              <LayoutInventario />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route index element={<DashboardInventario />} />
+          <Route path="productos" element={<ProductosInventario />} />
+          <Route path="movimientos" element={<MovimientosInventario />} />
+        </Route>
 
         {/* Ruta no encontrada */}
 
