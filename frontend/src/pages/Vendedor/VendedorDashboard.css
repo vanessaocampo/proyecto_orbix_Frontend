@@ -1,0 +1,25 @@
+.vdash-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.vdash-titulo {
+  margin: 0;
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+
+.vdash-fecha {
+  margin: 2px 0 0;
+  font-size: 14px;
+  color: var(--muted-foreground);
+}
+
+.vdash-charts-row {
+  display: flex;
+  gap: 16px;
+}

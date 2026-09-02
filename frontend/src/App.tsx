@@ -10,7 +10,13 @@ import LoginOpera from "./pages/LoginOpera/LoginOpera";
 
 import DashboardAdmin from "./pages/DashboardAdmin/DashboardAdmin";
 
-import DashboardCajero from "./pages/DashboardCajero/DashboardCajero";
+import VendedorDashboard from "./pages/Vendedor/VendedorDashboard";
+
+import VendedorProductos from "./pages/Vendedor/VendedorProductos";
+
+import VendedorClientes from "./pages/Vendedor/VendedorClientes";
+
+import VendedorVentas from "./pages/Vendedor/VendedorVentas";
 
 import DashboardInventario from "./pages/DashboardInventario/DashboardInventario";
 import InventarioAdmin from "./pages/DashboardAdmin/InventarioAdmin/InventarioAdmin";
@@ -96,7 +102,31 @@ function App() {
           path="/dashboard/vendedor"
           element={
             <ProtectedRoute roles={["vendedor"]}>
-              <DashboardCajero />
+              <VendedorDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/vendedor/productos"
+          element={
+            <ProtectedRoute roles={["vendedor"]}>
+              <VendedorProductos />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/vendedor/clientes"
+          element={
+            <ProtectedRoute roles={["vendedor"]}>
+              <VendedorClientes />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/vendedor/ventas"
+          element={
+            <ProtectedRoute roles={["vendedor"]}>
+              <VendedorVentas />
             </ProtectedRoute>
           }
         />

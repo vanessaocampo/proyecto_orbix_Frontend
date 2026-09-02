@@ -1,0 +1,250 @@
+.vventas-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.vventas-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.vventas-titulo {
+  margin: 0;
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+
+.vventas-sub {
+  margin: 2px 0 0;
+  font-size: 14px;
+  color: var(--muted-foreground);
+}
+
+.vventas-registrar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #8b5cf6;
+  color: #ffffff;
+  font-family: "Outfit", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.vventas-registrar:hover {
+  opacity: 0.85;
+}
+
+/* Resumen */
+.vventas-resumen {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.vventas-resumen-card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.vventas-resumen-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.vventas-resumen-label p {
+  margin: 0;
+  font-family: "Outfit", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+
+.vventas-resumen-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.vventas-resumen-valor {
+  margin: 0;
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+
+/* Filtros */
+.vventas-filtros {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.vventas-filtros button {
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 13px;
+  font-family: "Outfit", sans-serif;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.vventas-filtros button.activo {
+  border-color: transparent;
+  background-color: #8b5cf6;
+  color: #ffffff;
+}
+
+/* Tabla */
+.vventas-tabla-wrap {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.vventas-tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.vventas-tabla thead {
+  background-color: var(--background);
+}
+
+.vventas-tabla th {
+  padding: 11px 16px;
+  text-align: left;
+  font-family: "Outfit", sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+}
+
+.vventas-tabla td {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.vventas-tabla tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.vventas-tabla tbody tr:hover {
+  background-color: var(--background);
+}
+
+.vventas-id {
+  font-family: "DM Mono", monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: #8b5cf6;
+}
+
+.vventas-cliente {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.vventas-items {
+  font-family: "DM Mono", monospace;
+  font-size: 13px;
+  color: var(--muted-foreground);
+  text-align: center;
+}
+
+.vventas-monto {
+  font-family: "DM Mono", monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.vventas-fecha {
+  font-family: "DM Mono", monospace;
+  font-size: 12px;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+
+.vventas-vacio {
+  padding: 40px;
+  text-align: center;
+  font-family: "Outfit", sans-serif;
+  font-size: 14px;
+  color: var(--muted-foreground);
+}
+
+/* Badges */
+.vventas-pago,
+.vventas-estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: "Outfit", sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+
+.vventas-pago.transferencia {
+  background-color: #ede9fe;
+  color: #6d28d9;
+}
+
+.vventas-pago.efectivo {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.vventas-estado.completada {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.vventas-estado.en-proceso {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.vventas-estado.pendiente {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.vventas-estado.cancelada {
+  background-color: #fee2e2;
+  color: #991b1b;
+}

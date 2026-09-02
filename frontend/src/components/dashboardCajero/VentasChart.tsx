@@ -7,52 +7,58 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { ventasMensualesVendedor } from "../../data/mockDataVendedor";
 import "./ChartsRow.css";
 
-// TODO: reemplazar por datos reales del backend (ventas acumuladas por mes)
-const DATOS = [
-  { mes: "Ene", valor: 12200 },
-  { mes: "Feb", valor: 13400 },
-  { mes: "Mar", valor: 12800 },
-  { mes: "Abr", valor: 15100 },
-  { mes: "May", valor: 16900 },
-  { mes: "Jun", valor: 15800 },
-  { mes: "Jul", valor: 19800 },
-  { mes: "Ago", valor: 21500 },
-  { mes: "Sep", valor: 20600 },
-  { mes: "Oct", valor: 22300 },
-  { mes: "Nov", valor: 23100 },
-  { mes: "Dic", valor: 24000 },
-];
+const formatoCOP = (valor: number) =>
+  valor.toLocaleString("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 });
 
 const VentasChart = () => {
   return (
-    <div className="chart-card">
+    <div className="vchart-card vchart-card-ancho">
       <h3>Mis ventas 2026</h3>
-      <p className="chart-sub naranja">Evolución mensual acumulada</p>
+      <p className="vchart-sub">Evolución mensual acumulada</p>
 
-      <ResponsiveContainer width="100%" height={220}>
-        <AreaChart data={DATOS} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+      <ResponsiveContainer width="100%" height={200}>
+        <AreaChart data={ventasMensualesVendedor} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
           <defs>
-            <linearGradient id="colorVentas" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#7c5cfc" stopOpacity={0.35} />
-              <stop offset="95%" stopColor="#7c5cfc" stopOpacity={0} />
+            <linearGradient id="vendGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.25} />
+              <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eceef3" />
-          <XAxis dataKey="mes" tick={{ fontSize: 11, fill: "#8890a0" }} axisLine={false} tickLine={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+          <XAxis
+            dataKey="mes"
+            tick={{ fontSize: 11, fontFamily: "DM Mono, monospace", fill: "var(--muted-foreground)" }}
+            axisLine={false}
+            tickLine={false}
+          />
           <YAxis
             tickFormatter={(v) => `$${v / 1000}k`}
-            tick={{ fontSize: 11, fill: "#8890a0" }}
+            tick={{ fontSize: 10, fontFamily: "DM Mono, monospace", fill: "var(--muted-foreground)" }}
             axisLine={false}
             tickLine={false}
           />
           <Tooltip
-            formatter={(v) =>
-              Number(v).toLocaleString("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 })
-            }
+            contentStyle={{
+              background: "var(--card)",
+              border: "1px solid var(--border)",
+              borderRadius: "8px",
+              fontSize: "12px",
+              fontFamily: "DM Mono, monospace",
+            }}
+            formatter={(v) => [formatoCOP(Number(v)), "Mis ventas"]}
           />
-          <Area type="monotone" dataKey="valor" stroke="#7c5cfc" strokeWidth={2.5} fill="url(#colorVentas)" />
+          <Area
+            type="monotone"
+            dataKey="ventas"
+            stroke="#8b5cf6"
+            strokeWidth={2}
+            fill="url(#vendGrad)"
+            dot={false}
+            activeDot={{ r: 5, fill: "#8b5cf6" }}
+          />
         </AreaChart>
       </ResponsiveContainer>
     </div>

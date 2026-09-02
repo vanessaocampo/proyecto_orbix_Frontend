@@ -1,0 +1,197 @@
+.vproductos-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.vproductos-titulo {
+  margin: 0;
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+
+.vproductos-sub {
+  margin: 2px 0 0;
+  font-size: 14px;
+  color: var(--muted-foreground);
+}
+
+/* Filtros */
+.vproductos-filtros {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.vproductos-buscar {
+  position: relative;
+  flex: 1;
+  max-width: 320px;
+}
+
+.vproductos-buscar svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted-foreground);
+}
+
+.vproductos-buscar input {
+  padding-left: 36px;
+  padding-right: 12px;
+  height: 38px;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: var(--card);
+  color: var(--foreground);
+  font-family: "Source Sans 3", sans-serif;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.vproductos-buscar input:focus {
+  border-color: #8b5cf6;
+}
+
+.vproductos-categorias {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.vproductos-categorias button {
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 13px;
+  font-family: "Outfit", sans-serif;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.vproductos-categorias button:hover {
+  border-color: #8b5cf6;
+  color: #8b5cf6;
+}
+
+.vproductos-categorias button.activo {
+  border-color: transparent;
+  background-color: #8b5cf6;
+  color: #ffffff;
+}
+
+/* Tarjetas */
+.vproductos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.vproducto-card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vproducto-card.agotado {
+  opacity: 0.55;
+}
+
+.vproducto-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.vproducto-categoria {
+  font-family: "Outfit", sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+
+.vproducto-stock {
+  font-family: "Outfit", sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 99px;
+  background-color: #d1fae5;
+  color: #065f46;
+  white-space: nowrap;
+}
+
+.vproducto-stock.bajo {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.vproducto-stock.sin-stock {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.vproducto-nombre {
+  margin: 0;
+  font-family: "Outfit", sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--foreground);
+  line-height: 1.3;
+}
+
+.vproducto-id {
+  margin: 0;
+  font-family: "DM Mono", monospace;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+
+.vproducto-precio {
+  margin: 0;
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  font-size: 19px;
+  letter-spacing: -0.02em;
+  color: #8b5cf6;
+}
+
+.vproducto-boton {
+  margin-top: auto;
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: "Outfit", sans-serif;
+  font-weight: 600;
+  background-color: #8b5cf6;
+  color: #ffffff;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.vproducto-boton:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.vproducto-boton:disabled {
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+  cursor: not-allowed;
+}

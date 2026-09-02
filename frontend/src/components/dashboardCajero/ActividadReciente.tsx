@@ -1,72 +1,51 @@
 import { Receipt, UserPlus } from "lucide-react";
+import { actividadRecienteVendedor } from "../../data/mockDataVendedor";
 import "./ActividadReciente.css";
 
-const actividades = [
-  {
-    tipo: "venta",
-    nombre: "María García",
-    descripcion: "Venta registrada",
-    valor: "$ 1.890",
-    tiempo: "Hace 20 min",
-  },
-  {
-    tipo: "cliente",
-    nombre: "Roberto Fuentes",
-    descripcion: "Nuevo cliente",
-    valor: "",
-    tiempo: "Hace 1 h",
-  },
-  {
-    tipo: "venta",
-    nombre: "Juan Méndez",
-    descripcion: "Venta registrada",
-    valor: "$ 5.900",
-    tiempo: "Hace 3 h",
-  },
-  {
-    tipo: "venta",
-    nombre: "Ferretería Central",
-    descripcion: "Venta registrada",
-    valor: "$ 3.800",
-    tiempo: "Ayer",
-  },
-];
+const formatoCOP = (valor: number) =>
+  valor.toLocaleString("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 });
 
 const ActividadReciente = () => {
   return (
-    <section className="actividad-card">
-      <h3>Actividad reciente</h3>
+    <section className="vactividad-card">
+      <div className="vactividad-header">
+        <h3>Actividad reciente</h3>
+      </div>
 
-      <div className="actividad-lista">
-        {actividades.map((actividad, index) => {
-          const Icono =
-            actividad.tipo === "cliente"
-              ? UserPlus
-              : Receipt;
+      <div className="vactividad-lista">
+        {actividadRecienteVendedor.map((actividad, index) => {
+          const esCliente = actividad.monto === null;
+          const Icono = esCliente ? UserPlus : Receipt;
 
           return (
-            <div className="actividad-item" key={index}>
+            <div
+              className="vactividad-item"
+              key={index}
+              style={{
+                borderBottom:
+                  index < actividadRecienteVendedor.length - 1
+                    ? "1px solid var(--border)"
+                    : "none",
+              }}
+            >
               <div
-                className={`actividad-icono ${
-                  actividad.tipo === "cliente"
-                    ? "icono-cliente"
-                    : "icono-venta"
+                className={`vactividad-icono ${
+                  esCliente ? "vactividad-icono-cliente" : "vactividad-icono-venta"
                 }`}
               >
-                <Icono size={13} />
+                <Icono size={14} />
               </div>
 
-              <div className="actividad-info">
-                <strong>{actividad.descripcion}</strong>
-                <span>{actividad.nombre}</span>
+              <div className="vactividad-info">
+                <strong>{actividad.accion}</strong>
+                <span>{actividad.cliente}</span>
               </div>
 
-              <div className="actividad-datos">
-                {actividad.valor && (
-                  <strong>{actividad.valor}</strong>
+              <div className="vactividad-datos">
+                {actividad.monto !== null && (
+                  <strong>{formatoCOP(actividad.monto)}</strong>
                 )}
-
-                <span>{actividad.tiempo}</span>
+                <span>{actividad.hora}</span>
               </div>
             </div>
           );

@@ -7,7 +7,6 @@ type Metrica = {
   colorDetalle: "purple" | "green" | "blue" | "orange";
 };
 
-// TODO: reemplazar por datos reales desde GET /api/v1/ventas/resumen (o el endpoint que exponga el backend)
 const METRICAS: Metrica[] = [
   {
     titulo: "Mis ventas del mes",
@@ -37,12 +36,12 @@ const METRICAS: Metrica[] = [
 
 const MetricCards = () => {
   return (
-    <div className="metric-cards">
+    <div className="vmetric-cards">
       {METRICAS.map((metrica) => (
-        <div className="metric-card" key={metrica.titulo}>
-          <p className="metric-titulo">{metrica.titulo}</p>
-          <h2 className="metric-valor">{metrica.valor}</h2>
-          <p className={`metric-detalle ${metrica.colorDetalle}`}>
+        <div className="vmetric-card" key={metrica.titulo}>
+          <p className="vmetric-titulo">{metrica.titulo}</p>
+          <h2 className="vmetric-valor">{metrica.valor}</h2>
+          <p className={`vmetric-detalle ${metrica.colorDetalle}`}>
             {metrica.detalle}
           </p>
         </div>

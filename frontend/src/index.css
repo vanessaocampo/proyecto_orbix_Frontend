@@ -1,3 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -5,7 +9,15 @@
 }
 
 :root {
-  font-family: "Nunito Sans", sans-serif;
+  --background: #f0f4f8;
+  --foreground: #0d1b2e;
+  --card: #ffffff;
+  --border: #dde3ea;
+  --muted: #e4eaf1;
+  --muted-foreground: #64748b;
+  --sidebar: #0a1628;
+
+  font-family: "Source Sans 3", "Nunito Sans", sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -19,5 +31,34 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
-  font-family: "Nunito Sans", sans-serif;
+  font-family: "Source Sans 3", "Nunito Sans", sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Outfit", system-ui, sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
 }

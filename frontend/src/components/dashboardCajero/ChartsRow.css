@@ -1,35 +1,30 @@
-.chart-card {
-  background-color: #ffffff;
-  border: 1px solid #d9dee8;
-  border-radius: 10px;
-  padding: 16px 18px;
+.vchart-card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
   min-width: 0;
   box-sizing: border-box;
 }
 
-/* Gráfico de ventas: más ancho */
-.chart-card:first-child {
-  flex: 2;
-}
-
-/* Gráfico de meta: más estrecho */
-.chart-card:last-child {
+.vchart-card-ancho {
   flex: 1;
 }
 
-.chart-card h3 {
-  margin: 0 0 5px;
-  font-size: 14px;
+.vchart-card-estrecho {
+  flex: 0 0 340px;
+}
+
+.vchart-card h3 {
+  margin: 0 0 4px;
+  font-family: "Outfit", sans-serif;
   font-weight: 600;
-  color: #1f2233;
+  font-size: 16px;
+  color: var(--foreground);
 }
 
-.chart-sub {
-  margin: 0 0 8px;
-  font-size: 10px;
-  color: #8890a0;
-}
-
-.chart-sub.naranja {
-  color: #ea580c;
+.vchart-sub {
+  margin: 0 0 16px;
+  font-size: 12px;
+  color: var(--muted-foreground);
 }

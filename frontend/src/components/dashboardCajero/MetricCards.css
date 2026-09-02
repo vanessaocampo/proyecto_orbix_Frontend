@@ -1,46 +1,52 @@
-.metric-cards {
-  display: flex;
-  gap: 20px;
-  padding: 0 30px;
+.vmetric-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
 }
 
-.metric-card {
-  flex: 1;
-  background-color: #ffffff;
-  border-radius: 15px;
-  padding: 20px 22px;
+.vmetric-card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
 }
 
-.metric-titulo {
-  margin: 0 0 12px;
-  font-size: 13px;
-  color: #8890a0;
-}
-
-.metric-valor {
+.vmetric-titulo {
   margin: 0 0 8px;
-  font-size: 26px;
-  color: #1f2233;
+  font-family: "Outfit", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--muted-foreground);
 }
 
-.metric-detalle {
+.vmetric-valor {
+  margin: 0 0 6px;
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--foreground);
+}
+
+.vmetric-detalle {
   margin: 0;
   font-size: 12px;
   font-weight: 600;
 }
 
-.metric-detalle.purple {
-  color: #7c5cfc;
+.vmetric-detalle.purple {
+  color: #8b5cf6;
 }
 
-.metric-detalle.green {
-  color: #16a34a;
+.vmetric-detalle.green {
+  color: #10b981;
 }
 
-.metric-detalle.blue {
-  color: #2563eb;
+.vmetric-detalle.blue {
+  color: #0e7490;
 }
 
-.metric-detalle.orange {
-  color: #ea580c;
+.vmetric-detalle.orange {
+  color: #f59e0b;
 }

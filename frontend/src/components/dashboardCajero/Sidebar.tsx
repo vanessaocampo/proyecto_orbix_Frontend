@@ -1,50 +1,86 @@
-import {
-  LayoutGrid,
-  ShoppingBag,
-  Users,
-  Receipt,
-  Target,
-} from "lucide-react";
+import { LayoutGrid, ShoppingBag, Users, Receipt, Target } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import LogoutButton from "../LogoutButton";
 
 import "./Sidebar.css";
 
 const ITEMS = [
-  { path: "/dashboard/cajero", label: "Mi Dashboard", icon: LayoutGrid },
-  { path: "/dashboard/cajero/productos", label: "Productos", icon: ShoppingBag },
-  { path: "/dashboard/cajero/clientes", label: "Mis Clientes", icon: Users },
-  { path: "/dashboard/cajero/ventas", label: "Mis Ventas", icon: Receipt },
+  { path: "/dashboard/vendedor", label: "Mi Dashboard", icon: LayoutGrid },
+  { path: "/dashboard/vendedor/productos", label: "Productos", icon: ShoppingBag },
+  { path: "/dashboard/vendedor/clientes", label: "Mis Clientes", icon: Users },
+  { path: "/dashboard/vendedor/ventas", label: "Mis Ventas", icon: Receipt },
 ];
+
+const obtenerUsuario = () => {
+  try {
+    const usuarioGuardado = localStorage.getItem("usuario");
+
+    if (!usuarioGuardado) {
+      return { nombre: "Vendedor", iniciales: "VD" };
+    }
+
+    const usuario = JSON.parse(usuarioGuardado);
+
+    const nombre: string = usuario?.nombre ?? "Vendedor";
+
+    const iniciales = nombre
+      .trim()
+      .split(/\s+/)
+      .map((palabra: string) => palabra[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
+
+    return {
+      nombre,
+      iniciales: iniciales || "VD",
+    };
+  } catch {
+    return { nombre: "Vendedor", iniciales: "VD" };
+  }
+};
 
 const Sidebar = () => {
   const { pathname } = useLocation();
+  const { nombre, iniciales } = obtenerUsuario();
 
   return (
-    <aside className="sidebar-vendedor">
-      <div className="sidebar-vendedor-titulo">
-        <div className="logo-orbix">
-          <Target size={18} />
+    <aside className="vendedor-sidebar">
+      {/* Logo */}
+      <div className="vendedor-sidebar-top">
+        <div className="vendedor-logo">
+          <div className="vendedor-logo-icono">
+            <Target size={18} />
+          </div>
+          <span className="vendedor-logo-nombre">Orbix</span>
         </div>
-        <h2 className="siti">Orbix</h2>
+
+        <span className="vendedor-badge-rol">Vendedor</span>
       </div>
 
-      <span className="badge-rol">Vendedor</span>
-
-      <p className="navp">MENÚ</p>
-      <nav className="navegacion-vendedor">
+      {/* Navegación */}
+      <p className="vendedor-nav-label">MENÚ</p>
+      <nav className="vendedor-nav">
         {ITEMS.map(({ path, label, icon: Icon }) => {
           const activo = pathname === path;
           return (
             <a key={path} href={path} className={activo ? "activo" : ""}>
-              <Icon size={20} />
+              <Icon size={18} />
               <span>{label}</span>
             </a>
           );
         })}
       </nav>
 
-      <div className="sidebar-vendedor-footer">
+      {/* Pie: usuario + cerrar perfil */}
+      <div className="vendedor-sidebar-footer">
+        <div className="vendedor-usuario-info">
+          <div className="vendedor-avatar">{iniciales}</div>
+          <div className="vendedor-usuario-texto">
+            <strong>{nombre}</strong>
+            <span>Vendedor</span>
+          </div>
+        </div>
         <LogoutButton />
       </div>
     </aside>

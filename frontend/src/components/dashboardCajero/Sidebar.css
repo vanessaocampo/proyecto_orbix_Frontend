@@ -1,88 +1,166 @@
-.sidebar-vendedor {
-  width: 230px;
-  height: 100vh;
-  background-color: #14141f;
-  position: fixed;
-  left: 0;
-  top: 0;
+.vendedor-sidebar {
+  width: 240px;
+  min-height: 100vh;
+  background-color: var(--sidebar);
+  color: var(--sidebar-foreground, #cbd5e1);
   display: flex;
   flex-direction: column;
-  padding: 22px 16px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
   box-sizing: border-box;
+  user-select: none;
 }
 
-.sidebar-vendedor-titulo {
+/* Logo */
+.vendedor-sidebar-top {
+  padding: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.vendedor-logo {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 0 8px;
 }
 
-.logo-orbix {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background-color: #7c5cfc;
-  color: white;
+.vendedor-logo-icono {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background-color: #8b5cf6;
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-.siti {
-  color: #f5f5fa;
-  font-size: 17px;
-  margin: 0;
+.vendedor-logo-nombre {
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  font-size: 19px;
+  color: #ffffff;
+  letter-spacing: -0.01em;
 }
 
-.badge-rol {
-  margin: 10px 8px 22px;
-  align-self: flex-start;
-  background-color: #7c5cfc;
-  color: white;
+.vendedor-badge-rol {
+  display: inline-block;
+  margin-top: 10px;
   font-size: 11px;
+  font-family: "Outfit", sans-serif;
   font-weight: 600;
-  padding: 3px 12px;
-  border-radius: 20px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  background-color: rgba(139, 92, 246, 0.18);
+  color: #c4b5fd;
 }
 
-.navp {
-  color: #666c7c;
-  padding: 0 8px;
+/* Navegación */
+.vendedor-nav-label {
+  padding: 16px 24px 6px;
+  margin: 0;
+  font-family: "Outfit", sans-serif;
   font-size: 10px;
-  letter-spacing: 0.5px;
-  margin: 0 0 10px;
+  letter-spacing: 0.08em;
+  color: rgba(203, 213, 225, 0.35);
+  font-weight: 600;
 }
 
-.navegacion-vendedor {
+.vendedor-nav {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
+  padding: 0 12px;
 }
 
-.navegacion-vendedor a {
+.vendedor-nav a {
   display: flex;
   align-items: center;
-  gap: 14px;
-  color: #9298a8;
+  gap: 12px;
   padding: 10px 12px;
-  border-radius: 10px;
+  border-radius: 8px;
   text-decoration: none;
+  font-family: "Outfit", sans-serif;
   font-size: 14px;
+  color: rgba(203, 213, 225, 0.7);
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.navegacion-vendedor a:hover {
-  background-color: #1c1c2b;
-  color: #f5f5fa;
+.vendedor-nav a:hover {
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
-.navegacion-vendedor a.activo {
-  background-color: #7c5cfc;
-  color: white;
+.vendedor-nav a.activo {
+  background-color: rgba(139, 92, 246, 0.18);
+  color: #c4b5fd;
+  font-weight: 600;
 }
 
-.sidebar-vendedor-footer {
+/* Pie */
+.vendedor-sidebar-footer {
   margin-top: auto;
+  padding: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.vendedor-usuario-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 8px;
+  margin-bottom: 12px;
+}
+
+.vendedor-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #8b5cf6;
+  color: #ffffff;
+  font-family: "Outfit", sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.vendedor-usuario-texto {
+  min-width: 0;
+  line-height: 1.25;
+}
+
+.vendedor-usuario-texto strong {
+  display: block;
+  font-family: "Outfit", sans-serif;
+  font-size: 13px;
+  color: rgba(226, 232, 240, 0.9);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vendedor-usuario-texto span {
+  display: block;
+  font-size: 11px;
+  color: rgba(203, 213, 225, 0.45);
+}
+
+.vendedor-sidebar-footer .cerrar-perfil {
+  margin: 0;
+  width: 100%;
+  height: 36px;
+  border-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: rgba(203, 213, 225, 0.55);
+  font-size: 12px;
+}
+
+.vendedor-sidebar-footer .cerrar-perfil:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: rgba(203, 213, 225, 0.85);
 }
