@@ -122,14 +122,43 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     cargarDatos();
   }, []);
 
-  const agregarProducto = (prod: Producto) => setProductos(prev => [prod, ...prev]);
+  const agregarProducto = async (prod: Producto) => {
+    // 1. Actualizacin UI inmediata (Optimistic update)
+    setProductos(prev => [prod, ...prev]);
 
-  const registrarMovimiento = (mov: Movimiento, sku: string, cantidadNum: number, tipo: string) => {
+    // 2. Sincronizacin con Base de Datos
+    try {
+      const token = localStorage.getItem('token');
+      if (token) {
+        const payload = {
+          sku: prod.id,
+          nombre: prod.nombre,
+          precio: prod.precio,
+          stock: prod.stock,
+          stockMinimo: prod.stockMin,
+          // Para no romper las llaves forneas, usamos IDs genricos o intentamos mapear
+          idCategoria: 1, 
+          idProveedor: 1
+        };
+        await fetch('http://localhost:3000/api/v1/productos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify(payload)
+        });
+      }
+    } catch (e) {
+      console.error("Error al guardar el producto en la BD", e);
+    }
+  };
+
+  const registrarMovimiento = async (mov: Movimiento, sku: string, cantidadNum: number, tipo: string) => {
     setMovimientos(prev => [mov, ...prev]);
     
     // Actualizar stock del producto asociado localmente (el backend lo har tambin)
+    let prodEncontrado: Producto | undefined;
     setProductos(prev => prev.map(p => {
       if (p.id === sku || p.nombre.toLowerCase() === mov.producto.toLowerCase()) {
+        prodEncontrado = p;
         const nuevoStock = tipo === "Entrada" ? p.stock + cantidadNum : p.stock - cantidadNum;
         return { 
           ...p, 
@@ -139,6 +168,28 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
       }
       return p;
     }));
+
+    // Sincronizar con la BD
+    try {
+      const token = localStorage.getItem('token');
+      if (token && prodEncontrado) {
+        const rawId = prodEncontrado.id.replace('PRD-', '');
+        const idProducto = parseInt(rawId) || 1;
+        const endpointTipo = tipo.toLowerCase() === 'entrada' ? 'entrada' : tipo.toLowerCase() === 'salida' ? 'salida' : 'ajuste';
+        
+        await fetch(`http://localhost:3000/api/v1/inventario/${endpointTipo}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({
+            idProducto,
+            cantidad: cantidadNum,
+            referencia: mov.nota || 'Registrado desde Dashboard'
+          })
+        });
+      }
+    } catch (e) {
+      console.error("Error al guardar el movimiento en la BD", e);
+    }
   };
 
   return (
