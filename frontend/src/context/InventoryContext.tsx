@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
 export type Producto = {
   id: string;
@@ -28,6 +28,7 @@ export type Movimiento = {
 interface InventoryContextType {
   productos: Producto[];
   movimientos: Movimiento[];
+  loading: boolean;
   agregarProducto: (prod: Producto) => void;
   registrarMovimiento: (mov: Movimiento, sku: string, cantidadNum: number, tipo: string) => void;
 }
@@ -53,15 +54,81 @@ const initialMovimientos: Movimiento[] = [
 export const InventoryProvider = ({ children }: { children: ReactNode }) => {
   const [productos, setProductos] = useState<Producto[]>(initialProductos);
   const [movimientos, setMovimientos] = useState<Movimiento[]>(initialMovimientos);
+  
+  // Agregar un estado para saber si est cargando
+  const [loading, setLoading] = useState(false);
+
+  // Hook para cargar datos reales de la BD al montar el componente
+  useEffect(() => {
+    const cargarDatos = async () => {
+      setLoading(true);
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error("No token"); // Si no hay token, usa los de prueba
+        
+        const headers = { 'Authorization': `Bearer ${token}` };
+        
+        // 1. Cargar Productos reales
+        const resProd = await fetch('http://localhost:3000/api/v1/productos', { headers });
+        if (resProd.ok) {
+          const dataProd = await resProd.json();
+          if (dataProd.success && dataProd.data.length > 0) {
+            const prodMapeados: Producto[] = dataProd.data.map((p: any) => ({
+              id: p.sku || `PRD-${p.idProducto}`, // Usa SKU si existe
+              nombre: p.nombre,
+              categoria: p.categoria?.nombre || 'General',
+              precio: Number(p.precio),
+              stock: p.stock,
+              stockMin: p.stockMinimo,
+              valor: Number(p.precio) * p.stock,
+              proveedor: p.proveedor?.nombre || 'Local'
+            }));
+            setProductos(prodMapeados);
+          }
+        }
+
+        // 2. Cargar Movimientos reales
+        const resMov = await fetch('http://localhost:3000/api/v1/inventario/movimientos', { headers });
+        if (resMov.ok) {
+           const dataMov = await resMov.json();
+           if (dataMov.success && dataMov.data.length > 0) {
+              const movMapeados: Movimiento[] = dataMov.data.map((m: any) => {
+                const dateObj = new Date(m.fecha);
+                return {
+                  id: `MOV-${m.idMovimiento}`,
+                  fecha: dateObj.toLocaleDateString(),
+                  hora: dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                  tipo: m.tipo === 'entrada' ? 'Entrada' : m.tipo === 'salida' ? 'Salida' : m.tipo === 'ajuste' ? 'Ajuste' : 'Devolucion',
+                  producto: m.producto?.nombre || 'Desconocido',
+                  sku: m.producto?.sku || 'N/A',
+                  cantidad: (m.tipo === 'entrada' || m.tipo === 'devolucion' ? '+' : '-') + m.cantidad + ' u.',
+                  isPositive: m.tipo === 'entrada' || m.tipo === 'devolucion',
+                  valor: m.cantidad * Number(m.producto?.precio || 0),
+                  responsable: m.usuario?.nombre || 'Sistema',
+                  nota: m.referencia || 'N/A'
+                };
+              });
+              setMovimientos(movMapeados);
+           }
+        }
+      } catch (error) {
+        console.warn("No se pudo conectar con la BD en NEON o no hay sesion. Usando Mock Data.");
+        // Fallback silencioso a initialProductos y initialMovimientos (Mock Data)
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    cargarDatos();
+  }, []);
 
   const agregarProducto = (prod: Producto) => setProductos(prev => [prod, ...prev]);
 
   const registrarMovimiento = (mov: Movimiento, sku: string, cantidadNum: number, tipo: string) => {
     setMovimientos(prev => [mov, ...prev]);
     
-    // Actualizar stock del producto asociado
+    // Actualizar stock del producto asociado localmente (el backend lo har tambin)
     setProductos(prev => prev.map(p => {
-      // Buscar el producto por SKU exacto, o por nombre si el SKU no coincide perfectamente
       if (p.id === sku || p.nombre.toLowerCase() === mov.producto.toLowerCase()) {
         const nuevoStock = tipo === "Entrada" ? p.stock + cantidadNum : p.stock - cantidadNum;
         return { 
@@ -75,7 +142,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <InventoryContext.Provider value={{ productos, movimientos, agregarProducto, registrarMovimiento }}>
+    <InventoryContext.Provider value={{ productos, movimientos, agregarProducto, registrarMovimiento, loading }}>
       {children}
     </InventoryContext.Provider>
   );
