@@ -4,6 +4,8 @@ export type Producto = {
   id: string;
   nombre: string;
   categoria: string;
+  descripcion?: string;
+  precioCompra?: number;
   precio: number;
   stock: number;
   stockMin: number;
@@ -77,6 +79,8 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
               id: p.sku || `PRD-${p.idProducto}`, // Usa SKU si existe
               nombre: p.nombre,
               categoria: p.categoria?.nombre || 'General',
+              descripcion: p.descripcion,
+              precioCompra: p.precioCompra ? Number(p.precioCompra) : undefined,
               precio: Number(p.precio),
               stock: p.stock,
               stockMin: p.stockMinimo,
@@ -123,20 +127,22 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const agregarProducto = async (prod: Producto) => {
-    // 1. Actualizacin UI inmediata (Optimistic update)
+    // 1. Actualización UI inmediata (Optimistic update)
     setProductos(prev => [prod, ...prev]);
 
-    // 2. Sincronizacin con Base de Datos
+    // 2. Sincronización con Base de Datos
     try {
       const token = localStorage.getItem('token');
       if (token) {
         const payload = {
           sku: prod.id,
           nombre: prod.nombre,
+          descripcion: prod.descripcion,
+          precioCompra: prod.precioCompra,
           precio: prod.precio,
           stock: prod.stock,
           stockMinimo: prod.stockMin,
-          // Para no romper las llaves forneas, usamos IDs genricos o intentamos mapear
+          // Para no romper las llaves foráneas, usamos IDs genéricos o intentamos mapear
           idCategoria: 1, 
           idProveedor: 1
         };

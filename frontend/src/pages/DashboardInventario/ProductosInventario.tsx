@@ -17,8 +17,11 @@ const ProductosInventario = () => {
   // Estado del Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [nuevoProducto, setNuevoProducto] = useState({
+    sku: "",
     nombre: "",
+    descripcion: "",
     categoria: "Electrónica",
+    precioCompra: "",
     precio: "",
     stock: "",
     stockMin: "",
@@ -44,14 +47,16 @@ const ProductosInventario = () => {
   // Manejar creación de producto
   const handleAgregarProducto = (e: React.FormEvent) => {
     e.preventDefault();
-    const nuevoId = `PRD-00${productos.length + 1}`;
+    const nuevoId = nuevoProducto.sku || `PRD-00${productos.length + 1}`;
     const pPrecio = Number(nuevoProducto.precio);
     const pStock = Number(nuevoProducto.stock);
     
     const productoAgregado = {
       id: nuevoId,
       nombre: nuevoProducto.nombre,
+      descripcion: nuevoProducto.descripcion,
       categoria: nuevoProducto.categoria,
+      precioCompra: nuevoProducto.precioCompra ? Number(nuevoProducto.precioCompra) : undefined,
       precio: pPrecio,
       stock: pStock,
       stockMin: Number(nuevoProducto.stockMin),
@@ -63,7 +68,7 @@ const ProductosInventario = () => {
     setIsModalOpen(false);
     
     // Resetear form
-    setNuevoProducto({ nombre: "", categoria: "Electrónica", precio: "", stock: "", stockMin: "", proveedor: "" });
+    setNuevoProducto({ sku: "", nombre: "", descripcion: "", categoria: "Electrónica", precioCompra: "", precio: "", stock: "", stockMin: "", proveedor: "" });
   };
 
   // Calcular valor total de filtrados
@@ -188,24 +193,53 @@ const ProductosInventario = () => {
             
             <form onSubmit={handleAgregarProducto}>
               <div className="modal-body">
+                <div className="form-row">
+                  <div className="form-group-inv">
+                    <label>Código SKU (Opcional)</label>
+                    <input type="text" placeholder="Ej. PRD-123" 
+                      value={nuevoProducto.sku} onChange={(e) => setNuevoProducto({...nuevoProducto, sku: e.target.value})} />
+                  </div>
+                  <div className="form-group-inv">
+                    <label>Nombre del Producto</label>
+                    <input type="text" required placeholder="Ej. Teclado Inalámbrico" 
+                      value={nuevoProducto.nombre} onChange={(e) => setNuevoProducto({...nuevoProducto, nombre: e.target.value})} />
+                  </div>
+                </div>
+
                 <div className="form-group-inv">
-                  <label>Nombre del Producto</label>
-                  <input type="text" required placeholder="Ej. Teclado Inalámbrico" 
-                    value={nuevoProducto.nombre} onChange={(e) => setNuevoProducto({...nuevoProducto, nombre: e.target.value})} />
+                  <label>Descripción</label>
+                  <textarea placeholder="Breve descripción del producto..." rows={2} style={{width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid #e2e8f0'}}
+                    value={nuevoProducto.descripcion} onChange={(e) => setNuevoProducto({...nuevoProducto, descripcion: e.target.value})} />
                 </div>
                 
                 <div className="form-row">
                   <div className="form-group-inv">
                     <label>Categoría</label>
                     <select value={nuevoProducto.categoria} onChange={(e) => setNuevoProducto({...nuevoProducto, categoria: e.target.value})}>
+                      <option value="Abarrotes">Abarrotes</option>
+                      <option value="Aseo">Aseo</option>
+                      <option value="Bebidas">Bebidas</option>
+                      <option value="Papelería">Papelería</option>
                       <option value="Electrónica">Electrónica</option>
                       <option value="Ropa y calzado">Ropa y calzado</option>
-                      <option value="Alimentos">Alimentos</option>
                       <option value="Hogar">Hogar</option>
                     </select>
                   </div>
                   <div className="form-group-inv">
-                    <label>Precio Unitario ($)</label>
+                    <label>Proveedor</label>
+                    <input type="text" required placeholder="Nombre de la empresa proveedora" 
+                      value={nuevoProducto.proveedor} onChange={(e) => setNuevoProducto({...nuevoProducto, proveedor: e.target.value})} />
+                  </div>
+                </div>
+
+                <div className="form-row">
+                  <div className="form-group-inv">
+                    <label>Precio Compra ($)</label>
+                    <input type="number" min="0" placeholder="0.00" 
+                      value={nuevoProducto.precioCompra} onChange={(e) => setNuevoProducto({...nuevoProducto, precioCompra: e.target.value})} />
+                  </div>
+                  <div className="form-group-inv">
+                    <label>Precio Venta ($)</label>
                     <input type="number" required min="0" placeholder="0.00" 
                       value={nuevoProducto.precio} onChange={(e) => setNuevoProducto({...nuevoProducto, precio: e.target.value})} />
                   </div>
@@ -222,12 +256,6 @@ const ProductosInventario = () => {
                     <input type="number" required min="0" placeholder="0" 
                       value={nuevoProducto.stockMin} onChange={(e) => setNuevoProducto({...nuevoProducto, stockMin: e.target.value})} />
                   </div>
-                </div>
-
-                <div className="form-group-inv">
-                  <label>Proveedor</label>
-                  <input type="text" required placeholder="Nombre de la empresa proveedora" 
-                    value={nuevoProducto.proveedor} onChange={(e) => setNuevoProducto({...nuevoProducto, proveedor: e.target.value})} />
                 </div>
               </div>
 
