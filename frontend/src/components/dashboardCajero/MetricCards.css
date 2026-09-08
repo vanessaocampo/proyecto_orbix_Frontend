@@ -11,6 +11,23 @@
   padding: 20px;
 }
 
+.vmetric-card-boton {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.vmetric-card-boton:hover {
+  border-color: #8b5cf6;
+  transform: translateY(-1px);
+}
+
+.vmetric-card-boton:active {
+  transform: translateY(0);
+}
+
 .vmetric-titulo {
   margin: 0 0 8px;
   font-family: "Outfit", sans-serif;
