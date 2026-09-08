@@ -5,7 +5,18 @@ import "./ActividadReciente.css";
 const formatoCOP = (valor: number) =>
   valor.toLocaleString("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 });
 
-const ActividadReciente = () => {
+type Actividad = {
+  accion: string;
+  cliente: string;
+  monto: number | null;
+  hora: string;
+};
+
+const ActividadReciente = ({
+  actividades = actividadRecienteVendedor,
+}: {
+  actividades?: Actividad[];
+}) => {
   return (
     <section className="vactividad-card">
       <div className="vactividad-header">
@@ -13,7 +24,7 @@ const ActividadReciente = () => {
       </div>
 
       <div className="vactividad-lista">
-        {actividadRecienteVendedor.map((actividad, index) => {
+        {actividades.map((actividad, index) => {
           const esCliente = actividad.monto === null;
           const Icono = esCliente ? UserPlus : Receipt;
 
@@ -23,7 +34,7 @@ const ActividadReciente = () => {
               key={index}
               style={{
                 borderBottom:
-                  index < actividadRecienteVendedor.length - 1
+                  index < actividades.length - 1
                     ? "1px solid var(--border)"
                     : "none",
               }}

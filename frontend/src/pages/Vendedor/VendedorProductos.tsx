@@ -1,20 +1,27 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
 import VendedorLayout from "../../components/dashboardCajero/VendedorLayout";
-import { productosVendedor } from "../../data/mockDataVendedor";
+import CargandoVendedor from "../../components/dashboardCajero/CargandoVendedor";
+import useVendedorData from "../../hooks/useVendedorData";
 
 import "./VendedorProductos.css";
-
-const CATEGORIAS = ["Todas", "Electrónica", "Ropa y calzado", "Alimentos", "Hogar"];
 
 const formatoCOP = (valor: number) =>
   valor.toLocaleString("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 });
 
 const VendedorProductos = () => {
+  const { productos, cargando } = useVendedorData();
+  const navigate = useNavigate();
   const [busqueda, setBusqueda] = useState("");
   const [categoria, setCategoria] = useState("Todas");
 
-  const filtrados = productosVendedor.filter((producto) => {
+  const categorias = [
+    "Todas",
+    ...Array.from(new Set(productos.map((producto) => producto.categoria))).sort(),
+  ];
+
+  const filtrados = productos.filter((producto) => {
     const coincideBusqueda = producto.nombre
       .toLowerCase()
       .includes(busqueda.toLowerCase());
@@ -23,11 +30,15 @@ const VendedorProductos = () => {
     return coincideBusqueda && coincideCategoria;
   });
 
-  const disponibles = productosVendedor.filter((p) => p.stock > 0).length;
+  const disponibles = productos.filter((p) => p.stock > 0).length;
 
   return (
     <VendedorLayout vista="Productos">
       <div className="vproductos-flex">
+        {cargando ? (
+          <CargandoVendedor />
+        ) : (
+          <>
         <div>
           <h1 className="vproductos-titulo">Catálogo de productos</h1>
           <p className="vproductos-sub">{disponibles} productos disponibles para vender</p>
@@ -46,7 +57,7 @@ const VendedorProductos = () => {
           </div>
 
           <div className="vproductos-categorias">
-            {CATEGORIAS.map((c) => (
+            {categorias.map((c) => (
               <button
                 key={c}
                 className={categoria === c ? "activo" : ""}
@@ -85,13 +96,23 @@ const VendedorProductos = () => {
 
                 <p className="vproducto-precio">{formatoCOP(producto.precio)}</p>
 
-                <button className="vproducto-boton" disabled={agotado}>
+                <button
+                  className="vproducto-boton"
+                  disabled={agotado}
+                  onClick={() =>
+                    navigate("/dashboard/vendedor/ventas", {
+                      state: { abrirRegistro: true, productoId: producto.id },
+                    })
+                  }
+                >
                   {agotado ? "Sin disponibilidad" : "Agregar a venta"}
                 </button>
               </div>
             );
           })}
         </div>
+          </>
+        )}
       </div>
     </VendedorLayout>
   );
