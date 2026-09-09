@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
 export type Producto = {
   id: string;
@@ -28,6 +28,7 @@ export type Movimiento = {
 interface InventoryContextType {
   productos: Producto[];
   movimientos: Movimiento[];
+  loading: boolean;
   agregarProducto: (prod: Producto) => void;
   registrarMovimiento: (mov: Movimiento, sku: string, cantidadNum: number, tipo: string) => void;
 }
@@ -53,16 +54,111 @@ const initialMovimientos: Movimiento[] = [
 export const InventoryProvider = ({ children }: { children: ReactNode }) => {
   const [productos, setProductos] = useState<Producto[]>(initialProductos);
   const [movimientos, setMovimientos] = useState<Movimiento[]>(initialMovimientos);
+  
+  // Agregar un estado para saber si est cargando
+  const [loading, setLoading] = useState(false);
 
-  const agregarProducto = (prod: Producto) => setProductos(prev => [prod, ...prev]);
+  // Hook para cargar datos reales de la BD al montar el componente
+  useEffect(() => {
+    const cargarDatos = async () => {
+      setLoading(true);
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error("No token"); // Si no hay token, usa los de prueba
+        
+        const headers = { 'Authorization': `Bearer ${token}` };
+        
+        // 1. Cargar Productos reales
+        const resProd = await fetch('http://localhost:3000/api/v1/productos', { headers });
+        if (resProd.ok) {
+          const dataProd = await resProd.json();
+          if (dataProd.success && dataProd.data.length > 0) {
+            const prodMapeados: Producto[] = dataProd.data.map((p: any) => ({
+              id: p.sku || `PRD-${p.idProducto}`, // Usa SKU si existe
+              nombre: p.nombre,
+              categoria: p.categoria?.nombre || 'General',
+              precio: Number(p.precio),
+              stock: p.stock,
+              stockMin: p.stockMinimo,
+              valor: Number(p.precio) * p.stock,
+              proveedor: p.proveedor?.nombre || 'Local'
+            }));
+            setProductos(prodMapeados);
+          }
+        }
 
-  const registrarMovimiento = (mov: Movimiento, sku: string, cantidadNum: number, tipo: string) => {
+        // 2. Cargar Movimientos reales
+        const resMov = await fetch('http://localhost:3000/api/v1/inventario/movimientos', { headers });
+        if (resMov.ok) {
+           const dataMov = await resMov.json();
+           if (dataMov.success && dataMov.data.length > 0) {
+              const movMapeados: Movimiento[] = dataMov.data.map((m: any) => {
+                const dateObj = new Date(m.fecha);
+                return {
+                  id: `MOV-${m.idMovimiento}`,
+                  fecha: dateObj.toLocaleDateString(),
+                  hora: dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                  tipo: m.tipo === 'entrada' ? 'Entrada' : m.tipo === 'salida' ? 'Salida' : m.tipo === 'ajuste' ? 'Ajuste' : 'Devolucion',
+                  producto: m.producto?.nombre || 'Desconocido',
+                  sku: m.producto?.sku || 'N/A',
+                  cantidad: (m.tipo === 'entrada' || m.tipo === 'devolucion' ? '+' : '-') + m.cantidad + ' u.',
+                  isPositive: m.tipo === 'entrada' || m.tipo === 'devolucion',
+                  valor: m.cantidad * Number(m.producto?.precio || 0),
+                  responsable: m.usuario?.nombre || 'Sistema',
+                  nota: m.referencia || 'N/A'
+                };
+              });
+              setMovimientos(movMapeados);
+           }
+        }
+      } catch (error) {
+        console.warn("No se pudo conectar con la BD en NEON o no hay sesion. Usando Mock Data.");
+        // Fallback silencioso a initialProductos y initialMovimientos (Mock Data)
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    cargarDatos();
+  }, []);
+
+  const agregarProducto = async (prod: Producto) => {
+    // 1. Actualizacin UI inmediata (Optimistic update)
+    setProductos(prev => [prod, ...prev]);
+
+    // 2. Sincronizacin con Base de Datos
+    try {
+      const token = localStorage.getItem('token');
+      if (token) {
+        const payload = {
+          sku: prod.id,
+          nombre: prod.nombre,
+          precio: prod.precio,
+          stock: prod.stock,
+          stockMinimo: prod.stockMin,
+          // Para no romper las llaves forneas, usamos IDs genricos o intentamos mapear
+          idCategoria: 1, 
+          idProveedor: 1
+        };
+        await fetch('http://localhost:3000/api/v1/productos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify(payload)
+        });
+      }
+    } catch (e) {
+      console.error("Error al guardar el producto en la BD", e);
+    }
+  };
+
+  const registrarMovimiento = async (mov: Movimiento, sku: string, cantidadNum: number, tipo: string) => {
     setMovimientos(prev => [mov, ...prev]);
     
-    // Actualizar stock del producto asociado
+    // Actualizar stock del producto asociado localmente (el backend lo har tambin)
+    let prodEncontrado: Producto | undefined;
     setProductos(prev => prev.map(p => {
-      // Buscar el producto por SKU exacto, o por nombre si el SKU no coincide perfectamente
       if (p.id === sku || p.nombre.toLowerCase() === mov.producto.toLowerCase()) {
+        prodEncontrado = p;
         const nuevoStock = tipo === "Entrada" ? p.stock + cantidadNum : p.stock - cantidadNum;
         return { 
           ...p, 
@@ -72,10 +168,32 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
       }
       return p;
     }));
+
+    // Sincronizar con la BD
+    try {
+      const token = localStorage.getItem('token');
+      if (token && prodEncontrado) {
+        const rawId = prodEncontrado.id.replace('PRD-', '');
+        const idProducto = parseInt(rawId) || 1;
+        const endpointTipo = tipo.toLowerCase() === 'entrada' ? 'entrada' : tipo.toLowerCase() === 'salida' ? 'salida' : 'ajuste';
+        
+        await fetch(`http://localhost:3000/api/v1/inventario/${endpointTipo}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({
+            idProducto,
+            cantidad: cantidadNum,
+            referencia: mov.nota || 'Registrado desde Dashboard'
+          })
+        });
+      }
+    } catch (e) {
+      console.error("Error al guardar el movimiento en la BD", e);
+    }
   };
 
   return (
-    <InventoryContext.Provider value={{ productos, movimientos, agregarProducto, registrarMovimiento }}>
+    <InventoryContext.Provider value={{ productos, movimientos, agregarProducto, registrarMovimiento, loading }}>
       {children}
     </InventoryContext.Provider>
   );

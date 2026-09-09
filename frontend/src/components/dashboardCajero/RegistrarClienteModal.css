@@ -1,0 +1,256 @@
+.clic-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 22, 40, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+  padding: 16px;
+}
+
+.clic-modal-content {
+  width: 100%;
+  max-width: 520px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 24px 50px rgba(10, 22, 40, 0.25);
+  animation: clicFadeIn 0.25s ease;
+}
+
+@keyframes clicFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header */
+.clic-modal-header {
+  position: relative;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.clic-modal-titulo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.clic-modal-titulo-wrap h3 {
+  margin: 0;
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+
+.clic-modal-badge {
+  padding: 3px 10px;
+  border-radius: 99px;
+  background-color: #ede9fe;
+  color: #6d28d9;
+  font-family: "Outfit", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.clic-modal-subtitulo {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+
+.clic-modal-cerrar {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.clic-modal-cerrar:hover {
+  background-color: var(--muted);
+  color: var(--foreground);
+}
+
+/* Cuerpo */
+.clic-modal-cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 24px;
+}
+
+.clic-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.clic-fila {
+  display: flex;
+  gap: 12px;
+}
+
+.clic-campo label {
+  font-family: "Outfit", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted-foreground);
+}
+
+.clic-input {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+  font-family: "Source Sans 3", sans-serif;
+  font-size: 14px;
+  color: var(--foreground);
+  background-color: var(--card);
+  transition: border-color 0.15s;
+}
+
+.clic-input:focus {
+  border-color: #8b5cf6;
+}
+
+.clic-input::placeholder {
+  color: #94a3b8;
+}
+
+.clic-error {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background-color: #fee2e2;
+  color: #991b1b;
+  font-size: 13px;
+  text-align: center;
+}
+
+/* Footer */
+.clic-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+}
+
+.clic-cancelar {
+  padding: 9px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--card);
+  color: var(--muted-foreground);
+  font-family: "Outfit", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.clic-cancelar:hover:not(:disabled) {
+  background-color: var(--muted);
+}
+
+.clic-cancelar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.clic-registrar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #8b5cf6;
+  color: #ffffff;
+  font-family: "Outfit", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.clic-registrar:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.clic-registrar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Éxito */
+.clic-modal-exito {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 36px 24px;
+  text-align: center;
+}
+
+.clic-modal-exito-icono {
+  font-size: 44px;
+}
+
+.clic-modal-exito h3 {
+  margin: 0;
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--foreground);
+}
+
+.clic-modal-exito p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted-foreground);
+  max-width: 320px;
+}
+
+.clic-modal-exito p strong {
+  color: var(--foreground);
+}
+
+.clic-modal-exito-btn {
+  margin-top: 8px;
+  padding: 9px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #8b5cf6;
+  color: #ffffff;
+  font-family: "Outfit", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.clic-modal-exito-btn:hover {
+  opacity: 0.85;
+}

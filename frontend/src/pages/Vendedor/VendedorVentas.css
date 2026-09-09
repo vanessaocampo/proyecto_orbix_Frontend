@@ -163,6 +163,18 @@
   background-color: var(--background);
 }
 
+.vventas-tabla tr.vventas-fila {
+  scroll-margin: 80px;
+}
+
+.vventas-tabla tr.vventas-fila.resaltada {
+  background-color: #efeefd;
+}
+
+.vventas-tabla tr.vventas-fila.resaltada td {
+  border-bottom-color: #c4b5fd;
+}
+
 .vventas-id {
   font-family: "DM Mono", monospace;
   font-size: 13px;
@@ -229,6 +241,11 @@
   color: #92400e;
 }
 
+.vventas-pago.tarjeta {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
 .vventas-estado.completada {
   background-color: #d1fae5;
   color: #065f46;
@@ -247,4 +264,87 @@
 .vventas-estado.cancelada {
   background-color: #fee2e2;
   color: #991b1b;
+}
+
+.vventas-estado.devuelta {
+  background-color: #e2e8f0;
+  color: #334155;
+}
+
+.vventas-estado.confirmada {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.vventas-estado.anulada {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Acción Anular */
+.vventas-accion {
+  text-align: right;
+}
+
+.vventas-acciones {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.vventas-modificar {
+  padding: 5px 12px;
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  border-radius: 8px;
+  background-color: transparent;
+  color: #7c3aed;
+  font-family: "Outfit", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.vventas-modificar:hover:not(:disabled) {
+  background-color: #7c3aed;
+  color: #ffffff;
+}
+
+.vventas-modificar:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.vventas-anular {
+  padding: 5px 12px;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: 8px;
+  background-color: transparent;
+  color: #dc2626;
+  font-family: "Outfit", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.vventas-anular:hover:not(:disabled) {
+  background-color: #dc2626;
+  color: #ffffff;
+}
+
+.vventas-anular:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.vventas-error {
+  margin: 0 0 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background-color: #fee2e2;
+  color: #991b1b;
+  font-family: "Outfit", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
 }

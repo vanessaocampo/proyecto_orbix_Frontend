@@ -9,8 +9,18 @@ const META = {
 const formatoCOP = (valor: number) =>
   valor.toLocaleString("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 });
 
-const MetaMensual = () => {
-  const porcentaje = Math.min(100, Math.round((META.actual / META.objetivo) * 100));
+type MetaMensualProps = {
+  actual?: number;
+  objetivo?: number;
+  mesTexto?: string;
+};
+
+const MetaMensual = ({
+  actual = META.actual,
+  objetivo = META.objetivo,
+  mesTexto = META.mesTexto,
+}: MetaMensualProps) => {
+  const porcentaje = Math.min(100, Math.round((actual / objetivo) * 100));
 
   return (
     <div className="vmeta-mensual">
@@ -18,7 +28,7 @@ const MetaMensual = () => {
         <div>
           <h3>Meta mensual</h3>
           <p className="vmeta-mensual-sub">
-            {META.mesTexto} · {formatoCOP(META.actual)} de {formatoCOP(META.objetivo)}
+            {mesTexto} · {formatoCOP(actual)} de {formatoCOP(objetivo)}
           </p>
         </div>
         <span className={`vmeta-porcentaje ${porcentaje >= 100 ? "completada" : ""}`}>
@@ -32,7 +42,7 @@ const MetaMensual = () => {
 
       <div className="vmeta-rango">
         <span>$0</span>
-        <span>{formatoCOP(META.objetivo)}</span>
+        <span>{formatoCOP(objetivo)}</span>
       </div>
     </div>
   );
