@@ -149,14 +149,14 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         const payload = {
           sku: prod.id,
           nombre: prod.nombre,
-          descripcion: prod.descripcion,
-          precioCompra: prod.precioCompra,
+          descripcion: prod.descripcion || null,
+          precioCompra: prod.precioCompra || 0,
           precio: prod.precio,
           stock: prod.stock,
           stockMinimo: prod.stockMin,
           // Para no romper las llaves foráneas, usamos IDs genéricos o intentamos mapear
-          idCategoria: 1, 
-          idProveedor: 1
+          idCategoria: defaultCatId, 
+          idProveedor: defaultProvId
         };
         await fetch('http://localhost:3000/api/v1/productos', {
           method: 'POST',
