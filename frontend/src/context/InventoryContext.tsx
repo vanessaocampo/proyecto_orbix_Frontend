@@ -33,6 +33,7 @@ interface InventoryContextType {
   movimientos: Movimiento[];
   loading: boolean;
   agregarProducto: (prod: Producto) => void;
+  modificarProducto: (prod: Producto) => void;
   registrarMovimiento: (mov: Movimiento, sku: string, cantidadNum: number, tipo: string) => void;
 }
 
@@ -169,6 +170,32 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  
+  const modificarProducto = async (prod: Producto) => {
+    setProductos(prev => prev.map(p => p.id === prod.id ? prod : p));
+    try {
+      const token = localStorage.getItem('token');
+      if (token && prod.dbId) {
+        const payload = {
+          sku: prod.id,
+          nombre: prod.nombre,
+          descripcion: prod.descripcion || null,
+          precioCompra: prod.precioCompra || 0,
+          precio: prod.precio,
+          stock: prod.stock,
+          stockMinimo: prod.stockMin,
+        };
+        await fetch(`http://localhost:3000/api/v1/productos/${prod.dbId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify(payload)
+        });
+      }
+    } catch (e) {
+      console.error("Error al modificar el producto en la BD", e);
+    }
+  };
+
   const registrarMovimiento = async (mov: Movimiento, sku: string, cantidadNum: number, tipo: string) => {
     setMovimientos(prev => [mov, ...prev]);
     
@@ -211,7 +238,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <InventoryContext.Provider value={{ productos, movimientos, agregarProducto, registrarMovimiento, loading }}>
+    <InventoryContext.Provider value={{ productos, movimientos, agregarProducto, modificarProducto, registrarMovimiento, loading }}>
       {children}
     </InventoryContext.Provider>
   );
