@@ -1,4 +1,6 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+
+import { VendedorDataProvider } from "./context/VendedorDataContext";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
 
@@ -102,37 +104,25 @@ function App() {
         {/* Dashboards para el vendedor*/}
 
         <Route
-          path="/dashboard/vendedor"
           element={
             <ProtectedRoute roles={["vendedor"]}>
-              <VendedorDashboard />
+              <VendedorDataProvider>
+                <Outlet />
+              </VendedorDataProvider>
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/dashboard/vendedor/productos"
-          element={
-            <ProtectedRoute roles={["vendedor"]}>
-              <VendedorProductos />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/vendedor/clientes"
-          element={
-            <ProtectedRoute roles={["vendedor"]}>
-              <VendedorClientes />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/vendedor/ventas"
-          element={
-            <ProtectedRoute roles={["vendedor"]}>
-              <VendedorVentas />
-            </ProtectedRoute>
-          }
-        />
+        >
+          <Route path="/dashboard/vendedor" element={<VendedorDashboard />} />
+          <Route
+            path="/dashboard/vendedor/productos"
+            element={<VendedorProductos />}
+          />
+          <Route
+            path="/dashboard/vendedor/clientes"
+            element={<VendedorClientes />}
+          />
+          <Route path="/dashboard/vendedor/ventas" element={<VendedorVentas />} />
+        </Route>
 
         {/* Dashboards para el inventario*/}
 

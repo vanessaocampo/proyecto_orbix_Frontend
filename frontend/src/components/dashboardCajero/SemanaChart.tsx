@@ -15,14 +15,20 @@ const META_DIARIA = 4000;
 const formatoCOP = (valor: number) =>
   valor.toLocaleString("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 });
 
-const SemanaChart = () => {
+const SemanaChart = ({
+  data = metaSemanaVendedor,
+  metaDiaria = META_DIARIA,
+}: {
+  data?: typeof metaSemanaVendedor;
+  metaDiaria?: number;
+}) => {
   return (
     <div className="vchart-card vchart-card-estrecho">
       <h3>Esta semana vs meta</h3>
-      <p className="vchart-sub">Meta diaria: {formatoCOP(META_DIARIA)}</p>
+      <p className="vchart-sub">Meta diaria: {formatoCOP(metaDiaria)}</p>
 
       <ResponsiveContainer width="100%" height={200}>
-        <BarChart data={metaSemanaVendedor} margin={{ top: 0, right: 0, left: -28, bottom: 0 }} barGap={4}>
+        <BarChart data={data} margin={{ top: 0, right: 0, left: -28, bottom: 0 }} barGap={4}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
           <XAxis
             dataKey="dia"

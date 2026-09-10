@@ -1,6 +1,7 @@
 import React from "react";
-import { Search, Bell } from "lucide-react";
+import { Bell } from "lucide-react";
 import Sidebar from "./Sidebar";
+import BuscadorGlobal from "./BuscadorGlobal";
 
 import "./VendedorLayout.css";
 
@@ -56,11 +57,8 @@ const VendedorLayout = ({ vista, children }: VendedorLayoutProps) => {
           </p>
 
           <div className="vendedor-topbar-acciones">
-            {/* Buscador */}
-            <form className="vendedor-buscar">
-              <Search size={15} />
-              <input type="text" placeholder="Buscar..." />
-            </form>
+            {/* Buscador global */}
+            <BuscadorGlobal />
 
             {/* Notificaciones */}
             <div className="vendedor-notifi">

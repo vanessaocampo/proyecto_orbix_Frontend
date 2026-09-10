@@ -13,14 +13,14 @@ import "./ChartsRow.css";
 const formatoCOP = (valor: number) =>
   valor.toLocaleString("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 });
 
-const VentasChart = () => {
+const VentasChart = ({ data = ventasMensualesVendedor }: { data?: typeof ventasMensualesVendedor }) => {
   return (
     <div className="vchart-card vchart-card-ancho">
       <h3>Mis ventas 2026</h3>
       <p className="vchart-sub">Evolución mensual acumulada</p>
 
       <ResponsiveContainer width="100%" height={200}>
-        <AreaChart data={ventasMensualesVendedor} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
+        <AreaChart data={data} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
           <defs>
             <linearGradient id="vendGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.25} />

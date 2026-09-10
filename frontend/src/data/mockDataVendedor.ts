@@ -1,17 +1,30 @@
-export type EstadoVenta = "Completada" | "En proceso" | "Pendiente" | "Cancelada";
+export type EstadoVenta = "Confirmada" | "Pendiente" | "Anulada";
+
+export type DetalleVenta = {
+  idProducto: number;
+  nombre: string;
+  cantidad: number;
+  precioUnitario: number;
+};
 
 export type VentaVendedor = {
   id: string;
+  idVenta?: number;
+  idCliente?: number;
   cliente: string;
   monto: number;
   estado: EstadoVenta;
   fecha: string;
+  fechaISO?: string;
   items: number;
-  pago: "Transferencia" | "Efectivo";
+  pago: "Transferencia" | "Efectivo" | "Tarjeta";
+  metodoPago?: "efectivo" | "tarjeta" | "transferencia";
+  itemsDetalle?: DetalleVenta[];
 };
 
 export type ProductoVendedor = {
   id: string;
+  idProducto?: number;
   nombre: string;
   categoria: string;
   precio: number;
@@ -21,6 +34,7 @@ export type ProductoVendedor = {
 
 export type ClienteVendedor = {
   id: string;
+  idCliente?: number;
   nombre: string;
   ciudad: string;
   totalCompras: number;
@@ -55,9 +69,9 @@ export const actividadRecienteVendedor = [
 ];
 
 export const ventasVendedor: VentaVendedor[] = [
-  { id: "ORD-2846", cliente: "Distribuidora Norte", monto: 3200, estado: "En proceso", fecha: "30 Jul 2026", items: 1, pago: "Transferencia" },
-  { id: "ORD-2843", cliente: "Juan Méndez", monto: 5900, estado: "Pendiente", fecha: "28 Jul 2026", items: 1, pago: "Efectivo" },
-  { id: "ORD-2840", cliente: "Ferretería Central", monto: 3800, estado: "Completada", fecha: "26 Jul 2026", items: 3, pago: "Efectivo" },
+  { id: "ORD-2846", cliente: "Distribuidora Norte", monto: 3200, estado: "Pendiente", fecha: "30 Jul 2026", items: 1, pago: "Transferencia" },
+  { id: "ORD-2843", cliente: "Juan Méndez", monto: 5900, estado: "Confirmada", fecha: "28 Jul 2026", items: 1, pago: "Efectivo" },
+  { id: "ORD-2840", cliente: "Ferretería Central", monto: 3800, estado: "Anulada", fecha: "26 Jul 2026", items: 3, pago: "Efectivo" },
 ];
 
 export const productosVendedor: ProductoVendedor[] = [
