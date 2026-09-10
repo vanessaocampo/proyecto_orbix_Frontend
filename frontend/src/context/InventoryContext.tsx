@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from '
 
 export type Producto = {
   id: string;
+  dbId?: string;
   nombre: string;
   categoria: string;
   precio: number;
@@ -57,6 +58,8 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
   
   // Agregar un estado para saber si est cargando
   const [loading, setLoading] = useState(false);
+  const [defaultCatId, setDefaultCatId] = useState<string|undefined>();
+  const [defaultProvId, setDefaultProvId] = useState<string|undefined>();
 
   // Hook para cargar datos reales de la BD al montar el componente
   useEffect(() => {
@@ -68,13 +71,22 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         
         const headers = { 'Authorization': `Bearer ${token}` };
         
+        // 0. Cargar Cat/Prov
+        const [resCat, resProv] = await Promise.all([
+          fetch('http://localhost:3000/api/v1/categorias', { headers }),
+          fetch('http://localhost:3000/api/v1/proveedores', { headers })
+        ]);
+        if (resCat.ok) { const d = await resCat.json(); if (d.data?.length > 0) setDefaultCatId(d.data[0].idCategoria); }
+        if (resProv.ok) { const d = await resProv.json(); if (d.data?.length > 0) setDefaultProvId(d.data[0].idProveedor); }
+
         // 1. Cargar Productos reales
         const resProd = await fetch('http://localhost:3000/api/v1/productos', { headers });
         if (resProd.ok) {
           const dataProd = await resProd.json();
           if (dataProd.success && dataProd.data.length > 0) {
             const prodMapeados: Producto[] = dataProd.data.map((p: any) => ({
-              id: p.sku || `PRD-${p.idProducto}`, // Usa SKU si existe
+              id: p.sku || `PRD-${p.idProducto.substring(0,6)}`,
+              dbId: p.idProducto,
               nombre: p.nombre,
               categoria: p.categoria?.nombre || 'General',
               precio: Number(p.precio),
@@ -172,7 +184,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     // Sincronizar con la BD
     try {
       const token = localStorage.getItem('token');
-      if (token && prodEncontrado) {
+      if (token && prodEncontrado && prodEncontrado.dbId) {
         const rawId = prodEncontrado.id.replace('PRD-', '');
         const idProducto = parseInt(rawId) || 1;
         const endpointTipo = tipo.toLowerCase() === 'entrada' ? 'entrada' : tipo.toLowerCase() === 'salida' ? 'salida' : 'ajuste';
