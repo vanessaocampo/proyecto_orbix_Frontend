@@ -21,14 +21,18 @@
 
 .grafica-donut {
   width: 100%;
-  height: 190px;
+  height: 180px;
   margin-top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .categorias-lista {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  margin-top: 5px;
 }
 
 .categoria-item {
@@ -41,7 +45,7 @@
 .categoria-nombre {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .categoria-punto {

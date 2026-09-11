@@ -145,8 +145,15 @@
 
 .graficas-dashboard {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
   gap: 18px;
   padding: 18px 0;
+  align-items: start;
+}
+
+.ventas-dashboard {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 18px;
   align-items: start;
 }

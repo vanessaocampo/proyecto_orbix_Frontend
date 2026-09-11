@@ -11,6 +11,7 @@ import UltimasVentas from "../../components/dashboardAdmin/UltimasVentas";
 import { Search, Bell, Download } from "lucide-react";
 
 import "./DashboardAdmin.css";
+import EstaSemana from "../../components/dashboardAdmin/EstaSemana";
 
 const DashboardAdmin = () => {
   return (
@@ -18,7 +19,6 @@ const DashboardAdmin = () => {
       <Sidebar />
 
       <div className="dashboard-contenido">
-
         {/* BARRA SUPERIOR */}
 
         <div className="dashboard-barra-superior">
@@ -32,19 +32,14 @@ const DashboardAdmin = () => {
             <form className="dashboard-buscar">
               <Search size={20} />
 
-              <input
-                type="text"
-                placeholder="Buscar..."
-              />
+              <input type="text" placeholder="Buscar..." />
             </form>
 
             <div className="dashboard-notifi">
               <Bell size={20} />
             </div>
 
-            <div className="dashboard-usuario">
-              VO
-            </div>
+            <div className="dashboard-usuario">VO</div>
           </div>
         </div>
 
@@ -54,9 +49,7 @@ const DashboardAdmin = () => {
           <div>
             <h2>Dashboard</h2>
 
-            <p className="dashboard-fecha">
-              Miércoles, 30 de julio de 2026
-            </p>
+            <p className="dashboard-fecha">Miércoles, 30 de julio de 2026</p>
           </div>
 
           <button className="dashboard-button-exportar">
@@ -72,8 +65,10 @@ const DashboardAdmin = () => {
           <VentasCategorias />
         </div>
 
-        <UltimasVentas />
-
+        <div className="ventas-dashboard">
+          <UltimasVentas />
+          <EstaSemana />
+        </div>
       </div>
     </main>
   );
