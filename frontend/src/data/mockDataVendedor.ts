@@ -1,7 +1,7 @@
 export type EstadoVenta = "Confirmada" | "Pendiente" | "Anulada";
 
 export type DetalleVenta = {
-  idProducto: number;
+  idProducto: string;
   nombre: string;
   cantidad: number;
   precioUnitario: number;
@@ -9,8 +9,9 @@ export type DetalleVenta = {
 
 export type VentaVendedor = {
   id: string;
-  idVenta?: number;
-  idCliente?: number;
+  idVenta?: string;
+  codigoVenta?: string;
+  idCliente?: string;
   cliente: string;
   monto: number;
   estado: EstadoVenta;
@@ -24,7 +25,7 @@ export type VentaVendedor = {
 
 export type ProductoVendedor = {
   id: string;
-  idProducto?: number;
+  idProducto?: string;
   nombre: string;
   categoria: string;
   precio: number;
@@ -34,7 +35,8 @@ export type ProductoVendedor = {
 
 export type ClienteVendedor = {
   id: string;
-  idCliente?: number;
+  idCliente?: string;
+  codigoCliente?: string;
   nombre: string;
   ciudad: string;
   totalCompras: number;

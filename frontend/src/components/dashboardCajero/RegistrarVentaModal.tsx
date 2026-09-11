@@ -6,6 +6,7 @@ import {
   Trash2,
   Check,
   UserPlus,
+  CheckCircle2,
 } from "lucide-react";
 import {
   clientesVendedor,
@@ -167,7 +168,7 @@ const RegistrarVentaModal = ({
       >
         <div className="rvmodal-header">
           <div className="rvmodal-titulo-wrap">
-            <h3>🛒 Registro de ventas</h3>
+            <h3>Registro de ventas</h3>
             <span className="rvmodal-badge">Orbix</span>
           </div>
           <p className="rvmodal-subtitulo">Una venta en pocos pasos</p>
@@ -183,7 +184,9 @@ const RegistrarVentaModal = ({
 
         {registrada ? (
           <div className="rvmodal-exito">
-            <span className="rvmodal-exito-icono">✅</span>
+            <span className="rvmodal-exito-icono">
+              <CheckCircle2 size={28} />
+            </span>
             <h3>Venta registrada</h3>
             <p>
               La venta por <strong>{formatoCOP(total)}</strong> a{" "}
@@ -204,7 +207,7 @@ const RegistrarVentaModal = ({
               {/* Cliente */}
               <div className="rvmodal-seccion">
                 <div className="rvmodal-seccion-cabecera">
-                  <p className="rvmodal-seccion-titulo">👤 Seleccionar cliente</p>
+                  <p className="rvmodal-seccion-titulo">Seleccionar cliente</p>
                   <button
                     type="button"
                     className={`rvmodal-nuevo-cliente ${
@@ -257,7 +260,7 @@ const RegistrarVentaModal = ({
               {/* Productos */}
               <div className="rvmodal-seccion">
                 <p className="rvmodal-seccion-titulo">
-                  📦 Buscar y agregar productos
+                  Buscar y agregar productos
                 </p>
                 <input
                   type="text"
@@ -344,7 +347,7 @@ const RegistrarVentaModal = ({
               {items.length > 0 && (
                 <div className="rvmodal-seccion">
                   <p className="rvmodal-seccion-titulo">
-                    💰 Resumen · {totalItems}{" "}
+                    Resumen · {totalItems}{" "}
                     {totalItems === 1 ? "producto" : "productos"}
                   </p>
                   <div className="rvmodal-resumen-lista">
@@ -383,21 +386,21 @@ const RegistrarVentaModal = ({
 
               {/* Pago */}
               <div className="rvmodal-seccion">
-                <p className="rvmodal-seccion-titulo">💰 Método de pago</p>
+                <p className="rvmodal-seccion-titulo">Método de pago</p>
                 <div className="rvmodal-pago">
                   <button
                     type="button"
                     className={pago === "Efectivo" ? "activo" : ""}
                     onClick={() => setPago("Efectivo")}
                   >
-                    💵 Efectivo
+                    Efectivo
                   </button>
                   <button
                     type="button"
                     className={pago === "Transferencia" ? "activo" : ""}
                     onClick={() => setPago("Transferencia")}
                   >
-                    🏦 Transferencia
+                    Transferencia
                   </button>
                 </div>
               </div>
