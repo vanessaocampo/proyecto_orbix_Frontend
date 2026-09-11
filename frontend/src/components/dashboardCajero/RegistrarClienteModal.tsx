@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { X, Check } from "lucide-react";
+import { X, Check, CheckCircle2 } from "lucide-react";
 
 import "./RegistrarClienteModal.css";
+import Aviso from "./Aviso";
 
 type ClienteNuevo = {
   nombre: string;
@@ -91,7 +92,7 @@ const RegistrarClienteModal = ({
       >
         <div className="clic-modal-header">
           <div className="clic-modal-titulo-wrap">
-            <h3>👤 Nuevo cliente</h3>
+            <h3>Nuevo cliente</h3>
             <span className="clic-modal-badge">Orbix</span>
           </div>
           <p className="clic-modal-subtitulo">
@@ -109,7 +110,9 @@ const RegistrarClienteModal = ({
 
         {registrado ? (
           <div className="clic-modal-exito">
-            <span className="clic-modal-exito-icono">✅</span>
+            <span className="clic-modal-exito-icono">
+              <CheckCircle2 size={28} />
+            </span>
             <h3>Cliente registrado</h3>
             <p>
               <strong>{nombre}</strong> {ciudad && `de ${ciudad}`} se agregó a
@@ -231,7 +234,7 @@ const RegistrarClienteModal = ({
                 </select>
               </div>
 
-              {error && <p className="clic-error">{error}</p>}
+              {error && <Aviso>{error}</Aviso>}
             </div>
 
             <div className="clic-modal-footer">

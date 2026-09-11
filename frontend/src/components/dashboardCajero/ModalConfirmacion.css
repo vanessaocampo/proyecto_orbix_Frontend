@@ -1,0 +1,128 @@
+.mconf-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 22, 40, 0.5);
+  backdrop-filter: blur(2px);
+  padding: 16px;
+}
+
+.mconf-card {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 32px 28px 24px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  text-align: center;
+  animation: mconfFadeIn 0.25s ease;
+}
+
+@keyframes mconfFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mconf-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: #ede9fe;
+  color: #8b5cf6;
+}
+
+.mconf-icono.rojo {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.mconf-card h3 {
+  margin: 0;
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--foreground);
+}
+
+.mconf-texto {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+
+.mconf-texto strong {
+  color: var(--foreground);
+}
+
+.mconf-detalle {
+  margin: 4px 0 0;
+  padding: 10px 14px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 10px;
+  background-color: var(--muted);
+  font-family: "DM Mono", monospace;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+
+.mconf-acciones {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.mconf-acciones button {
+  flex: 1;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 10px;
+  font-family: "Outfit", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.mconf-acciones button:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.mconf-acciones button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.mconf-cancelar {
+  background-color: var(--muted);
+  color: var(--foreground);
+}
+
+.mconf-aceptar {
+  background-color: #8b5cf6;
+  color: #ffffff;
+}
+
+.mconf-aceptar.rojo {
+  background-color: #dc2626;
+  color: #ffffff;
+}

@@ -333,5 +333,3 @@ const TablaVentas = ({
     </>
   );
 };
-
-export default TablaVentas;

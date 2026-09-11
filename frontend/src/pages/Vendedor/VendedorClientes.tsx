@@ -84,8 +84,11 @@ const VendedorClientes = () => {
       const response = await clienteService.crear(cliente);
 
       const creado: ClienteVendedor = {
-        id: `CLI-${response.data.idCliente}`,
-        idCliente: response.data.idCliente,
+        id: String(response.data.idCliente ?? ""),
+        idCliente: String(response.data.idCliente ?? ""),
+        codigoCliente: response.data.codigoCliente
+          ? String(response.data.codigoCliente)
+          : undefined,
         nombre: response.data.nombre,
         ciudad: response.data.ciudad ?? "—",
         totalCompras: 0,
@@ -179,7 +182,7 @@ const VendedorClientes = () => {
                   </div>
                   <div className="vcliente-nombre-box">
                     <p className="vcliente-nombre">{cliente.nombre}</p>
-                    <p className="vcliente-id">{cliente.id}</p>
+                    <p className="vcliente-id">{cliente.codigoCliente ?? cliente.id}</p>
                   </div>
                 </div>
 

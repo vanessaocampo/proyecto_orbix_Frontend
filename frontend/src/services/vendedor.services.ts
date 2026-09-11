@@ -70,8 +70,12 @@ async function obtenerProductos(): Promise<ProductoVendedor[] | null> {
   if (!items) return null;
 
   return items.map((producto) => ({
-    id: `PRD-${String(producto.idProducto).padStart(3, "0")}`,
-    idProducto: Number(producto.idProducto),
+    id: String(
+      producto.sku && producto.sku !== ""
+        ? producto.sku
+        : `PRD-${String(producto.idProducto ?? "").slice(0, 8)}`,
+    ),
+    idProducto: String(producto.idProducto ?? ""),
     nombre: String(producto.nombre ?? "Producto"),
     categoria:
       (producto.categoria as { nombre?: string } | undefined)?.nombre ?? "General",
@@ -86,8 +90,11 @@ async function obtenerClientes(): Promise<ClienteVendedor[] | null> {
   if (!items) return null;
 
   return items.map((cliente) => ({
-    id: `CLI-${String(cliente.idCliente).padStart(3, "0")}`,
-    idCliente: Number(cliente.idCliente),
+    id: String(cliente.idCliente ?? ""),
+    idCliente: String(cliente.idCliente ?? ""),
+    codigoCliente: cliente.codigoCliente
+      ? String(cliente.codigoCliente)
+      : undefined,
     nombre: String(cliente.nombre ?? "Cliente"),
     ciudad: String(cliente.ciudad ?? "—"),
     totalCompras: 0,
@@ -105,7 +112,7 @@ async function obtenerVentas(): Promise<VentaVendedor[] | null> {
       | Array<{
           cantidad: number;
           precioUnitario: number;
-          producto: { idProducto: number; nombre: string };
+          producto: { idProducto: string; nombre: string };
         }>
       | undefined;
 
@@ -114,10 +121,11 @@ async function obtenerVentas(): Promise<VentaVendedor[] | null> {
       0;
 
     return {
-      id: `ORD-${venta.idVenta}`,
-      idVenta: Number(venta.idVenta),
-      idCliente: Number(
-        (venta.cliente as { idCliente?: number } | undefined)?.idCliente ?? 0,
+      id: `ORD-${String(venta.idVenta ?? "")}`,
+      idVenta: String(venta.idVenta ?? ""),
+      codigoVenta: venta.codigoVenta ? String(venta.codigoVenta) : undefined,
+      idCliente: String(
+        (venta.cliente as { idCliente?: string } | undefined)?.idCliente ?? "",
       ),
       cliente: (venta.cliente as { nombre?: string } | undefined)?.nombre ?? "Cliente",
       monto: Number(venta.total ?? 0),
@@ -128,7 +136,7 @@ async function obtenerVentas(): Promise<VentaVendedor[] | null> {
       pago: MAPA_PAGO[String(venta.metodoPago)] ?? "Efectivo",
       metodoPago: (venta.metodoPago as VentaVendedor["metodoPago"]) ?? "efectivo",
       itemsDetalle: detalles?.map((detalle) => ({
-        idProducto: Number(detalle.producto.idProducto),
+        idProducto: String(detalle.producto.idProducto ?? ""),
         nombre: detalle.producto.nombre,
         cantidad: Number(detalle.cantidad),
         precioUnitario: Number(detalle.precioUnitario ?? 0),
@@ -138,10 +146,10 @@ async function obtenerVentas(): Promise<VentaVendedor[] | null> {
 }
 
 export type VentaNueva = {
-  idCliente: number;
+  idCliente: string;
   estado?: "pendiente" | "en_proceso" | "completada" | "cancelada" | "devuelta";
   metodoPago?: "efectivo" | "tarjeta" | "transferencia";
-  items: { idProducto: number; cantidad: number; precioUnitario?: number }[];
+  items: { idProducto: string; cantidad: number; precioUnitario?: number }[];
 };
 
 async function crearVenta(venta: VentaNueva) {
@@ -170,7 +178,7 @@ async function crearVenta(venta: VentaNueva) {
 }
 
 async function actualizarEstadoVenta(
-  idVenta: number,
+  idVenta: string,
   estado: NonNullable<VentaNueva["estado"]>,
 ) {
   const token = localStorage.getItem("token");
@@ -197,7 +205,7 @@ async function actualizarEstadoVenta(
   return data;
 }
 
-const idVentaDe = (id: string) => Number(id.replace("ORD-", ""));
+const idVentaDe = (id: string) => id.replace("ORD-", "");
 
 const vendedorService = {
   obtenerProductos,

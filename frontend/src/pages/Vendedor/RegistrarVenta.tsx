@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   X,
   Plus,
@@ -9,6 +9,9 @@ import {
   UserPlus,
   ShoppingCart,
   ArrowLeft,
+  Clock,
+  CheckCircle2,
+  Printer,
 } from "lucide-react";
 import {
   productosVendedor,
@@ -16,8 +19,18 @@ import {
   type DetalleVenta,
   type ProductoVendedor,
 } from "../../data/mockDataVendedor";
-import clienteService from "../../services/clientes.services";
+import clienteService, {
+  type ClienteNuevo,
+} from "../../services/clientes.services";
 import vendedorService from "../../services/vendedor.services";
+import useVendedorData from "../../hooks/useVendedorData";
+import RegistrarClienteModal from "../../components/dashboardCajero/RegistrarClienteModal";
+import Aviso from "../../components/dashboardCajero/Aviso";
+import ModalConfirmacion from "../../components/dashboardCajero/ModalConfirmacion";
+import {
+  imprimirComprobante,
+  type DatosComprobante,
+} from "../../utils/comprobante";
 
 import "./RegistrarVenta.css";
 
@@ -56,12 +69,14 @@ const RegistrarVenta = ({
   onVentaRegistrada,
   modoEdicion = false,
 }: RegistrarVentaProps) => {
+  const { agregarClienteLocal } = useVendedorData();
+
   const [busqueda, setBusqueda] = useState("");
   const [categoria, setCategoria] = useState("Todas");
   const [idCliente, setIdCliente] = useState(clienteInicialId ?? "");
-  const [nuevoCliente, setNuevoCliente] = useState(false);
-  const [nombreNuevoCliente, setNombreNuevoCliente] = useState("");
-  const [documentoNuevoCliente, setDocumentoNuevoCliente] = useState("");
+  const [modalNuevoCliente, setModalNuevoCliente] = useState(false);
+  const [enviandoCliente, setEnviandoCliente] = useState(false);
+  const [errorNuevoCliente, setErrorNuevoCliente] = useState("");
   const [items, setItems] = useState<ItemSeleccionado[]>(() => {
     const desdeItemsIniciales = (itemsIniciales ?? [])
       .map((detalle) => {
@@ -87,20 +102,25 @@ const RegistrarVenta = ({
   );
   const [registrada, setRegistrada] = useState(false);
   const [guardadaPendiente, setGuardadaPendiente] = useState(false);
+  const [confirmarPendiente, setConfirmarPendiente] = useState(false);
   const [enviando, setEnviando] = useState(false);
   const [errorRegistro, setErrorRegistro] = useState("");
+  const [ultimaVenta, setUltimaVenta] = useState<DatosComprobante | null>(null);
+  const [avisoStock, setAvisoStock] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!avisoStock) return;
+    const temporizador = setTimeout(() => setAvisoStock(null), 4000);
+    return () => clearTimeout(temporizador);
+  }, [avisoStock]);
 
   const clienteSeleccionado = clientes.find(
     (cliente) => cliente.id === idCliente,
   );
 
-  const nombreCliente = nuevoCliente
-    ? nombreNuevoCliente.trim()
-    : (clienteSeleccionado?.nombre ?? "");
+  const nombreCliente = clienteSeleccionado?.nombre ?? "";
 
-  const tieneCliente = nuevoCliente
-    ? nombreNuevoCliente.trim() !== "" && documentoNuevoCliente.trim() !== ""
-    : !!clienteSeleccionado;
+  const tieneCliente = !!clienteSeleccionado;
 
   const categorias = [
     "Todas",
@@ -129,7 +149,17 @@ const RegistrarVenta = ({
   const cantidadDe = (id: string) =>
     items.find((item) => item.producto.id === id)?.cantidad ?? 0;
 
+  const alMaximo = (producto: ProductoVendedor) =>
+    cantidadDe(producto.id) >= producto.stock;
+
   const agregarProducto = (producto: ProductoVendedor) => {
+    if (alMaximo(producto)) {
+      setAvisoStock(
+        `No hay más unidades disponibles de ${producto.nombre}.`,
+      );
+      return;
+    }
+
     setItems((actuales) => {
       const existente = actuales.find(
         (item) => item.producto.id === producto.id,
@@ -148,15 +178,28 @@ const RegistrarVenta = ({
   };
 
   const cambiarCantidad = (id: string, delta: number) => {
-    setItems((actuales) =>
-      actuales
-        .map((item) =>
-          item.producto.id === id
-            ? { ...item, cantidad: Math.max(0, item.cantidad + delta) }
-            : item,
+    setItems((actuales) => {
+      const item = actuales.find((i) => i.producto.id === id);
+      if (!item) return actuales;
+
+      const solicitada = item.cantidad + delta;
+      const limite = item.producto.stock;
+
+      if (delta > 0 && solicitada > limite) {
+        setAvisoStock(
+          `Ya tienes las ${limite} unidades disponibles de ${item.producto.nombre}.`,
+        );
+        return actuales;
+      }
+
+      return actuales
+        .map((i) =>
+          i.producto.id === id
+            ? { ...i, cantidad: Math.max(0, solicitada) }
+            : i,
         )
-        .filter((item) => item.cantidad > 0),
-    );
+        .filter((i) => i.cantidad > 0);
+    });
   };
 
   const manejarCantidadExacta = (id: string, cantidad: number) => {
@@ -164,7 +207,16 @@ const RegistrarVenta = ({
       actuales
         .map((item) =>
           item.producto.id === id
-            ? { ...item, cantidad: Math.max(1, cantidad) }
+            ? {
+                ...item,
+                cantidad: Math.max(
+                  1,
+                  Math.min(
+                    Number.isNaN(cantidad) ? 1 : cantidad,
+                    item.producto.stock,
+                  ),
+                ),
+              }
             : item,
         )
         .filter((item) => item.cantidad > 0),
@@ -177,14 +229,12 @@ const RegistrarVenta = ({
 
   const limpiarVenta = () => {
     setIdCliente("");
-    setNuevoCliente(false);
-    setNombreNuevoCliente("");
-    setDocumentoNuevoCliente("");
     setItems([]);
     setPago("Efectivo");
     setRegistrada(false);
     setGuardadaPendiente(false);
     setErrorRegistro("");
+    setUltimaVenta(null);
   };
 
   const handleRegistrar = async (estado: "pendiente" | "completada") => {
@@ -197,11 +247,11 @@ const RegistrarVenta = ({
       const idClienteVenta =
         clienteSeleccionado?.idCliente ??
         (await clienteService.crear({
-          nombre: nombreNuevoCliente.trim(),
-          documento: documentoNuevoCliente.trim(),
+          nombre: clienteSeleccionado?.nombre ?? "",
+          documento: "",
         })).data.idCliente;
 
-      await vendedorService.crearVenta({
+      const respuesta = await vendedorService.crearVenta({
         idCliente: idClienteVenta,
         estado,
         metodoPago: pago === "Efectivo" ? "efectivo" : "transferencia",
@@ -218,6 +268,29 @@ const RegistrarVenta = ({
         }),
       });
 
+      if (estado === "completada") {
+        setUltimaVenta({
+          numero:
+            String(respuesta?.data?.codigoVenta ?? "") ||
+            `ORD-${String(respuesta?.data?.idVenta ?? "")}`,
+          fecha: new Date().toLocaleString("es-CO", {
+            dateStyle: "short",
+            timeStyle: "short",
+          }),
+          cliente: nombreCliente,
+          pago: pago === "Efectivo" ? "Efectivo" : "Transferencia",
+          items: items.map((item) => ({
+            nombre: item.producto.nombre,
+            cantidad: item.cantidad,
+            precio: item.producto.precio,
+            subtotal: item.producto.precio * item.cantidad,
+          })),
+          total,
+        });
+      } else {
+        setUltimaVenta(null);
+      }
+
       onVentaRegistrada?.();
       setGuardadaPendiente(estado === "pendiente");
       setRegistrada(true);
@@ -231,11 +304,39 @@ const RegistrarVenta = ({
   };
 
   const dejarPendiente = () => {
-    const confirmar = window.confirm(
-      "Esta venta quedará como VENTA PENDIENTE: los productos no van a estar en el inventario hasta que cambies el estado de esta venta. ¿Continuar?",
-    );
-    if (confirmar) {
-      void handleRegistrar("pendiente");
+    setConfirmarPendiente(true);
+  };
+
+  const agregarClienteCaja = async (cliente: ClienteNuevo) => {
+    setEnviandoCliente(true);
+    setErrorNuevoCliente("");
+
+    try {
+      const response = await clienteService.crear(cliente);
+
+      const creado: ClienteVendedor = {
+        id: String(response.data.idCliente ?? ""),
+        idCliente: String(response.data.idCliente ?? ""),
+        codigoCliente: response.data.codigoCliente
+          ? String(response.data.codigoCliente)
+          : undefined,
+        nombre: response.data.nombre,
+        ciudad: response.data.ciudad ?? "—",
+        totalCompras: 0,
+        pedidos: 0,
+        ultimo: "—",
+      };
+
+      agregarClienteLocal(creado);
+      setIdCliente(creado.id);
+      setModalNuevoCliente(false);
+    } catch (err) {
+      setErrorNuevoCliente(
+        err instanceof Error ? err.message : "Error al registrar el cliente.",
+      );
+      throw err;
+    } finally {
+      setEnviandoCliente(false);
     }
   };
 
@@ -244,7 +345,7 @@ const RegistrarVenta = ({
       <div className="rventa-header">
         <div>
           <h1 className="rventa-titulo">
-            {modoEdicion ? "✏️ Modificar venta" : "🛒 Registrar venta"}
+            {modoEdicion ? "Modificar venta" : "Registrar venta"}
           </h1>
           <p className="rventa-sub">
             {modoEdicion
@@ -292,6 +393,8 @@ const RegistrarVenta = ({
                 ))}
               </div>
             </div>
+
+            {avisoStock && <Aviso>{avisoStock}</Aviso>}
 
             <div className="rventa-grid">
 {productosFiltrados.map((producto) => {
@@ -342,6 +445,9 @@ const RegistrarVenta = ({
                           <span>{cantidad}</span>
                           <button
                             type="button"
+                            className={`${
+                              cantidad >= producto.stock ? "limite" : ""
+                            }`}
                             onClick={() => cambiarCantidad(producto.id, 1)}
                             aria-label="Aumentar"
                           >
@@ -352,7 +458,6 @@ const RegistrarVenta = ({
                         <button
                           type="button"
                           className="rventa-card-agregar"
-                          disabled={agotado}
                           onClick={() => agregarProducto(producto)}
                         >
                           <Plus size={15} />
@@ -383,54 +488,33 @@ const RegistrarVenta = ({
             {/* Cliente */}
             <div className="rventa-panel-seccion">
               <div className="rventa-panel-seccion-cabecera">
-                <p className="rventa-panel-label">👤 Cliente</p>
+                <p className="rventa-panel-label">Cliente</p>
                 <button
                   type="button"
-                  className={`rventa-nuevo-cliente ${
-                    nuevoCliente ? "activo" : ""
-                  }`}
-                  onClick={() => setNuevoCliente(!nuevoCliente)}
+                  className="rventa-nuevo-cliente"
+                  onClick={() => setModalNuevoCliente(true)}
                 >
                   <UserPlus size={13} />
-                  {nuevoCliente ? "Existente" : "Nuevo"}
+                  Nuevo
                 </button>
               </div>
 
-              {nuevoCliente ? (
-                <div className="rventa-nuevo-fila">
-                  <input
-                    type="text"
-                    className="rventa-input"
-                    placeholder="Nombre *"
-                    value={nombreNuevoCliente}
-                    onChange={(e) => setNombreNuevoCliente(e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    className="rventa-input"
-                    placeholder="Documento *"
-                    value={documentoNuevoCliente}
-                    onChange={(e) => setDocumentoNuevoCliente(e.target.value)}
-                  />
-                </div>
-              ) : (
-<select
-                  className="rventa-select"
-                  value={idCliente}
-                  onChange={(e) => setIdCliente(e.target.value)}
-                >
-                  <option value="" disabled>
-                    {clientes.length === 0
-                      ? "No hay clientes registrados"
-                      : "Selecciona un cliente"}
+              <select
+                className="rventa-select"
+                value={idCliente}
+                onChange={(e) => setIdCliente(e.target.value)}
+              >
+                <option value="" disabled>
+                  {clientes.length === 0
+                    ? "No hay clientes registrados"
+                    : "Selecciona un cliente"}
+                </option>
+                {clientes.map((cliente) => (
+                  <option key={cliente.id} value={cliente.id}>
+                    {cliente.nombre} · {cliente.ciudad}
                   </option>
-                  {clientes.map((cliente) => (
-                    <option key={cliente.id} value={cliente.id}>
-                      {cliente.nombre} · {cliente.ciudad}
-                    </option>
-                  ))}
-                </select>
-              )}
+                ))}
+              </select>
             </div>
 
             {/* Items */}
@@ -474,6 +558,9 @@ const RegistrarVenta = ({
                       />
                       <button
                         type="button"
+                        className={`${
+                          item.cantidad >= item.producto.stock ? "limite" : ""
+                        }`}
                         onClick={() => cambiarCantidad(item.producto.id, 1)}
                         aria-label="Aumentar"
                       >
@@ -500,21 +587,21 @@ const RegistrarVenta = ({
 
             {/* Pago */}
             <div className="rventa-panel-seccion">
-              <p className="rventa-panel-label">💰 Método de pago</p>
+              <p className="rventa-panel-label">Método de pago</p>
               <div className="rventa-pago">
                 <button
                   type="button"
                   className={pago === "Efectivo" ? "activo" : ""}
                   onClick={() => setPago("Efectivo")}
                 >
-                  💵 Efectivo
+                  Efectivo
                 </button>
                 <button
                   type="button"
                   className={pago === "Transferencia" ? "activo" : ""}
                   onClick={() => setPago("Transferencia")}
                 >
-                  🏦 Transferencia
+                  Transferencia
                 </button>
               </div>
             </div>
@@ -530,9 +617,7 @@ const RegistrarVenta = ({
                 <strong>{formatoCOP(total)}</strong>
               </div>
 
-              {errorRegistro && (
-                <p className="rventa-error">{errorRegistro}</p>
-              )}
+              {errorRegistro && <Aviso>{errorRegistro}</Aviso>}
 
               <div className="rventa-acciones">
                 <button
@@ -565,6 +650,38 @@ const RegistrarVenta = ({
         </div>
 
         {/* Confirmación */}
+        <ModalConfirmacion
+          abierto={confirmarPendiente}
+          titulo="Dejar como venta pendiente"
+          icono={<Clock size={26} />}
+          texto={
+            <>
+              Los productos <strong>no quedarán descontados del inventario</strong>{" "}
+              hasta que cambies el estado de esta venta.
+            </>
+          }
+          detalle={`Venta por ${formatoCOP(total)} a ${nombreCliente}`}
+          textoBoton="Sí, dejar pendiente"
+          procesando={enviando}
+          onCancelar={() => setConfirmarPendiente(false)}
+          onConfirmar={() => {
+            setConfirmarPendiente(false);
+            void handleRegistrar("pendiente");
+          }}
+        />
+
+        {/* Modal nuevo cliente */}
+        <RegistrarClienteModal
+          abierto={modalNuevoCliente}
+          onCerrar={() => {
+            setModalNuevoCliente(false);
+            setErrorNuevoCliente("");
+          }}
+          onRegistrar={agregarClienteCaja}
+          enviando={enviandoCliente}
+          error={errorNuevoCliente}
+        />
+
         {registrada && (
           <div className="rventa-exito-overlay" onClick={limpiarVenta}>
             <div
@@ -583,7 +700,9 @@ const RegistrarVenta = ({
               </button>
               {guardadaPendiente ? (
                 <>
-                  <span className="rventa-exito-icono">🕐</span>
+                  <span className="rventa-exito-icono">
+                    <Clock size={28} />
+                  </span>
                   <h3>Venta pendiente</h3>
                   <p>
                     La venta por <strong>{formatoCOP(total)}</strong> a{" "}
@@ -594,13 +713,24 @@ const RegistrarVenta = ({
                 </>
               ) : (
                 <>
-                  <span className="rventa-exito-icono">✅</span>
+                  <span className="rventa-exito-icono">
+                    <CheckCircle2 size={28} />
+                  </span>
                   <h3>Venta registrada</h3>
                   <p>
                     La venta por <strong>{formatoCOP(total)}</strong> a{" "}
                     <strong>{nombreCliente}</strong> se registró correctamente.
                   </p>
                 </>
+              )}
+              {ultimaVenta && !guardadaPendiente && (
+                <button
+                  type="button"
+                  className="rventa-exito-btn rventa-exito-imprimir"
+                  onClick={() => imprimirComprobante(ultimaVenta)}
+                >
+                  <Printer size={16} /> Imprimir comprobante
+                </button>
               )}
               <button
                 type="button"
