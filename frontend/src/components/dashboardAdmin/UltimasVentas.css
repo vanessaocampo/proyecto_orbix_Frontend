@@ -1,18 +1,37 @@
 .ultimas-ventas {
-  margin: 10px 0;
+  margin: 0px 0px 10px;
   background-color: #ffffff;
   border: 1px solid #d9e0e8;
   border-radius: 18px;
   overflow: hidden;
 }
 
-/* TÍTULO */
+/* ENCABEZADO */
 
-.ultimas-ventas h3 {
+.ultimas-ventas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+}
+
+.ultimas-ventas-header h3 {
   margin: 0;
-  padding: 18px;
   font-size: 16px;
   color: #0b1f3a;
+}
+
+.ver-todas {
+  border: none;
+  background: transparent;
+  color: #087c9c;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.ver-todas:hover {
+  text-decoration: underline;
 }
 
 /* TABLA */
@@ -23,7 +42,7 @@
   table-layout: fixed;
 }
 
-/* ENCABEZADO */
+/* ENCABEZADO DE TABLA */
 
 .ultimas-ventas th {
   height: 46px;
@@ -48,6 +67,7 @@
 .ultimas-ventas tbody tr:last-child {
   border-bottom: none;
 }
+
 .ultimas-ventas tbody tr:hover {
   background-color: #f1f5f9;
   cursor: pointer;
@@ -98,6 +118,47 @@
 /* ESTADO */
 
 .ultimas-ventas td:nth-child(5) {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
+}
+
+/* FECHA */
+
+.ultimas-ventas td:nth-child(6) {
+  color: #58708d;
+  font-size: 12px;
+}
+
+/* COLORES DE ESTADO */
+
+.estado {
+  font-weight: 700;
+}
+
+.estado-completada {
+  color: #008f68;
+}
+
+.estado-proceso {
+  color: #087c9c;
+}
+
+.estado-pendiente {
+  color: #c2410c;
+}
+
+.estado-cancelada {
+  color: #dc2626;
+}
+
+.estado-default {
+  color: #58708d;
+}
+
+/* MENSAJES */
+
+.mensaje-tabla {
+  text-align: center;
+  color: #71829a !important;
+  padding: 30px !important;
 }
