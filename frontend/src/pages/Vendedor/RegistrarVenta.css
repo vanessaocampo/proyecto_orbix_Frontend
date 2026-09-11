@@ -292,6 +292,24 @@
   color: #6d28d9;
 }
 
+.rventa-card-cantidad button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background-color: var(--card);
+  color: var(--muted-foreground);
+}
+
+.rventa-card-cantidad button.limite {
+  background-color: rgba(220, 38, 38, 0.08);
+  border-color: rgba(220, 38, 38, 0.35);
+  color: #dc2626;
+}
+
+.rventa-card-cantidad button.limite:hover {
+  background-color: rgba(220, 38, 38, 0.12);
+  color: #dc2626;
+}
+
 .rventa-card-cantidad span {
   min-width: 20px;
   text-align: center;
@@ -392,14 +410,7 @@
   transition: all 0.15s;
 }
 
-.rventa-nuevo-cliente.activo {
-  border-color: transparent;
-  background-color: #ede9fe;
-  color: #6d28d9;
-}
-
-.rventa-select,
-.rventa-input {
+.rventa-select {
   padding: 9px 12px;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -411,19 +422,8 @@
   transition: border-color 0.15s;
 }
 
-.rventa-select:focus,
-.rventa-input:focus {
+.rventa-select:focus {
   border-color: #8b5cf6;
-}
-
-.rventa-nuevo-fila {
-  display: flex;
-  gap: 8px;
-}
-
-.rventa-nuevo-fila .rventa-input {
-  flex: 1;
-  min-width: 0;
 }
 
 /* Items del carrito */
@@ -510,6 +510,23 @@
 
 .rventa-panel-item-cant button:hover {
   background-color: var(--muted);
+}
+
+.rventa-panel-item-cant button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background-color: var(--card);
+}
+
+.rventa-panel-item-cant button.limite {
+  background-color: rgba(220, 38, 38, 0.08);
+  border-color: rgba(220, 38, 38, 0.35);
+  color: #dc2626;
+}
+
+.rventa-panel-item-cant button.limite:hover {
+  background-color: rgba(220, 38, 38, 0.12);
+  color: #dc2626;
 }
 
 .rventa-panel-item-cant input {
@@ -645,17 +662,6 @@
   cursor: not-allowed;
 }
 
-.rventa-error {
-  margin: 0;
-  padding: 8px 10px;
-  border: 1px solid rgba(239, 68, 68, 0.35);
-  border-radius: 8px;
-  background-color: rgba(239, 68, 68, 0.08);
-  color: #dc2626;
-  font-size: 12px;
-  line-height: 1.4;
-}
-
 .rventa-enviando {
   font-family: "Outfit", sans-serif;
 }
@@ -663,11 +669,14 @@
 /* Acciones de registro */
 .rventa-acciones {
   display: flex;
+  flex-direction: column;
   gap: 8px;
+  margin-top: 4px;
 }
 
 .rventa-acciones .rventa-registrar {
-  flex: 1;
+  width: 100%;
+  white-space: nowrap;
 }
 
 .rventa-registrar-confirmar {
@@ -756,6 +765,14 @@
 }
 
 .rventa-exito-btn:hover {
+  opacity: 0.85;
+}
+
+.rventa-exito-imprimir {
+  background-color: #2563eb;
+}
+
+.rventa-exito-imprimir:hover {
   opacity: 0.85;
 }
 

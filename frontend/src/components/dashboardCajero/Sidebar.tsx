@@ -1,5 +1,5 @@
 import { LayoutGrid, ShoppingBag, Users, Receipt, Target } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import LogoutButton from "../LogoutButton";
 
 import "./Sidebar.css";
@@ -64,10 +64,10 @@ const Sidebar = () => {
         {ITEMS.map(({ path, label, icon: Icon }) => {
           const activo = pathname === path;
           return (
-            <a key={path} href={path} className={activo ? "activo" : ""}>
+            <Link key={path} to={path} className={activo ? "activo" : ""}>
               <Icon size={18} />
               <span>{label}</span>
-            </a>
+            </Link>
           );
         })}
       </nav>

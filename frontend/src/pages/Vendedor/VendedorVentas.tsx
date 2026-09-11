@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Plus } from "lucide-react";
+import { Plus, Pencil, Trash2 } from "lucide-react";
 import VendedorLayout from "../../components/dashboardCajero/VendedorLayout";
 import CargandoVendedor from "../../components/dashboardCajero/CargandoVendedor";
+import DetalleVenta from "../../components/dashboardCajero/DetalleVenta";
 import RegistrarVenta from "./RegistrarVenta";
 import useVendedorData from "../../hooks/useVendedorData";
 import vendedorService from "../../services/vendedor.services";
 import type { EstadoVenta, VentaVendedor } from "../../data/mockDataVendedor";
+import Aviso from "../../components/dashboardCajero/Aviso";
+import ModalConfirmacion from "../../components/dashboardCajero/ModalConfirmacion";
 
 import "./VendedorVentas.css";
 
@@ -46,6 +49,9 @@ const VendedorVentas = () => {
   const [anulando, setAnulando] = useState<string | null>(null);
   const [errorEstado, setErrorEstado] = useState("");
   const [editandoVenta, setEditandoVenta] = useState<VentaVendedor | null>(null);
+  const [confirmarModificar, setConfirmarModificar] = useState<VentaVendedor | null>(null);
+  const [confirmarAnular, setConfirmarAnular] = useState<VentaVendedor | null>(null);
+  const [ventaDetalle, setVentaDetalle] = useState<VentaVendedor | null>(null);
 
   const [ventaResaltada, setVentaResaltada] = useState<string | null>(
     () => estadoNavegacion?.ventaId ?? null,
@@ -64,18 +70,22 @@ const VendedorVentas = () => {
     return () => window.clearTimeout(tiempo);
   }, [ventaResaltada, ventas]);
 
-  const anularVenta = async (ventaId: string) => {
-    const confirmar = window.confirm(
-      "¿Anular esta venta? Quedará en el historial con estado Anulada.",
-    );
-    if (!confirmar) return;
+  const anularVenta = (venta: VentaVendedor) => {
+    setConfirmarAnular(venta);
+  };
 
-    setAnulando(ventaId);
+  const confirmarAnulacion = async () => {
+    if (!confirmarAnular) return;
+
+    const venta = confirmarAnular;
+    setConfirmarAnular(null);
+
+    setAnulando(venta.id);
     setErrorEstado("");
 
     try {
       await vendedorService.actualizarEstadoVenta(
-        vendedorService.idVentaDe(ventaId),
+        vendedorService.idVentaDe(venta.id),
         "cancelada",
       );
       await refrescar();
@@ -89,11 +99,15 @@ const VendedorVentas = () => {
     }
   };
 
-  const modificarVenta = async (venta: VentaVendedor) => {
-    const confirmar = window.confirm(
-      "¿Modificar esta venta pendiente? Se cancelará la venta actual y se abrirá el formulario con sus datos para que la vuelvas a registrar.",
-    );
-    if (!confirmar) return;
+  const modificarVenta = (venta: VentaVendedor) => {
+    setConfirmarModificar(venta);
+  };
+
+  const confirmarModificacion = async () => {
+    if (!confirmarModificar) return;
+
+    const venta = confirmarModificar;
+    setConfirmarModificar(null);
 
     setAnulando(venta.id);
     setErrorEstado("");
@@ -156,9 +170,7 @@ const VendedorVentas = () => {
             clientes={clientes}
             productoInicialId={estadoNavegacion?.productoId}
             clienteInicialId={
-              editandoVenta
-                ? `CLI-${String(editandoVenta.idCliente ?? 0).padStart(3, "0")}`
-                : estadoNavegacion?.clienteId
+              editandoVenta?.idCliente || estadoNavegacion?.clienteId
             }
             itemsIniciales={editandoVenta?.itemsDetalle}
             metodoPagoInicial={editandoVenta?.metodoPago}
@@ -224,7 +236,7 @@ const VendedorVentas = () => {
         </div>
 
         {/* Tabla */}
-        {errorEstado && <p className="vventas-error">{errorEstado}</p>}
+        {errorEstado && <Aviso>{errorEstado}</Aviso>}
         <div className="vventas-tabla-wrap" ref={tablaWrapRef}>
           <table className="vventas-tabla">
             <thead>
@@ -241,7 +253,7 @@ const VendedorVentas = () => {
                   data-venta={venta.id}
                   className={`vventas-fila${ventaResaltada === venta.id ? " resaltada" : ""}`}
                 >
-                  <td className="vventas-id">{venta.id}</td>
+                  <td className="vventas-id">{venta.codigoVenta ?? venta.id}</td>
                   <td className="vventas-cliente">{venta.cliente}</td>
                   <td className="vventas-items">{venta.items}</td>
                   <td className="vventas-monto">{formatoCOP(venta.monto)}</td>
@@ -258,6 +270,13 @@ const VendedorVentas = () => {
                   <td className="vventas-fecha">{venta.fecha}</td>
                   <td className="vventas-accion">
                     <div className="vventas-acciones">
+                      <button
+                        type="button"
+                        className="vventas-ver"
+                        onClick={() => setVentaDetalle(venta)}
+                      >
+                        Ver detalle
+                      </button>
                       {venta.estado === "Pendiente" && (
                         <button
                           type="button"
@@ -273,7 +292,7 @@ const VendedorVentas = () => {
                           type="button"
                           className="vventas-anular"
                           disabled={anulando === venta.id}
-                          onClick={() => anularVenta(venta.id)}
+                          onClick={() => anularVenta(venta)}
                         >
                           {anulando === venta.id ? "Procesando..." : "Anular"}
                         </button>
@@ -292,6 +311,52 @@ const VendedorVentas = () => {
             </tbody>
           </table>
         </div>
+
+        {confirmarAnular && (
+          <ModalConfirmacion
+            abierto
+            titulo="Anular venta"
+            icono={<Trash2 size={22} />}
+            tono="rojo"
+            texto={
+              <>
+                Esta venta se anulará y quedará en el historial con estado{" "}
+                <strong>Anulada</strong>.
+              </>
+            }
+            detalle={`${confirmarAnular.codigoVenta ?? confirmarAnular.id} · ${formatoCOP(confirmarAnular.monto)} · ${confirmarAnular.cliente}`}
+            textoBoton="Sí, anular"
+            procesando={anulando === confirmarAnular.id}
+            onCancelar={() => setConfirmarAnular(null)}
+            onConfirmar={() => void confirmarAnulacion()}
+          />
+        )}
+
+        {confirmarModificar && (
+          <ModalConfirmacion
+            abierto
+            titulo="Modificar venta pendiente"
+            icono={<Pencil size={26} />}
+            texto={
+              <>
+                La venta actual se cancelará y se abrirá el formulario con sus{" "}
+                datos para que la registres de nuevo.
+              </>
+            }
+            detalle={`${confirmarModificar.codigoVenta ?? confirmarModificar.id} · ${formatoCOP(confirmarModificar.monto)} · ${confirmarModificar.cliente}`}
+            textoBoton="Sí, modificar"
+            procesando={anulando === confirmarModificar.id}
+            onCancelar={() => setConfirmarModificar(null)}
+            onConfirmar={() => void confirmarModificacion()}
+          />
+        )}
+
+        {ventaDetalle && (
+          <DetalleVenta
+            venta={ventaDetalle}
+            onCerrar={() => setVentaDetalle(null)}
+          />
+        )}
       </div>
       )}
     </VendedorLayout>

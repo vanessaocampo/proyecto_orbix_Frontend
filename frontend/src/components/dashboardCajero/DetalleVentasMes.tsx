@@ -73,7 +73,7 @@ const DetalleVentas = ({ ventas, titulo, subtitulo, vacio, onVolver }: DetalleVe
           <tbody>
             {ventas.map((venta) => (
               <tr key={venta.id}>
-                <td className="vventas-id">{venta.id}</td>
+                <td className="vventas-id">{venta.codigoVenta ?? venta.id}</td>
                 <td className="vventas-cliente">{venta.cliente}</td>
                 <td className="vventas-items">{venta.items}</td>
                 <td className="vventas-monto">{formatoCOP(venta.monto)}</td>
