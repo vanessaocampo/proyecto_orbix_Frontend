@@ -3,7 +3,9 @@ import {
   Package,
   ArrowRightLeft,
   LogOut,
-  X
+  X,
+  Pin,
+  PinOff
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import LogoutButton from "../LogoutButton";
@@ -12,15 +14,17 @@ import "./SidebarInventario.css";
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
+  isPinned: boolean;
+  onTogglePin: () => void;
 }
 
-const SidebarInventario = ({ isOpen, onClose }: SidebarProps) => {
+const SidebarInventario = ({ isOpen, onClose, isPinned, onTogglePin }: SidebarProps) => {
   return (
     <>
       {/* Overlay oscuro para cerrar al hacer clic afuera en móviles */}
       {isOpen && <div className="sidebar-overlay" onClick={onClose}></div>}
       
-      <aside className={`sidebar-inventario ${isOpen ? 'open' : ''}`}>
+      <aside className={`sidebar-inventario ${isOpen ? 'open' : ''} ${isPinned ? 'pinned' : 'unpinned'}`}>
         <div className="sidebar-titulo-inv">
           <div className="logo-container">
             <div className="logo-icon">
@@ -61,6 +65,16 @@ const SidebarInventario = ({ isOpen, onClose }: SidebarProps) => {
               <p className="user-role-inv">Inventario</p>
             </div>
           </div>
+          
+          <button 
+            className="btn-cambiar-perfil toggle-pin-btn" 
+            onClick={onTogglePin}
+            title={isPinned ? "Desanclar barra" : "Anclar barra"}
+          >
+            {isPinned ? <PinOff size={18} /> : <Pin size={18} />}
+            <span>{isPinned ? "Desanclar" : "Anclar barra"}</span>
+          </button>
+
           <LogoutButton className="btn-cambiar-perfil">
             <LogOut size={18} />
             <span>Cerrar sesión</span>

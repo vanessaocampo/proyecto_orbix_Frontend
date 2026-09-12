@@ -5,7 +5,6 @@
 }
 
 .contenido-dashboard-inv {
-  margin-left: 230px; /* Igualar al ancho del Sidebar de admin */
   flex: 1;
   display: flex;
   flex-direction: column;

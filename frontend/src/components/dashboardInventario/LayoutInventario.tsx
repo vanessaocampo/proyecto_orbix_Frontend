@@ -7,12 +7,18 @@ import { InventoryProvider } from "../../context/InventoryContext";
 
 const LayoutInventario = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarPinned, setIsSidebarPinned] = useState(false);
 
   return (
     <main className="main-inv">
-      <SidebarInventario isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      <SidebarInventario 
+        isOpen={isSidebarOpen} 
+        onClose={() => setIsSidebarOpen(false)} 
+        isPinned={isSidebarPinned}
+        onTogglePin={() => setIsSidebarPinned(!isSidebarPinned)}
+      />
 
-      <div className="contenido-dashboard-inv">
+      <div className={`contenido-dashboard-inv ${isSidebarPinned ? 'pinned' : 'unpinned'}`}>
         <div className="barra-superior-inv">
           <div className="left-acciones-inv">
             <button className="menu-toggle-inv" onClick={() => setIsSidebarOpen(true)}>

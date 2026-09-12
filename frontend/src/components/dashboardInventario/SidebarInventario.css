@@ -193,3 +193,91 @@
     display: block;
   }
 }
+
+/* ESTILOS PARA SIDEBAR COLLAPSE / UNPINNED */
+.sidebar-inventario {
+  transition: width 0.3s ease;
+  overflow-x: hidden;
+  white-space: nowrap;
+  z-index: 999;
+}
+
+.sidebar-inventario.unpinned {
+  width: 75px;
+}
+
+.sidebar-inventario.unpinned:hover {
+  width: 230px;
+}
+
+.sidebar-inventario.unpinned:not(:hover) .siti-inv,
+.sidebar-inventario.unpinned:not(:hover) .badge-inventario,
+.sidebar-inventario.unpinned:not(:hover) .navp-inv,
+.sidebar-inventario.unpinned:not(:hover) .navegacion-inv span,
+.sidebar-inventario.unpinned:not(:hover) .user-info-inv,
+.sidebar-inventario.unpinned:not(:hover) .btn-cambiar-perfil span {
+  opacity: 0;
+  width: 0;
+  pointer-events: none;
+  visibility: hidden;
+  display: none;
+}
+
+.sidebar-inventario.unpinned:not(:hover) .sidebar-titulo-inv {
+  padding: 25px 25px;
+}
+
+.sidebar-inventario.unpinned:not(:hover) .navegacion-inv a {
+  padding: 10px 25px;
+  justify-content: center;
+}
+
+.sidebar-inventario.unpinned:not(:hover) .btn-cambiar-perfil {
+  padding: 10px;
+  justify-content: center;
+}
+
+.sidebar-inventario.unpinned:not(:hover) .user-avatar-inv {
+  margin: 0 auto;
+}
+
+.sidebar-inventario.unpinned:not(:hover) .sidebar-footer-inv {
+  align-items: center;
+}
+
+.toggle-pin-btn {
+  margin-bottom: 10px;
+}
+
+.contenido-dashboard-inv {
+  transition: margin-left 0.3s ease;
+}
+
+.contenido-dashboard-inv.unpinned {
+  margin-left: 75px;
+}
+.contenido-dashboard-inv.pinned {
+  margin-left: 230px;
+}
+
+@media (max-width: 992px) {
+  .contenido-dashboard-inv.pinned,
+  .contenido-dashboard-inv.unpinned {
+    margin-left: 0;
+  }
+  .sidebar-inventario.unpinned {
+    width: 230px;
+  }
+  .sidebar-inventario.unpinned .siti-inv,
+  .sidebar-inventario.unpinned .badge-inventario,
+  .sidebar-inventario.unpinned .navp-inv,
+  .sidebar-inventario.unpinned .navegacion-inv span,
+  .sidebar-inventario.unpinned .user-info-inv,
+  .sidebar-inventario.unpinned .btn-cambiar-perfil span {
+    opacity: 1;
+    display: block;
+    width: auto;
+    visibility: visible;
+  }
+}
+
