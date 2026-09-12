@@ -54,77 +54,77 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
   const [defaultProvId, setDefaultProvId] = useState<string|undefined>();
 
   // Hook para cargar datos reales de la BD al montar el componente
-  useEffect(() => {
-    const cargarDatos = async () => {
-      setLoading(true);
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) throw new Error("No token"); // Si no hay token, usa los de prueba
-        
-        const headers = { 'Authorization': `Bearer ${token}` };
-        
-        // 0. Cargar Cat/Prov
-        const [resCat, resProv] = await Promise.all([
-          fetch('http://localhost:3000/api/v1/categorias', { headers }),
-          fetch('http://localhost:3000/api/v1/proveedores', { headers })
-        ]);
-        if (resCat.ok) { const d = await resCat.json(); if (d.data?.length > 0) setDefaultCatId(d.data[0].idCategoria); }
-        if (resProv.ok) { const d = await resProv.json(); if (d.data?.length > 0) setDefaultProvId(d.data[0].idProveedor); }
+  const refrescar = async () => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) throw new Error("No token"); // Si no hay token, usa los de prueba
+      
+      const headers = { 'Authorization': `Bearer ${token}` };
+      
+      // 0. Cargar Cat/Prov
+      const [resCat, resProv] = await Promise.all([
+        fetch('http://localhost:3000/api/v1/categorias', { headers }),
+        fetch('http://localhost:3000/api/v1/proveedores', { headers })
+      ]);
+      if (resCat.ok) { const d = await resCat.json(); if (d.data?.length > 0) setDefaultCatId(d.data[0].idCategoria); }
+      if (resProv.ok) { const d = await resProv.json(); if (d.data?.length > 0) setDefaultProvId(d.data[0].idProveedor); }
 
-        // 1. Cargar Productos reales
-        const resProd = await fetch('http://localhost:3000/api/v1/productos', { headers });
-        if (resProd.ok) {
-          const dataProd = await resProd.json();
-          if (dataProd.success && dataProd.data.length > 0) {
-            const prodMapeados: Producto[] = dataProd.data.map((p: any) => ({
-              id: p.sku || `PRD-${p.idProducto.substring(0,6)}`,
-              dbId: p.idProducto,
-              nombre: p.nombre,
-              categoria: p.categoria?.nombre || 'General',
-              descripcion: p.descripcion,
-              precioCompra: p.precioCompra ? Number(p.precioCompra) : undefined,
-              precio: Number(p.precio),
-              stock: p.stock,
-              stockMin: p.stockMinimo,
-              valor: Number(p.precio) * p.stock,
-              proveedor: p.proveedor?.nombre || 'Local'
-            }));
-            setProductos(prodMapeados);
-          }
+      // 1. Cargar Productos reales
+      const resProd = await fetch('http://localhost:3000/api/v1/productos', { headers });
+      if (resProd.ok) {
+        const dataProd = await resProd.json();
+        if (dataProd.success && dataProd.data.length > 0) {
+          const prodMapeados: Producto[] = dataProd.data.map((p: any) => ({
+            id: p.sku || `PRD-${p.idProducto.substring(0,6)}`,
+            dbId: p.idProducto,
+            nombre: p.nombre,
+            categoria: p.categoria?.nombre || 'General',
+            descripcion: p.descripcion,
+            precioCompra: p.precioCompra ? Number(p.precioCompra) : undefined,
+            precio: Number(p.precio),
+            stock: p.stock,
+            stockMin: p.stockMinimo,
+            valor: Number(p.precio) * p.stock,
+            proveedor: p.proveedor?.nombre || 'Local'
+          }));
+          setProductos(prodMapeados);
         }
-
-        // 2. Cargar Movimientos reales
-        const resMov = await fetch('http://localhost:3000/api/v1/inventario/movimientos', { headers });
-        if (resMov.ok) {
-           const dataMov = await resMov.json();
-           if (dataMov.success && dataMov.data.length > 0) {
-              const movMapeados: Movimiento[] = dataMov.data.map((m: any) => {
-                const dateObj = new Date(m.fecha);
-                return {
-                  id: m.codigoMovimiento || `MOV-${m.idMovimiento.substring(0,8)}`,
-                  fecha: dateObj.toLocaleDateString(),
-                  hora: dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                  tipo: m.tipo === 'entrada' ? 'Entrada' : m.tipo === 'salida' ? 'Salida' : m.tipo === 'ajuste' ? 'Ajuste' : 'Devolucion',
-                  producto: m.producto?.nombre || 'Desconocido',
-                  sku: m.producto?.sku || 'N/A',
-                  cantidad: (m.tipo === 'entrada' || m.tipo === 'devolucion' ? '+' : '-') + m.cantidad + ' u.',
-                  isPositive: m.tipo === 'entrada' || m.tipo === 'devolucion',
-                  valor: m.cantidad * Number(m.producto?.precio || 0),
-                  responsable: m.usuario?.nombre || 'Sistema',
-                  nota: m.referencia || 'N/A'
-                };
-              });
-              setMovimientos(movMapeados);
-           }
-        }
-      } catch (error) {
-        console.error("No se pudo conectar con la BD o la sesión caducó."); setProductos([]); setMovimientos([]);
-      } finally {
-        setLoading(false);
       }
-    };
 
-    cargarDatos();
+      // 2. Cargar Movimientos reales
+      const resMov = await fetch('http://localhost:3000/api/v1/inventario/movimientos', { headers });
+      if (resMov.ok) {
+         const dataMov = await resMov.json();
+         if (dataMov.success && dataMov.data.length > 0) {
+            const movMapeados: Movimiento[] = dataMov.data.map((m: any) => {
+              const dateObj = new Date(m.fecha);
+              return {
+                id: m.codigoMovimiento || `MOV-${m.idMovimiento.substring(0,8)}`,
+                fecha: dateObj.toLocaleDateString(),
+                hora: dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                tipo: m.tipo === 'entrada' ? 'Entrada' : m.tipo === 'salida' ? 'Salida' : m.tipo === 'ajuste' ? 'Ajuste' : 'Devolucion',
+                producto: m.producto?.nombre || 'Desconocido',
+                sku: m.producto?.sku || 'N/A',
+                cantidad: (m.tipo === 'entrada' || m.tipo === 'devolucion' ? '+' : '-') + m.cantidad + ' u.',
+                isPositive: m.tipo === 'entrada' || m.tipo === 'devolucion',
+                valor: m.cantidad * Number(m.producto?.precio || 0),
+                responsable: m.usuario?.nombre || 'Sistema',
+                nota: m.referencia || 'N/A'
+              };
+            });
+            setMovimientos(movMapeados);
+         }
+      }
+    } catch (error) {
+      console.error("No se pudo conectar con la BD o la sesión caducó."); setProductos([]); setMovimientos([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    refrescar();
   }, []);
 
   const agregarProducto = async (prod: Producto) => {
