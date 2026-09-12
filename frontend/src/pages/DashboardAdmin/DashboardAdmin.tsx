@@ -1,5 +1,3 @@
-import Sidebar from "../../components/dashboardAdmin/Sidebar";
-
 import CarsDatos from "../../components/dashboardAdmin/CarsDatos";
 
 import Ventasanuales from "../../components/dashboardAdmin/ventasAnuales";
@@ -15,35 +13,8 @@ import EstaSemana from "../../components/dashboardAdmin/EstaSemana";
 
 const DashboardAdmin = () => {
   return (
-    <main className="dashboard-main">
-      <Sidebar />
-
-      <div className="dashboard-contenido">
-        {/* BARRA SUPERIOR */}
-
-        <div className="dashboard-barra-superior">
-          <p>
-            <span className="dashboard-orbix">Orbix</span> /{" "}
-            <span className="dashboard-admin">Admin</span> /{" "}
-            <span className="dashboard-titulo">Dashboard</span>
-          </p>
-
-          <div className="dashboard-acciones-superiores">
-            <form className="dashboard-buscar">
-              <Search size={20} />
-
-              <input type="text" placeholder="Buscar..." />
-            </form>
-
-            <div className="dashboard-notifi">
-              <Bell size={20} />
-            </div>
-
-            <div className="dashboard-usuario">VO</div>
-          </div>
-        </div>
-
-        {/* ENCABEZADO */}
+    <>
+{/* ENCABEZADO */}
 
         <div className="dashboard-encabezado">
           <div>
@@ -69,9 +40,8 @@ const DashboardAdmin = () => {
           <UltimasVentas />
           <EstaSemana />
         </div>
-      </div>
-    </main>
-  );
+      </>
+);
 };
 
 export default DashboardAdmin;

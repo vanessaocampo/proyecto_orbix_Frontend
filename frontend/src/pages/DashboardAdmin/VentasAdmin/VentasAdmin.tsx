@@ -1,7 +1,6 @@
 import { Search, Bell, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import Sidebar from "../../../components/dashboardAdmin/Sidebar";
 import "./VentasAdmin.css";
 
 import CardsVentas from "../../../components/dashboardAdmin/VentasAdmin/CardsVentas";
@@ -73,13 +72,8 @@ const VentasAdmin = () => {
   };
 
   return (
-    <main className="ventas-main">
-
-      <Sidebar />
-
-      <div className="ventas-contenido">
-
-        {/* =========================
+    <>
+{/* =========================
             BARRA SUPERIOR
         ========================= */}
 
@@ -205,10 +199,8 @@ const VentasAdmin = () => {
           />
         )}
 
-      </div>
-
-    </main>
-  );
+      </>
+);
 };
 
 export default VentasAdmin;

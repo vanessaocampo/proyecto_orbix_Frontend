@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Bell } from "lucide-react";
 import Sidebar from "./Sidebar";
 import BuscadorGlobal from "./BuscadorGlobal";
+import ProfileDropdown from "../ProfileDropdown";
 
 import "./VendedorLayout.css";
 
@@ -10,39 +11,13 @@ type VendedorLayoutProps = {
   children: React.ReactNode;
 };
 
-const obtenerUsuario = () => {
-  try {
-    const usuarioGuardado = localStorage.getItem("usuario");
-
-    if (!usuarioGuardado) {
-      return { iniciales: "VD" };
-    }
-
-    const usuario = JSON.parse(usuarioGuardado);
-
-    const nombre: string = usuario?.nombre ?? "Vendedor";
-
-    const iniciales = nombre
-      .trim()
-      .split(/\s+/)
-      .map((palabra: string) => palabra[0])
-      .join("")
-      .slice(0, 2)
-      .toUpperCase();
-
-    return { iniciales: iniciales || "VD" };
-  } catch {
-    return { iniciales: "VD" };
-  }
-};
-
 const VendedorLayout = ({ vista, children }: VendedorLayoutProps) => {
-  const { iniciales } = obtenerUsuario();
+  const [isSidebarPinned, setIsSidebarPinned] = useState(true);
 
   return (
-    <main className="vendedor-app">
+    <main className={`vendedor-app ${isSidebarPinned ? 'sidebar-pinned' : 'sidebar-unpinned'}`}>
       {/* Sidebar */}
-      <Sidebar />
+      <Sidebar isPinned={isSidebarPinned} onTogglePin={() => setIsSidebarPinned(!isSidebarPinned)} />
 
       {/* Contenido */}
       <div className="vendedor-body">
@@ -67,7 +42,7 @@ const VendedorLayout = ({ vista, children }: VendedorLayoutProps) => {
             </div>
 
             {/* Usuario */}
-            <div className="vendedor-usuario-menu">{iniciales}</div>
+            <ProfileDropdown />
           </div>
         </header>
 

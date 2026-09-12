@@ -37,3 +37,33 @@
   border-bottom: 1px solid #1c2b3d;
   padding: 25px 35px;
 }
+/* Pin/Unpin behavior for Sidebar */
+.sidebar {
+  transition: width 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar.unpinned {
+  width: 75px;
+}
+.sidebar.unpinned .siti {
+  font-size: 16px;
+}
+.sidebar.unpinned span {
+  display: none;
+}
+.sidebar.unpinned:hover {
+  width: 250px;
+  z-index: 999;
+}
+.sidebar.unpinned:hover span {
+  display: block;
+}
+.sidebar.unpinned:hover .siti {
+  font-size: 24px;
+}
+.toggle-pin-btn:hover {
+  background: #f1f5f9 !important;
+  color: #1e293b !important;
+}
+

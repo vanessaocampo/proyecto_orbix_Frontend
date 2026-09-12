@@ -1,7 +1,6 @@
 import { Search, Bell, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import Sidebar from "../../../components/dashboardAdmin/Sidebar";
 import FiltrosClientes from "../../../components/dashboardAdmin/ClientesAdmin/FiltrosClientes";
 import TablaClientes from "../../../components/dashboardAdmin/ClientesAdmin/TablaClientes";
 import NuevoClienteModal from "../../../components/dashboardAdmin/ClientesAdmin/NuevoClienteModal";
@@ -77,13 +76,8 @@ const ClientesAdmin = () => {
   };
 
   return (
-    <main className="clientes-main">
-
-      <Sidebar />
-
-      <div className="clientes-contenido">
-
-        <div className="clientes-barra-superior">
+    <>
+<div className="clientes-barra-superior">
 
           <p>
             <span className="clientes-orbix">

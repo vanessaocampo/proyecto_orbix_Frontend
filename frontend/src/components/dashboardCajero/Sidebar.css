@@ -164,3 +164,44 @@
   background-color: rgba(255, 255, 255, 0.06);
   color: rgba(203, 213, 225, 0.85);
 }
+/* Pin/Unpin behavior for Sidebar */
+.vendedor-sidebar {
+  transition: width 0.3s ease;
+}
+.vendedor-sidebar.unpinned {
+  width: 75px;
+}
+.vendedor-sidebar.unpinned .vendedor-logo-nombre,
+.vendedor-sidebar.unpinned .vendedor-nav-label,
+.vendedor-sidebar.unpinned .vendedor-nav a span,
+.vendedor-sidebar.unpinned .vendedor-sidebar-footer span {
+  display: none;
+}
+.vendedor-sidebar.unpinned:hover {
+  width: 240px; z-index: 999;
+}
+.vendedor-sidebar.unpinned:hover .vendedor-logo-nombre,
+.vendedor-sidebar.unpinned:hover .vendedor-nav-label,
+.vendedor-sidebar.unpinned:hover .vendedor-nav a span,
+.vendedor-sidebar.unpinned:hover .vendedor-sidebar-footer span {
+  display: block;
+}
+.toggle-pin-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: none;
+  color: #718096;
+  cursor: pointer;
+  padding: 12px;
+  width: 100%;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+.toggle-pin-btn:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+

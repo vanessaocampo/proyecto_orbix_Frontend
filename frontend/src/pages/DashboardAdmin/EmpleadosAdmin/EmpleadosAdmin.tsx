@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Bell, Plus, Search } from "lucide-react";
 
-import Sidebar from "../../../components/dashboardAdmin/Sidebar";
-
 import "./EmpleadosAdmin.css";
 
 import CardsEmpleados from "../../../components/dashboardAdmin/EmpleadosAdmin/CardsEmpleados";
@@ -14,39 +12,8 @@ const EmpleadosAdmin = () => {
   const [filtro, setFiltro] = useState("Todos");
 
   return (
-    <main className="empleados-main">
-      <Sidebar />
-
-      <div className="empleados-contenido">
-
-        {/* BARRA SUPERIOR */}
-        <div className="empleados-barra-superior">
-          <p>
-            <span className="empleados-orbix">Orbix</span> /{" "}
-            <span className="empleados-admin">Admin</span> /{" "}
-            <span className="empleados-titulo">Empleados</span>
-          </p>
-
-          <div className="empleados-acciones-superiores">
-            <form className="empleados-buscar">
-              <Search size={20} />
-              <input
-                type="text"
-                placeholder="Buscar..."
-              />
-            </form>
-
-            <div className="empleados-notifi">
-              <Bell size={20} />
-            </div>
-
-            <div className="empleados-usuario">
-              VO
-            </div>
-          </div>
-        </div>
-
-        {/* ENCABEZADO */}
+    <>
+{/* ENCABEZADO */}
         <div className="empleados-encabezado">
           <div>
             <h2>Empleados</h2>
@@ -79,9 +46,8 @@ const EmpleadosAdmin = () => {
           filtro={filtro}
         />
 
-      </div>
-    </main>
-  );
+      </>
+);
 };
 
 export default EmpleadosAdmin;

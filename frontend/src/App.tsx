@@ -29,6 +29,7 @@ import VentasAdmin from "./pages/DashboardAdmin/VentasAdmin/VentasAdmin";
 import ClientesAdmin from "./pages/DashboardAdmin/ClientesAdmin/ClientesAdmin";
 import ProvedoresAdmin from "./pages/DashboardAdmin/ProvedoresAdmin/ProvedoresAdmin";
 import ReportesAdmin from "./pages/DashboardAdmin/ReportesAdmin/ReportesAdmin";
+import LayoutAdmin from "./components/dashboardAdmin/LayoutAdmin";
 import EmpleadosAdmin from "./pages/DashboardAdmin/EmpleadosAdmin/EmpleadosAdmin";
 
 function App() {
@@ -44,62 +45,15 @@ function App() {
         {/* Dashboards */}
         {/* Dashboards para administrador */}
 
-        <Route
-          path="/dashboard/admin"
-          element={
-            <ProtectedRoute roles={["admin"]}>
-              <DashboardAdmin />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/admin/inventario"
-          element={
-            <ProtectedRoute roles={["admin"]}>
-              <InventarioAdmin />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/admin/ventas"
-          element={
-            <ProtectedRoute roles={["admin"]}>
-              <VentasAdmin />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/admin/clientes"
-          element={
-            <ProtectedRoute roles={["admin"]}>
-              <ClientesAdmin />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/admin/provedores"
-          element={
-            <ProtectedRoute roles={["admin"]}>
-              <ProvedoresAdmin />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/admin/reportes"
-          element={
-            <ProtectedRoute roles={["admin"]}>
-              <ReportesAdmin />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/admin/empleados"
-          element={
-            <ProtectedRoute roles={["admin"]}>
-              <EmpleadosAdmin />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/dashboard/admin" element={<ProtectedRoute roles={["admin"]}><LayoutAdmin /></ProtectedRoute>}>
+          <Route index element={<DashboardAdmin />} />
+          <Route path="inventario" element={<InventarioAdmin />} />
+          <Route path="ventas" element={<VentasAdmin />} />
+          <Route path="clientes" element={<ClientesAdmin />} />
+          <Route path="provedores" element={<ProvedoresAdmin />} />
+          <Route path="reportes" element={<ReportesAdmin />} />
+          <Route path="empleados" element={<EmpleadosAdmin />} />
+        </Route>
 
         {/* Dashboards para el vendedor*/}
 
@@ -149,3 +103,5 @@ function App() {
 }
 
 export default App;
+
+

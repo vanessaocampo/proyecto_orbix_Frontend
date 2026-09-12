@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 
 import "./InventarioAdmin.css";
 
-import Sidebar from "../../../components/dashboardAdmin/Sidebar";
-
 import { Search, Bell, Plus } from "lucide-react";
 
 import BuscarProductos from "../../../components/dashboardAdmin/InventarioAdmin/BuscarProductos";
@@ -154,42 +152,8 @@ const InventarioAdmin = () => {
   ).length;
 
   return (
-    <main className="inventario-main">
-      <Sidebar />
-
-      <div className="inventario-contenido">
-        {/* BARRA SUPERIOR */}
-        <div className="inventario-barra-superior">
-          <p>
-            <span className="inventario-orbix">Orbix</span> /{" "}
-            <span className="inventario-admin">Admin</span> /{" "}
-            <span className="inventario-titulo">Inventario</span>
-          </p>
-
-          <div className="inventario-acciones-superiores">
-            <form
-              className="inventario-buscar"
-              onSubmit={(e) => e.preventDefault()}
-            >
-              <Search size={20} />
-
-              <input
-                type="text"
-                placeholder="Buscar..."
-              />
-            </form>
-
-            <div className="inventario-notifi">
-              <Bell size={20} />
-            </div>
-
-            <div className="inventario-usuario">
-              VO
-            </div>
-          </div>
-        </div>
-
-        {/* ENCABEZADO */}
+    <>
+{/* ENCABEZADO */}
         <div className="inventario-encabezado">
           <div>
             <h2>Inventario</h2>
