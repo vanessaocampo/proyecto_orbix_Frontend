@@ -247,7 +247,7 @@ const ProductosInventario = () => {
                 
                 <div className="form-group-inv">
                   <label>Nombre del Producto</label>
-                  <input type="text" placeholder="Ej. Monitor Samsung 27\"" required value={nuevoProducto.nombre} onChange={(e) => setNuevoProducto({...nuevoProducto, nombre: e.target.value})} />
+                  <input type="text" placeholder="Ej. Monitor Samsung 27 pulg" required value={nuevoProducto.nombre} onChange={(e) => setNuevoProducto({...nuevoProducto, nombre: e.target.value})} />
                 </div>
               </div>
 
