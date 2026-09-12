@@ -57,14 +57,6 @@ const SidebarInventario = ({ isOpen, onClose, isPinned, onTogglePin }: SidebarPr
         </nav>
 
         <div className="sidebar-footer-inv">
-          <div className="user-profile-inv">
-            <div className="user-avatar-inv">LH</div>
-            <div className="user-info-inv">
-              <p className="user-name-inv">Luis Herrera</p>
-              <p className="user-role-inv">Inventario</p>
-            </div>
-          </div>
-          
           <button 
             className="btn-cambiar-perfil toggle-pin-btn" 
             onClick={onTogglePin}

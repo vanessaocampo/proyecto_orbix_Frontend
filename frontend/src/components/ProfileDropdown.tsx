@@ -95,13 +95,14 @@ const ProfileDropdown = () => {
 
       {isOpen && (
         <div className="profile-dropdown-menu">
-          <div className="profile-dropdown-header">
-            <div className="profile-dropdown-avatar">{initials}</div>
-            <div className="profile-dropdown-info">
-              <h4 className="profile-dropdown-name">{displayData.nombre}</h4>
-              <p className="profile-dropdown-email">{displayData.correo}</p>
-              <button className="profile-dropdown-link" onClick={handleOpenAccount}>Ver cuenta</button>
-            </div>
+            <div className="profile-dropdown-header">
+              <div className="profile-dropdown-avatar">{initials}</div>
+              <div className="profile-dropdown-info">
+                <h4 className="profile-dropdown-name">{displayData.nombre}</h4>
+                <p className="profile-dropdown-role">{displayData.rol ? displayData.rol.charAt(0).toUpperCase() + displayData.rol.slice(1) : 'Rol no definido'}</p>
+                <p className="profile-dropdown-email">{displayData.correo}</p>
+                <button className="profile-dropdown-link" onClick={handleOpenAccount}>Ver cuenta</button>
+              </div>
           </div>
           
           <div className="profile-dropdown-footer">
