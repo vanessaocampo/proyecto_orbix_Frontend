@@ -8,7 +8,7 @@ const categories = ["Todas", "Electrónica", "Ropa y calzado", "Alimentos", "Hog
 const statuses = ["Todos", "Disponible", "Stock bajo", "Sin stock"];
 
 const ProductosInventario = () => {
-  const { productos, agregarProducto } = useInventory();
+  const { productos, agregarProducto, modificarProducto } = useInventory();
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Todas");
@@ -16,6 +16,8 @@ const ProductosInventario = () => {
 
   // Estado del Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [productoAEditar, setProductoAEditar] = useState<any>(null);
   const [nuevoProducto, setNuevoProducto] = useState({
     sku: "",
     nombre: "",
@@ -45,6 +47,49 @@ const ProductosInventario = () => {
   });
 
   // Manejar creación de producto
+  
+  const handleEditClick = (prod: any) => {
+    setProductoAEditar(prod);
+    setNuevoProducto({
+      sku: prod.id,
+      nombre: prod.nombre,
+      descripcion: prod.descripcion || "",
+      categoria: prod.categoria,
+      precioCompra: prod.precioCompra || "",
+      precio: prod.precio,
+      stock: prod.stock,
+      stockMin: prod.stockMin,
+      proveedor: prod.proveedor
+    });
+    setIsEditModalOpen(true);
+  };
+
+  const handleModificarProducto = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!productoAEditar) return;
+    
+    const pPrecio = Number(nuevoProducto.precio);
+    const pStock = Number(nuevoProducto.stock);
+    
+    const productoModificado = {
+      ...productoAEditar,
+      nombre: nuevoProducto.nombre,
+      descripcion: nuevoProducto.descripcion,
+      categoria: nuevoProducto.categoria,
+      precioCompra: nuevoProducto.precioCompra ? Number(nuevoProducto.precioCompra) : undefined,
+      precio: pPrecio,
+      stock: pStock,
+      stockMin: Number(nuevoProducto.stockMin),
+      valor: pPrecio * pStock,
+      proveedor: nuevoProducto.proveedor
+    };
+
+    modificarProducto(productoModificado);
+    setIsEditModalOpen(false);
+    setProductoAEditar(null);
+    setNuevoProducto({ sku: "", nombre: "", descripcion: "", categoria: "Electrónica", precioCompra: "", precio: "", stock: "", stockMin: "", proveedor: "" });
+  };
+
   const handleAgregarProducto = (e: React.FormEvent) => {
     e.preventDefault();
     const nuevoId = nuevoProducto.sku || `PRD-00${productos.length + 1}`;
@@ -164,7 +209,7 @@ const ProductosInventario = () => {
                     <td className="text-dark">$ {prod.valor.toLocaleString('es-AR')}</td>
                     <td className="text-gray">{prod.proveedor}</td>
                     <td>
-                      <button className="btn-ajustar">Ajustar</button>
+                      <button className="btn-ajustar" onClick={() => handleEditClick(prod)}>Editar</button>
                     </td>
                   </tr>
                 )
@@ -181,6 +226,86 @@ const ProductosInventario = () => {
       </div>
 
       {/* Modal para Agregar Producto */}
+      
+      {/* Modal para Editar Producto */}
+      {isEditModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Modificar Producto</h3>
+              <button className="close-btn" onClick={() => { setIsEditModalOpen(false); setProductoAEditar(null); setNuevoProducto({ sku: "", nombre: "", descripcion: "", categoria: "Electrónica", precioCompra: "", precio: "", stock: "", stockMin: "", proveedor: "" }); }}>
+                <X size={24} />
+              </button>
+            </div>
+            
+            <form onSubmit={handleModificarProducto}>
+              <div className="form-row">
+                <div className="form-group-inv">
+                  <label>SKU</label>
+                  <input type="text" placeholder="Ej. PRD-001" disabled value={nuevoProducto.sku} />
+                </div>
+                
+                <div className="form-group-inv">
+                  <label>Nombre del Producto</label>
+                  <input type="text" placeholder="Ej. Monitor Samsung 27 pulg" required value={nuevoProducto.nombre} onChange={(e) => setNuevoProducto({...nuevoProducto, nombre: e.target.value})} />
+                </div>
+              </div>
+
+              <div className="form-group-inv">
+                <label>Descripción</label>
+                <textarea placeholder="Breve descripción del producto..." rows={2} style={{width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid #e2e8f0'}} value={nuevoProducto.descripcion} onChange={(e) => setNuevoProducto({...nuevoProducto, descripcion: e.target.value})} />
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group-inv">
+                  <label>Categoría</label>
+                  <select value={nuevoProducto.categoria} onChange={(e) => setNuevoProducto({...nuevoProducto, categoria: e.target.value})}>
+                    <option>Electrónica</option>
+                    <option>Ropa y calzado</option>
+                    <option>Hogar</option>
+                    <option>Alimentos</option>
+                  </select>
+                </div>
+                
+                <div className="form-group-inv">
+                  <label>Proveedor</label>
+                  <input type="text" placeholder="Proveedor del producto" value={nuevoProducto.proveedor} onChange={(e) => setNuevoProducto({...nuevoProducto, proveedor: e.target.value})} />
+                </div>
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group-inv">
+                  <label>Precio Compra ($)</label>
+                  <input type="number" placeholder="0" value={nuevoProducto.precioCompra} onChange={(e) => setNuevoProducto({...nuevoProducto, precioCompra: e.target.value})} />
+                </div>
+
+                <div className="form-group-inv">
+                  <label>Precio Venta ($)</label>
+                  <input type="number" placeholder="0" required value={nuevoProducto.precio} onChange={(e) => setNuevoProducto({...nuevoProducto, precio: e.target.value})} />
+                </div>
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group-inv">
+                  <label>Stock Actual</label>
+                  <input type="number" placeholder="0" required value={nuevoProducto.stock} onChange={(e) => setNuevoProducto({...nuevoProducto, stock: e.target.value})} />
+                </div>
+                
+                <div className="form-group-inv">
+                  <label>Stock Mínimo</label>
+                  <input type="number" placeholder="0" required value={nuevoProducto.stockMin} onChange={(e) => setNuevoProducto({...nuevoProducto, stockMin: e.target.value})} />
+                </div>
+              </div>
+              
+              <div className="modal-actions">
+                <button type="button" className="btn-cancel" onClick={() => { setIsEditModalOpen(false); setProductoAEditar(null); setNuevoProducto({ sku: "", nombre: "", descripcion: "", categoria: "Electrónica", precioCompra: "", precio: "", stock: "", stockMin: "", proveedor: "" }); }}>Cancelar</button>
+                <button type="submit" className="btn-primary">Guardar Cambios</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">

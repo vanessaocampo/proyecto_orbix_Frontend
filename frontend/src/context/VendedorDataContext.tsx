@@ -41,10 +41,10 @@ export const VendedorDataProvider = ({ children }: { children: ReactNode }) => {
       clientesApi: ClienteVendedor[] | null,
       ventasApi: VentaVendedor[] | null,
     ) => {
-      setProductos(productosApi ?? productosVendedor);
-      setClientes(clientesApi ?? clientesVendedor);
-      setVentas(ventasApi ?? ventasVendedor);
-      setUsandoMock(!productosApi || !clientesApi || !ventasApi);
+      setProductos(productosApi ?? []);
+      setClientes(clientesApi ?? []);
+      setVentas(ventasApi ?? []);
+      setUsandoMock(false);
       setCargando(false);
     },
     [],

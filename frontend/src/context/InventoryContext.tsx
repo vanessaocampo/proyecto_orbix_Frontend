@@ -33,30 +33,19 @@ interface InventoryContextType {
   movimientos: Movimiento[];
   loading: boolean;
   agregarProducto: (prod: Producto) => void;
+  modificarProducto: (prod: Producto) => void;
   registrarMovimiento: (mov: Movimiento, sku: string, cantidadNum: number, tipo: string) => void;
 }
 
 const InventoryContext = createContext<InventoryContextType | undefined>(undefined);
 
-const initialProductos: Producto[] = [
-  { id: "PRD-001", nombre: "Laptop Lenovo IdeaPad 5", categoria: "Electrónica", precio: 8450, stock: 14, stockMin: 5, valor: 118300, proveedor: "Lenovo Argentina" },
-  { id: "PRD-002", nombre: "Monitor Samsung 27\" FHD", categoria: "Electrónica", precio: 3200, stock: 8, stockMin: 5, valor: 25600, proveedor: "Samsung Corp" },
-  { id: "PRD-003", nombre: "Zapatillas Nike Air Max 270", categoria: "Ropa y calzado", precio: 1890, stock: 3, stockMin: 10, valor: 5670, proveedor: "Nike Distribuidora" },
-  { id: "PRD-004", nombre: "Set Utensilios Cocina 12pz", categoria: "Hogar", precio: 4620, stock: 22, stockMin: 5, valor: 101640, proveedor: "Menaje del Sur" },
-  { id: "PRD-005", nombre: "Smartphone Samsung Galaxy A55", categoria: "Electrónica", precio: 5900, stock: 19, stockMin: 8, valor: 112100, proveedor: "Samsung Corp" },
-  { id: "PRD-006", nombre: "Impresora HP LaserJet Pro", categoria: "Electrónica", precio: 2750, stock: 2, stockMin: 3, valor: 5500, proveedor: "HP Argentina" }
-];
 
-const initialMovimientos: Movimiento[] = [
-  { id: "MOV-0048", fecha: "30 Jul 2026", hora: "09:14", tipo: "Entrada", producto: "Laptop Lenovo IdeaPad 5", sku: "PRD-001", cantidad: "+10 u.", isPositive: true, valor: 84500, responsable: "Luis Herrera", nota: "Reposición mensual" },
-  { id: "MOV-0047", fecha: "30 Jul 2026", hora: "08:32", tipo: "Salida", producto: "Smartphone Samsung Galaxy A55", sku: "PRD-005", cantidad: "+3 u.", isPositive: true, valor: 17700, responsable: "Ana Torres", nota: "ORD-2843" },
-  { id: "MOV-0046", fecha: "29 Jul 2026", hora: "16:55", tipo: "Salida", producto: "Monitor Samsung 27\" FHD", sku: "PRD-002", cantidad: "+2 u.", isPositive: true, valor: 6400, responsable: "Diego Ruiz", nota: "ORD-2846" },
-  { id: "MOV-0045", fecha: "29 Jul 2026", hora: "14:20", tipo: "Ajuste", producto: "Zapatillas Nike Air Max 270", sku: "PRD-003", cantidad: "-4 u.", isPositive: false, valor: 7560, responsable: "Luis Herrera", nota: "Conteo físico - diferen..." }
-];
+
+
 
 export const InventoryProvider = ({ children }: { children: ReactNode }) => {
-  const [productos, setProductos] = useState<Producto[]>(initialProductos);
-  const [movimientos, setMovimientos] = useState<Movimiento[]>(initialMovimientos);
+  const [productos, setProductos] = useState<Producto[]>([]);
+  const [movimientos, setMovimientos] = useState<Movimiento[]>([]);
   
   // Agregar un estado para saber si est cargando
   const [loading, setLoading] = useState(false);
@@ -111,7 +100,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
               const movMapeados: Movimiento[] = dataMov.data.map((m: any) => {
                 const dateObj = new Date(m.fecha);
                 return {
-                  id: `MOV-${m.idMovimiento}`,
+                  id: m.codigoMovimiento || `MOV-${m.idMovimiento.substring(0,8)}`,
                   fecha: dateObj.toLocaleDateString(),
                   hora: dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                   tipo: m.tipo === 'entrada' ? 'Entrada' : m.tipo === 'salida' ? 'Salida' : m.tipo === 'ajuste' ? 'Ajuste' : 'Devolucion',
@@ -128,8 +117,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
            }
         }
       } catch (error) {
-        console.warn("No se pudo conectar con la BD en NEON o no hay sesion. Usando Mock Data.");
-        // Fallback silencioso a initialProductos y initialMovimientos (Mock Data)
+        console.error("No se pudo conectar con la BD o la sesión caducó."); setProductos([]); setMovimientos([]);
       } finally {
         setLoading(false);
       }
@@ -166,6 +154,32 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (e) {
       console.error("Error al guardar el producto en la BD", e);
+    }
+  };
+
+  
+  const modificarProducto = async (prod: Producto) => {
+    setProductos(prev => prev.map(p => p.id === prod.id ? prod : p));
+    try {
+      const token = localStorage.getItem('token');
+      if (token && prod.dbId) {
+        const payload = {
+          sku: prod.id,
+          nombre: prod.nombre,
+          descripcion: prod.descripcion || null,
+          precioCompra: prod.precioCompra || 0,
+          precio: prod.precio,
+          stock: prod.stock,
+          stockMinimo: prod.stockMin,
+        };
+        await fetch(`http://localhost:3000/api/v1/productos/${prod.dbId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify(payload)
+        });
+      }
+    } catch (e) {
+      console.error("Error al modificar el producto en la BD", e);
     }
   };
 
@@ -211,7 +225,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <InventoryContext.Provider value={{ productos, movimientos, agregarProducto, registrarMovimiento, loading }}>
+    <InventoryContext.Provider value={{ productos, movimientos, agregarProducto, modificarProducto, registrarMovimiento, loading }}>
       {children}
     </InventoryContext.Provider>
   );
