@@ -12,6 +12,7 @@ export type ClienteNuevo = {
 
 export type Cliente = {
   idCliente: string;
+  codigoCliente?: string | null;
   nombre: string;
   documento: string;
   telefono?: string;
@@ -20,7 +21,6 @@ export type Cliente = {
   ciudad?: string;
   segmento?: string;
 };
-
 type RespuestaClientes = {
   success: boolean;
   data: Cliente[];
