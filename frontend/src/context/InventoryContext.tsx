@@ -35,6 +35,7 @@ interface InventoryContextType {
   agregarProducto: (prod: Producto) => void;
   modificarProducto: (prod: Producto) => void;
   registrarMovimiento: (mov: Movimiento, sku: string, cantidadNum: number, tipo: string) => void;
+  refrescar: () => Promise<void>;
 }
 
 const InventoryContext = createContext<InventoryContextType | undefined>(undefined);
@@ -225,7 +226,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <InventoryContext.Provider value={{ productos, movimientos, agregarProducto, modificarProducto, registrarMovimiento, loading }}>
+    <InventoryContext.Provider value={{ productos, movimientos, agregarProducto, modificarProducto, registrarMovimiento, refrescar, loading }}>
       {children}
     </InventoryContext.Provider>
   );

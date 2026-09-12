@@ -8,7 +8,11 @@ const categories = ["Todas", "Electrónica", "Ropa y calzado", "Alimentos", "Hog
 const statuses = ["Todos", "Disponible", "Stock bajo", "Sin stock"];
 
 const ProductosInventario = () => {
-  const { productos, agregarProducto, modificarProducto } = useInventory();
+  const { productos, agregarProducto, modificarProducto, refrescar, loading } = useInventory();
+
+  useEffect(() => {
+    refrescar();
+  }, []);
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Todas");

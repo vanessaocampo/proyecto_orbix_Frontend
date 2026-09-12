@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Search, ChevronUp, ChevronDown, Minus, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Search, ChevronUp, ChevronDown, Minus, X, RefreshCcw, Loader2 } from "lucide-react";
 import "../../components/dashboardInventario/ModalInventario.css";
 import "./MovimientosInventario.css";
 import { useInventory } from "../../context/InventoryContext";
@@ -7,7 +7,12 @@ import { useInventory } from "../../context/InventoryContext";
 const types = ["Todos", "Entrada", "Salida", "Ajuste"];
 
 const MovimientosInventario = () => {
-  const { movimientos, registrarMovimiento } = useInventory();
+  const { movimientos, registrarMovimiento, refrescar, loading } = useInventory();
+
+  // Actualizar al montar
+  useEffect(() => {
+    refrescar();
+  }, []);
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState("Todos");
@@ -80,6 +85,9 @@ const MovimientosInventario = () => {
           <p>Registro de entradas, salidas y ajustes de stock</p>
         </div>
         <div className="mov-actions">
+          <button className="btn-outline" onClick={() => refrescar()} disabled={loading}>
+            {loading ? <Loader2 size={18} className="spin" /> : <RefreshCcw size={18} />} Actualizar
+          </button>
           <button className="btn-outline" onClick={() => abrirModal("Entrada")}>
             <ChevronUp size={18} /> Registrar entrada
           </button>
