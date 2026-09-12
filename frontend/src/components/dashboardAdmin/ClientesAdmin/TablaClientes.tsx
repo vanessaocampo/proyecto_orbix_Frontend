@@ -1,115 +1,224 @@
+import { useEffect, useState } from "react";
 import "./TablaClientes.css";
+
+import clienteService, {
+  type Cliente,
+} from "../../../services/clientes.services";
+
+import ventasService, {
+  type Venta,
+} from "../../../services/ventas.services";
+
+import PerfilClienteModal from "./PerfilClienteModal";
+
 interface TablaClientesProps {
   filtro: string;
   busqueda: string;
 }
 
-interface Cliente {
-  cliente: string;
-  id: string;
-  contacto: string;
-  correo: string;
-  ciudad: string;
-  total_compras: number;
-  pedidos: number;
-  perfil: string;
-}
+const TablaClientes = ({
+  filtro,
+  busqueda,
+}: TablaClientesProps) => {
+  const [clientes, setClientes] = useState<Cliente[]>([]);
+  const [ventas, setVentas] = useState<Venta[]>([]);
 
-const Clientes: Cliente[] = [
-  {
-    cliente: "Tech Solutions SRL",
-    id: "CLI-001",
-    contacto: "Carlos Benítez",
-    correo: "cbenitez@techsolutions.com",
-    ciudad: "Buenos Aires",
-    total_compras: 42800,
-    pedidos: 12,
-    perfil: "Corporativo",
-  },
-  {
-    cliente: "Distribuidora Norte",
-    id: "CLI-002",
-    contacto: "Lucia Rodriguez",
-    correo: "lucia@distnorte.com",
-    ciudad: "Rosario",
-    total_compras: 38500,
-    pedidos: 28,
-    perfil: "Mayorista",
-  },
-  {
-    cliente: "María García",
-    id: "CLI-003",
-    contacto: "María García",
-    correo: "mgarcia@gmail.com",
-    ciudad: "Buenos Aires",
-    total_compras: 8940,
-    pedidos: 5,
-    perfil: "Minorista",
-  },
-  {
-    cliente: "Comercial Del Sur",
-    id: "CLI-004",
-    contacto: "Roberto Peralta",
-    correo: "rperalta@comsur.net",
-    ciudad: "Bahía Blanca",
-    total_compras: 27600,
-    pedidos: 18,
-    perfil: "Mayorista",
-  },
-  {
-    cliente: "Juan Méndez",
-    id: "CLI-005",
-    contacto: "Juan Méndez",
-    correo: "jmendez@outlook.com",
-    ciudad: "Córdoba",
-    total_compras: 14200,
-    pedidos: 7,
-    perfil: "Minorista",
-  },
-  {
-    cliente: "Grupo Empresarial BC",
-    id: "CLI-006",
-    contacto: "Andrea Castillo",
-    correo: "acastillo@grupobc.com",
-    ciudad: "Buenos Aires",
-    total_compras: 65400,
-    pedidos: 34,
-    perfil: "Corporativo",
-  },
-  {
-    cliente: "Supermercado La Unión",
-    id: "CLI-007",
-    contacto: "Pedro Vidal",
-    correo: "pvidal@launion.com",
-    ciudad: "Mar de Plata",
-    total_compras: 31200,
-    pedidos: 22,
-    perfil: "Mayorista",
-  },
-  {
-    cliente: "Ferretería Central",
-    id: "CLI-008",
-    contacto: "Diana Lozano",
-    correo: "dlozano@ferretcentral.com",
-    ciudad: "salta",
-    total_compras: 18900,
-    pedidos: 14,
-    perfil: "Minorista",
-  },
-];
+  const [clienteSeleccionado, setClienteSeleccionado] =
+    useState<Cliente | null>(null);
 
-const TablaClientes = ({ filtro, busqueda }: TablaClientesProps) => {
-  const textoBusqueda = busqueda.toLocaleLowerCase().trim();
-  const clientesFiltrados = Clientes.filter((Cliente) => {
-    const coincidePerfil = filtro === "Todos" || Cliente.perfil === filtro;
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const cargarDatos = async () => {
+      try {
+        setCargando(true);
+        setError("");
+
+        const [datosClientes, datosVentas] = await Promise.all([
+          clienteService.obtenerClientes(),
+          ventasService.obtenerVentas(),
+        ]);
+
+        setClientes(datosClientes);
+        setVentas(datosVentas);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("Error al cargar los clientes.");
+        }
+      } finally {
+        setCargando(false);
+      }
+    };
+
+    cargarDatos();
+  }, []);
+
+  const textoBusqueda = busqueda
+    .toLocaleLowerCase()
+    .trim();
+
+  const clientesFiltrados = clientes.filter((cliente) => {
+    const coincideSegmento =
+      filtro === "Todos" ||
+      cliente.segmento?.toLowerCase() === filtro.toLowerCase();
 
     const coincideBusqueda =
-      Cliente.cliente.toLocaleLowerCase().includes(textoBusqueda) ||
-      Cliente.id.toLocaleLowerCase().includes(textoBusqueda) ||
-      Cliente.contacto.toLocaleLowerCase().includes(textoBusqueda) ||
-      Cliente.ciudad.toLocaleLowerCase().includes(textoBusqueda);
-    return coincidePerfil && coincideBusqueda;
+      cliente.nombre
+        .toLocaleLowerCase()
+        .includes(textoBusqueda) ||
+      cliente.documento
+        .toLocaleLowerCase()
+        .includes(textoBusqueda) ||
+      cliente.codigoCliente
+        ?.toLocaleLowerCase()
+        .includes(textoBusqueda) ||
+      cliente.ciudad
+        ?.toLocaleLowerCase()
+        .includes(textoBusqueda) ||
+      cliente.correo
+        ?.toLocaleLowerCase()
+        .includes(textoBusqueda);
+
+    return coincideSegmento && coincideBusqueda;
   });
+
+  const obtenerIniciales = (nombre: string) => {
+    return nombre
+      .split(" ")
+      .slice(0, 2)
+      .map((parte) => parte[0])
+      .join("")
+      .toUpperCase();
+  };
+
+  const obtenerSegmento = (segmento?: string) => {
+    if (!segmento) return "Nuevo";
+
+    return (
+      segmento.charAt(0).toUpperCase() +
+      segmento.slice(1).toLowerCase()
+    );
+  };
+
+  // --------------------------------
+  // VENTAS DEL CLIENTE
+  // --------------------------------
+
+  const obtenerVentasCliente = (idCliente: string) => {
+    return ventas.filter(
+      (venta) =>
+        venta.cliente.idCliente === idCliente
+    );
+  };
+
+  // --------------------------------
+  // TOTAL COMPRAS
+  // --------------------------------
+
+  const obtenerTotalCompras = (idCliente: string) => {
+    const ventasCliente =
+      obtenerVentasCliente(idCliente);
+
+    return ventasCliente.reduce(
+      (total, venta) => {
+        return total + Number(venta.total);
+      },
+      0
+    );
+  };
+
+  // --------------------------------
+  // CANTIDAD DE PEDIDOS
+  // --------------------------------
+
+  const obtenerCantidadPedidos = (
+    idCliente: string
+  ) => {
+    return obtenerVentasCliente(idCliente).length;
+  };
+
+  // --------------------------------
+  // ÚLTIMO PEDIDO
+  // --------------------------------
+
+  const obtenerUltimoPedido = (
+    idCliente: string
+  ) => {
+    const ventasCliente =
+      obtenerVentasCliente(idCliente);
+
+    if (ventasCliente.length === 0) {
+      return null;
+    }
+
+    return ventasCliente.reduce(
+      (ultimaVenta, venta) => {
+        return new Date(venta.fecha).getTime() >
+          new Date(ultimaVenta.fecha).getTime()
+          ? venta
+          : ultimaVenta;
+      }
+    );
+  };
+
+  // --------------------------------
+  // FORMATEAR DINERO
+  // --------------------------------
+
+  const formatearDinero = (valor: number) => {
+    return valor.toLocaleString("es-CO");
+  };
+
+  // --------------------------------
+  // FORMATEAR FECHA
+  // --------------------------------
+
+  const formatearFecha = (fecha: string) => {
+    return new Date(fecha).toLocaleDateString(
+      "es-CO",
+      {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }
+    );
+  };
+
+  // --------------------------------
+  // CARGANDO
+  // --------------------------------
+
+  if (cargando) {
+    return (
+      <section className="tabla-clientes-wrapper">
+        <div className="tabla-clientes-contenedor">
+          <div className="clientes-cargando">
+            Cargando clientes...
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // --------------------------------
+  // ERROR
+  // --------------------------------
+
+  if (error) {
+    return (
+      <section className="tabla-clientes-wrapper">
+        <div className="tabla-clientes-contenedor">
+          <div className="clientes-error">
+            {error}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="tabla-clientes-wrapper">
       <div className="tabla-clientes-contenedor">
@@ -121,57 +230,134 @@ const TablaClientes = ({ filtro, busqueda }: TablaClientesProps) => {
               <th>CIUDAD</th>
               <th>TOTAL COMPRAS</th>
               <th>PEDIDOS</th>
+              <th>ÚLTIMO PEDIDO</th>
+              <th>SEGMENTO</th>
+              <th></th>
             </tr>
           </thead>
 
           <tbody>
-            {clientesFiltrados.map((Cliente) => {
-              const iniciales = Cliente.cliente
-                .split(" ")
-                .slice(0, 2)
-                .map((nombre) => nombre[0])
-                .join("");
+            {clientesFiltrados.map((cliente) => {
+              const iniciales =
+                obtenerIniciales(
+                  cliente.nombre
+                );
+
+              const totalCompras =
+                obtenerTotalCompras(
+                  cliente.idCliente
+                );
+
+              const cantidadPedidos =
+                obtenerCantidadPedidos(
+                  cliente.idCliente
+                );
+
+              const ultimoPedido =
+                obtenerUltimoPedido(
+                  cliente.idCliente
+                );
 
               return (
-                <tr key={Cliente.id}>
+                <tr
+                  key={cliente.idCliente}
+                >
+                  {/* CLIENTE */}
                   <td className="cliente-info">
                     <div className="cliente-contenido">
-                      <div className="cliente-avatar">{iniciales}</div>
+                      <div className="cliente-avatar">
+                        {iniciales}
+                      </div>
 
                       <div className="cliente-datos">
                         <span className="cliente-nombre">
-                          {Cliente.cliente}
+                          {cliente.nombre}
                         </span>
 
-                        <span className="cliente-id">{Cliente.id}</span>
+                        <span className="cliente-id">
+                          {cliente.codigoCliente ||
+                            cliente.documento}
+                        </span>
                       </div>
                     </div>
                   </td>
 
+                  {/* CONTACTO */}
                   <td className="contacto-info">
                     <div className="contacto-datos">
                       <span className="contacto-nombre">
-                        {Cliente.contacto}
+                        {cliente.telefono ||
+                          "Sin teléfono"}
                       </span>
 
-                      <span className="contacto-correo">{Cliente.correo}</span>
+                      <span className="contacto-correo">
+                        {cliente.correo ||
+                          "Sin correo"}
+                      </span>
                     </div>
                   </td>
 
-                  <td className="ciudad-info">{Cliente.ciudad}</td>
-
-                  <td className="compras-info">
-                    $ {Cliente.total_compras.toLocaleString("es-CO")}
+                  {/* CIUDAD */}
+                  <td className="ciudad-info">
+                    {cliente.ciudad ||
+                      "Sin ciudad"}
                   </td>
 
-                  <td className="pedidos-info">{Cliente.pedidos}</td>
+                  {/* TOTAL COMPRAS */}
+                  <td className="compras-info">
+                    $ {formatearDinero(totalCompras)}
+                  </td>
+
+                  {/* PEDIDOS */}
+                  <td className="pedidos-info">
+                    {cantidadPedidos}
+                  </td>
+
+                  {/* ÚLTIMO PEDIDO */}
+                  <td className="ultimo-pedido-info">
+                    {ultimoPedido
+                      ? formatearFecha(
+                          ultimoPedido.fecha
+                        )
+                      : "Sin pedidos"}
+                  </td>
+
+                  {/* SEGMENTO */}
+                  <td className="segmento-info">
+                    <span
+                      className={`segmento-${
+                        cliente.segmento?.toLowerCase() ||
+                        "nuevo"
+                      }`}
+                    >
+                      {obtenerSegmento(
+                        cliente.segmento
+                      )}
+                    </span>
+                  </td>
+
+                  {/* PERFIL */}
+                  <td className="perfil-info">
+                    <button
+                      type="button"
+                      className="boton-ver-perfil"
+                      onClick={() =>
+                        setClienteSeleccionado(cliente)
+                      }
+                    >
+                      Ver perfil
+                    </button>
+                  </td>
                 </tr>
               );
             })}
 
             {clientesFiltrados.length === 0 && (
               <tr>
-                <td colSpan={5} className="clientes-sin-resultados">
+                <td
+                  colSpan={8}
+                  className="clientes-sin-resultados"
+                >
                   No se encontraron clientes.
                 </td>
               </tr>
@@ -179,6 +365,25 @@ const TablaClientes = ({ filtro, busqueda }: TablaClientesProps) => {
           </tbody>
         </table>
       </div>
+
+      {/* MODAL PERFIL DEL CLIENTE */}
+      {clienteSeleccionado && (
+        <PerfilClienteModal
+          cliente={clienteSeleccionado}
+          totalCompras={obtenerTotalCompras(
+            clienteSeleccionado.idCliente
+          )}
+          cantidadPedidos={obtenerCantidadPedidos(
+            clienteSeleccionado.idCliente
+          )}
+          ultimoPedido={obtenerUltimoPedido(
+            clienteSeleccionado.idCliente
+          )}
+          onCerrar={() =>
+            setClienteSeleccionado(null)
+          }
+        />
+      )}
     </section>
   );
 };

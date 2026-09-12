@@ -1,0 +1,316 @@
+/* 
+   FONDO DEL MODAL
+ */
+
+.nuevo-cliente-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 27, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+
+/* 
+   MODAL
+ */
+
+.nuevo-cliente-modal {
+  width: 500px;
+  max-width: calc(100vw - 40px);
+  background: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.20);
+}
+
+
+/* ================================
+   ENCABEZADO
+================================ */
+
+.nuevo-cliente-header {
+  height: 88px;
+  box-sizing: border-box;
+  padding: 20px 28px 14px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border-bottom: 1px solid #dbe2e8;
+  background: #ffffff;
+}
+
+.nuevo-cliente-titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nuevo-cliente-titulo h2 {
+  margin: 0;
+  color: #101828;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.nuevo-cliente-orbix {
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: #eef5f7;
+  color: #087f8c;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.nuevo-cliente-header p {
+  margin: 4px 0 0;
+  color: #718096;
+  font-size: 14px;
+}
+
+.nuevo-cliente-cerrar {
+  border: none;
+  background: transparent;
+  color: #61748a;
+  cursor: pointer;
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nuevo-cliente-cerrar:hover {
+  color: #087f8c;
+}
+
+
+/* ================================
+   FORMULARIO
+================================ */
+
+.nuevo-cliente-formulario {
+  padding: 18px 28px 18px;
+  box-sizing: border-box;
+}
+
+.nuevo-cliente-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 16px;
+  row-gap: 12px;
+}
+
+.campo-cliente {
+  display: flex;
+  flex-direction: column;
+}
+
+.campo-cliente label {
+  margin-bottom: 5px;
+  color: #60748a;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.campo-cliente input,
+.campo-cliente select {
+  width: 100%;
+  height: 42px;
+  box-sizing: border-box;
+  padding: 0 13px;
+  border: 1px solid #d5dee7;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #172033;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.campo-cliente input::placeholder {
+  color: #9aabc0;
+}
+
+.campo-cliente input:focus,
+.campo-cliente select:focus {
+  border-color: #087f8c;
+  box-shadow: 0 0 0 2px rgba(8, 127, 140, 0.10);
+}
+
+
+/* ================================
+   SEGMENTO
+================================ */
+
+.campo-segmento {
+  margin-top: 13px;
+}
+
+.campo-cliente select {
+  cursor: pointer;
+  appearance: auto;
+}
+
+
+/* ================================
+   PIE DEL MODAL
+================================ */
+
+.nuevo-cliente-footer {
+  height: 68px;
+  box-sizing: border-box;
+  padding: 12px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 11px;
+  border-top: 1px solid #dbe2e8;
+  background: #ffffff;
+}
+
+
+/* ================================
+   CANCELAR
+================================ */
+
+.boton-cancelar-cliente {
+  height: 40px;
+  padding: 0 19px;
+  border: 1px solid #d5dee7;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #64778c;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.boton-cancelar-cliente:hover {
+  background: #f6f8fa;
+  border-color: #b9c6d2;
+}
+
+
+/* ================================
+   REGISTRAR
+================================ */
+
+.boton-registrar-cliente {
+  height: 40px;
+  padding: 0 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: none;
+  border-radius: 8px;
+  background: #087f8c;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.boton-registrar-cliente:hover {
+  background: #066d78;
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 700px) {
+
+  .nuevo-cliente-modal {
+    width: 100%;
+    max-width: calc(100vw - 40px);
+  }
+
+  .nuevo-cliente-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nuevo-cliente-header {
+    height: auto;
+    min-height: 88px;
+    padding: 20px;
+  }
+
+  .nuevo-cliente-formulario {
+    padding: 18px 20px;
+  }
+
+  .nuevo-cliente-footer {
+    height: auto;
+    min-height: 68px;
+    padding: 12px 20px;
+  }
+}
+
+/* ================================
+   CLIENTE REGISTRADO
+================================ */
+
+/* ================================
+   CLIENTE REGISTRADO - ÉXITO
+================================ */
+
+.cliente-registrado {
+  min-height: 260px;
+  padding: 35px 28px 30px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.cliente-registrado svg {
+  width: 42px;
+  height: 42px;
+  color: #101828;
+  margin-bottom: 20px;
+}
+
+.cliente-registrado h3 {
+  margin: 0 0 10px;
+
+  color: #101828;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.cliente-registrado p {
+  margin: 0 0 25px;
+
+  color: #718096;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.cliente-registrado p strong {
+  color: #101828;
+  font-weight: 700;
+}
+
+.cliente-registrado .boton-registrar-cliente {
+  min-width: 105px;
+  height: 42px;
+  padding: 0 22px;
+
+  background: #087f8c;
+  font-size: 14px;
+}
+
+.cliente-registrado .boton-registrar-cliente:hover {
+  background: #066d78;
+}
