@@ -14,7 +14,8 @@ const ProtectedRoute = ({
 
   // No existe una sesión
   if (!token || !usuarioGuardado) {
-    return <Navigate to="/login/admin" replace />;
+    const isOperativo = window.location.pathname.includes("inventario") || window.location.pathname.includes("vendedor");
+    return <Navigate to={isOperativo ? "/login/opera" : "/login/admin"} replace />;
   }
 
   const usuario = JSON.parse(usuarioGuardado);
@@ -22,7 +23,8 @@ const ProtectedRoute = ({
   // El usuario está autenticado,
   // pero su rol no tiene permiso para esta ruta
   if (!roles.includes(usuario.rol)) {
-    return <Navigate to="/login/admin" replace />;
+    const isOperativo = window.location.pathname.includes("inventario") || window.location.pathname.includes("vendedor");
+    return <Navigate to={isOperativo ? "/login/opera" : "/login/admin"} replace />;
   }
 
   // Tiene sesión y el rol correspondiente
