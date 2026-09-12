@@ -100,7 +100,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
               const movMapeados: Movimiento[] = dataMov.data.map((m: any) => {
                 const dateObj = new Date(m.fecha);
                 return {
-                  id: `MOV-${m.idMovimiento}`,
+                  id: m.codigoMovimiento || `MOV-${m.idMovimiento.substring(0,8)}`,
                   fecha: dateObj.toLocaleDateString(),
                   hora: dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                   tipo: m.tipo === 'entrada' ? 'Entrada' : m.tipo === 'salida' ? 'Salida' : m.tipo === 'ajuste' ? 'Ajuste' : 'Devolucion',
