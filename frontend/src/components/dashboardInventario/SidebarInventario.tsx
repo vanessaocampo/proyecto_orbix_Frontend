@@ -8,7 +8,6 @@ import {
   PinOff
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
-import LogoutButton from "../LogoutButton";
 import "./SidebarInventario.css";
 
 interface SidebarProps {
@@ -74,11 +73,6 @@ const SidebarInventario = ({ isOpen, onClose, isPinned, onTogglePin }: SidebarPr
             {isPinned ? <PinOff size={18} /> : <Pin size={18} />}
             <span>{isPinned ? "Desanclar" : "Anclar barra"}</span>
           </button>
-
-          <LogoutButton className="btn-cambiar-perfil">
-            <LogOut size={18} />
-            <span>Cerrar sesión</span>
-          </LogoutButton>
         </div>
       </aside>
     </>

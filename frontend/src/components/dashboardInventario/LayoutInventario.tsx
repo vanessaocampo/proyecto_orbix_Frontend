@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import SidebarInventario from "./SidebarInventario";
 import "../../pages/DashboardInventario/DashboardInventario.css";
 import { InventoryProvider } from "../../context/InventoryContext";
+import ProfileDropdown from "../ProfileDropdown";
 
 const LayoutInventario = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -38,7 +39,7 @@ const LayoutInventario = () => {
             <div className="notifi-inv">
               <Bell size={20} />
             </div>
-            <div className="usuario-inv">LH</div>
+            <ProfileDropdown />
           </div>
         </div>
 
