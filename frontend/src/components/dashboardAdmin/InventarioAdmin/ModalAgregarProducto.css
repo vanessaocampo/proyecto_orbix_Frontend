@@ -1,0 +1,291 @@
+/* FONDO DEL MODAL */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(15, 23, 42, 0.45);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 1000;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* CONTENEDOR DEL MODAL */
+.modal-agregar-producto {
+  width: 100%;
+  max-width: 650px;
+  max-height: 90vh;
+
+  background-color: #ffffff;
+  border-radius: 18px;
+
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2);
+
+  overflow-y: auto;
+}
+
+/* ENCABEZADO */
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  padding: 24px 28px;
+
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-header h2 {
+  margin: 0 0 6px 0;
+
+  color: #0f172a;
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.modal-header p {
+  margin: 0;
+
+  color: #64748b;
+  font-size: 13px;
+}
+
+/* BOTÓN CERRAR */
+.modal-cerrar {
+  width: 34px;
+  height: 34px;
+
+  border: none;
+  border-radius: 8px;
+
+  background-color: transparent;
+  color: #64748b;
+
+  font-size: 26px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all 0.15s ease;
+}
+
+.modal-cerrar:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+/* FORMULARIO */
+.modal-formulario {
+  padding: 24px 28px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* CAMPO */
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.campo label {
+  color: #334155;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.campo input,
+.campo textarea,
+.campo select {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 11px 13px;
+
+  border: 1px solid #d9e0e8;
+  border-radius: 8px;
+
+  background-color: #ffffff;
+  color: #0f172a;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  outline: none;
+
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.campo input:focus,
+.campo textarea:focus,
+.campo select:focus {
+  border-color: #087c9c;
+
+  box-shadow: 0 0 0 3px rgba(8, 124, 156, 0.1);
+}
+
+.campo textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.campo input::placeholder,
+.campo textarea::placeholder {
+  color: #94a3b8;
+}
+
+/* CAMPOS DOBLES */
+.campos-doble {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* FOOTER */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+
+  padding: 18px 28px;
+
+  border-top: 1px solid #e2e8f0;
+}
+
+/* BOTÓN CANCELAR */
+.boton-cancelar {
+  padding: 10px 18px;
+
+  border: 1px solid #d9e0e8;
+  border-radius: 8px;
+
+  background-color: #ffffff;
+  color: #475569;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.15s ease;
+}
+
+.boton-cancelar:hover {
+  background-color: #f8fafc;
+  border-color: #b9c7d6;
+}
+
+/* BOTÓN GUARDAR */
+.boton-guardar {
+  padding: 10px 18px;
+
+  border: none;
+  border-radius: 8px;
+
+  background-color: #087c9c;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.15s ease;
+}
+
+.boton-guardar:hover {
+  background-color: #066b86;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .modal-overlay {
+    padding: 12px;
+  }
+
+  .modal-agregar-producto {
+    max-height: 95vh;
+    border-radius: 14px;
+  }
+
+  .modal-header {
+    padding: 20px;
+  }
+
+  .modal-formulario {
+    padding: 20px;
+  }
+
+  .campos-doble {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-footer {
+    padding: 16px 20px;
+  }
+}
+
+/* nueva categoria + proveedor */
+.campo > button[type="button"] {
+  align-self: flex-start;
+  padding: 8px 12px;
+  margin-top: 2px;
+  border: 1px solid #087c9c;
+  border-radius: 7px;
+  background-color: #ffffff;
+  color: #087c9c;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.campo > button[type="button"]:hover {
+  background-color: #087c9c;
+  color: #ffffff;
+  box-shadow: 0 3px 8px rgba(8, 124, 156, 0.18);
+}
+
+.campo > button[type="button"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.campo input + input + button[type="button"],
+.campo input + button[type="button"] {
+  align-self: flex-start;
+  padding: 9px 14px;
+  margin-top: 3px;
+  border: none;
+  border-radius: 7px;
+  background-color: #087c9c;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.campo input + input + button[type="button"]:hover,
+.campo input + button[type="button"]:hover {
+  background-color: #066b86;
+  box-shadow: 0 4px 10px rgba(8, 124, 156, 0.2);
+}

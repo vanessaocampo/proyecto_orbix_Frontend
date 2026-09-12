@@ -1,5 +1,4 @@
 import { Search } from "lucide-react";
-
 import "./FiltrosVentas.css";
 
 interface FiltrosVentasProps {
@@ -7,6 +6,8 @@ interface FiltrosVentasProps {
   setFiltro: (filtro: string) => void;
   busqueda: string;
   setBusqueda: (busqueda: string) => void;
+  totalResultados: number;
+  totalConfirmado: number;
 }
 
 const FiltrosVentas = ({
@@ -14,6 +15,8 @@ const FiltrosVentas = ({
   setFiltro,
   busqueda,
   setBusqueda,
+  totalResultados,
+  totalConfirmado,
 }: FiltrosVentasProps) => {
   const filtros = [
     "Todos",
@@ -26,7 +29,10 @@ const FiltrosVentas = ({
   return (
     <section className="filtros-ventas">
       <div className="filtros-ventas-contenido">
-        <form className="buscar-ventas">
+        <form
+          className="buscar-ventas"
+          onSubmit={(e) => e.preventDefault()}
+        >
           <Search size={21} />
 
           <input
@@ -40,8 +46,13 @@ const FiltrosVentas = ({
         <div className="botones-filtros-ventas">
           {filtros.map((nombreFiltro) => (
             <button
+              type="button"
               key={nombreFiltro}
-              className={filtro === nombreFiltro ? "filtro-venta-activo" : ""}
+              className={
+                filtro === nombreFiltro
+                  ? "filtro-venta-activo"
+                  : ""
+              }
               onClick={() => setFiltro(nombreFiltro)}
             >
               {nombreFiltro}
@@ -51,7 +62,8 @@ const FiltrosVentas = ({
       </div>
 
       <p className="ventas-resultados">
-        10 resultados · $ 47.160 confirmado (7 órd.)
+        {totalResultados} resultados · ${" "}
+        {totalConfirmado.toLocaleString("es-CO")} confirmado
       </p>
     </section>
   );

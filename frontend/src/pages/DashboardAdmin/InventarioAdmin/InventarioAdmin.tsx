@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "./InventarioAdmin.css";
 
@@ -7,101 +7,133 @@ import Sidebar from "../../../components/dashboardAdmin/Sidebar";
 import { Search, Bell, Plus } from "lucide-react";
 
 import BuscarProductos from "../../../components/dashboardAdmin/InventarioAdmin/BuscarProductos";
+
 import TablaProductos from "../../../components/dashboardAdmin/InventarioAdmin/TablaProductos";
+
 import Advertencia from "../../../components/dashboardAdmin/InventarioAdmin/Advertencia";
 
+import ModalAgregarProducto from "../../../components/dashboardAdmin/InventarioAdmin/ModalAgregarProducto";
+
+import ConfirmarEliminacion from "../../../components/dashboardAdmin/InventarioAdmin/ConfirmarEliminacion";
+
+import Notificacion from "../../../components/dashboardAdmin/InventarioAdmin/Notificacion";
+
+import productosService, {
+  type ProductoInventario,
+} from "../../../services/productos.services";
+
 const InventarioAdmin = () => {
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todas");
+  const [mostrarModal, setMostrarModal] = useState(false);
+
+  const [productoEditar, setProductoEditar] =
+    useState<ProductoInventario | null>(null);
+
+  const [productoEliminar, setProductoEliminar] =
+    useState<ProductoInventario | null>(null);
+
+  const [notificacion, setNotificacion] = useState("");
+
+  const [categoriaSeleccionada, setCategoriaSeleccionada] =
+    useState("Todas");
 
   const [textoBusqueda, setTextoBusqueda] = useState("");
 
-  const productos = [
-    {
-      codigo: "PRD-001",
-      nombre: "Laptop Lenovo IdeaPad 5",
-      categoria: "Electrónica",
-      precio: "$ 8.450",
-      stock: 14,
-    },
-    {
-      codigo: "PRD-002",
-      nombre: 'Monitor Samsung 27" FHD',
-      categoria: "Electrónica",
-      precio: "$ 3.200",
-      stock: 8,
-    },
-    {
-      codigo: "PRD-003",
-      nombre: "Zapatillas Nike Air Max 270",
-      categoria: "Ropa y calzado",
-      precio: "$ 1.890",
-      stock: 3,
-    },
-    {
-      codigo: "PRD-004",
-      nombre: "Set Utensilios Cocina 12pz",
-      categoria: "Hogar",
-      precio: "$ 4.620",
-      stock: 22,
-    },
-    {
-      codigo: "PRD-005",
-      nombre: "Smartphone Samsung Galaxy",
-      categoria: "Electrónica",
-      precio: "$ 5.900",
-      stock: 19,
-    },
-    {
-      codigo: "PRD-006",
-      nombre: "Impresora HP LaserJet Pro",
-      categoria: "Electrónica",
-      precio: "$ 2.750",
-      stock: 2,
-    },
-    {
-      codigo: "PRD-007",
-      nombre: "Auriculares Sony WH-1000XM5",
-      categoria: "Electrónica",
-      precio: "$ 4.100",
-      stock: 11,
-    },
-    {
-      codigo: "PRD-008",
-      nombre: "Remera Adidas Originals",
-      categoria: "Ropa y calzado",
-      precio: "$ 680",
-      stock: 45,
-    },
-    {
-      codigo: "PRD-009",
-      nombre: "Horno Electrico Sindelen",
-      categoria: "Hogar",
-      precio: "$ 1.340",
-      stock: 7,
-    },
-    {
-      codigo: "PRD-010",
-      nombre: "Arroz Largo Fino x5kg",
-      categoria: "Alimentos",
-      precio: "$ 320",
-      stock: 88,
-    },
-    {
-      codigo: "PRD-011",
-      nombre: "Aceite de Oliva Extra Virgen",
-      categoria: "Alimentos",
-      precio: "$ 540",
-      stock: 62,
-    },
-    {
-      codigo: "PRD-012",
-      nombre: "Teclado Mecánico Logitech",
-      categoria: "Electrónica",
-      precio: "$ 1.950",
-      stock: 4,
-    },
-  ];
+  const [productos, setProductos] =
+    useState<ProductoInventario[]>([]);
 
+  const [cargando, setCargando] = useState(true);
+
+  const [error, setError] = useState("");
+
+  const cargarProductos = async () => {
+    try {
+      setCargando(true);
+      setError("");
+
+      const productosObtenidos =
+        await productosService.obtenerProductos();
+
+      setProductos(productosObtenidos);
+    } catch (error) {
+      console.error("Error al cargar productos:", error);
+
+      setError(
+        error instanceof Error
+          ? error.message
+          : "No se pudieron cargar los productos.",
+      );
+    } finally {
+      setCargando(false);
+    }
+  };
+
+  useEffect(() => {
+    cargarProductos();
+  }, []);
+
+  // ABRIR MODAL PARA AGREGAR
+  const abrirModalAgregar = () => {
+    setProductoEditar(null);
+    setMostrarModal(true);
+  };
+
+  // ABRIR MODAL PARA EDITAR
+  const abrirModalEditar = (producto: ProductoInventario) => {
+    setProductoEditar(producto);
+    setMostrarModal(true);
+  };
+
+  // CERRAR MODAL
+  const cerrarModal = () => {
+    setMostrarModal(false);
+    setProductoEditar(null);
+  };
+
+  // PREPARAR ELIMINACIÓN
+  const solicitarEliminar = (idProducto: string) => {
+    const producto = productos.find(
+      (item) => item.idProducto === idProducto,
+    );
+
+    if (!producto) {
+      return;
+    }
+
+    setProductoEliminar(producto);
+  };
+
+  // CONFIRMAR ELIMINACIÓN
+  const confirmarEliminar = async () => {
+    if (!productoEliminar) {
+      return;
+    }
+
+    try {
+      setError("");
+
+      await productosService.eliminarProducto(
+        productoEliminar.idProducto,
+      );
+
+      setProductoEliminar(null);
+
+      setNotificacion("Producto eliminado correctamente.");
+
+      await cargarProductos();
+    } catch (error) {
+      console.error("Error al eliminar producto:", error);
+
+      setProductoEliminar(null);
+
+      setError(
+        error instanceof Error
+          ? error.message
+          : "No se pudo eliminar el producto.",
+      );
+    }
+  };
+
+  // FILTRAR PRODUCTOS
   const productosFiltrados = productos.filter((producto) => {
     const coincideCategoria =
       categoriaSeleccionada === "Todas" ||
@@ -116,12 +148,17 @@ const InventarioAdmin = () => {
     return coincideCategoria && coincideBusqueda;
   });
 
+  // PRODUCTOS CON STOCK BAJO
+  const productosStockBajo = productos.filter(
+    (producto) => producto.stock <= producto.stockMinimo,
+  ).length;
+
   return (
     <main className="inventario-main">
       <Sidebar />
 
       <div className="inventario-contenido">
-
+        {/* BARRA SUPERIOR */}
         <div className="inventario-barra-superior">
           <p>
             <span className="inventario-orbix">Orbix</span> /{" "}
@@ -130,7 +167,10 @@ const InventarioAdmin = () => {
           </p>
 
           <div className="inventario-acciones-superiores">
-            <form className="inventario-buscar">
+            <form
+              className="inventario-buscar"
+              onSubmit={(e) => e.preventDefault()}
+            >
               <Search size={20} />
 
               <input
@@ -149,23 +189,49 @@ const InventarioAdmin = () => {
           </div>
         </div>
 
+        {/* ENCABEZADO */}
         <div className="inventario-encabezado">
           <div>
             <h2>Inventario</h2>
 
             <p className="inventario-fecha">
-              12 productos 3 con stock bajo
+              {productos.length} productos{" "}
+              {productosStockBajo} con stock bajo
             </p>
           </div>
 
-          <button className="inventario-button-agregar">
+          <button
+            className="inventario-button-agregar"
+            onClick={abrirModalAgregar}
+          >
             <Plus size={20} />
             Agregar producto
           </button>
         </div>
 
-        <Advertencia />
+        {/* ERROR */}
+        {error && (
+          <div
+            style={{
+              padding: "15px",
+              marginBottom: "20px",
+              borderRadius: "10px",
+              backgroundColor: "#fee2e2",
+              color: "#b91c1c",
+            }}
+          >
+            {error}
+          </div>
+        )}
 
+        {/* ADVERTENCIA */}
+        {!cargando &&
+          !error &&
+          productosStockBajo > 0 && (
+            <Advertencia cantidad={productosStockBajo} />
+          )}
+
+        {/* BUSCADOR Y FILTROS */}
         <BuscarProductos
           categoriaSeleccionada={categoriaSeleccionada}
           onCategoriaChange={setCategoriaSeleccionada}
@@ -173,11 +239,52 @@ const InventarioAdmin = () => {
           onBusquedaChange={setTextoBusqueda}
         />
 
-        <TablaProductos
-          productos={productosFiltrados}
-        />
-
+        {/* TABLA */}
+        {cargando ? (
+          <div
+            style={{
+              padding: "40px",
+              textAlign: "center",
+              color: "#64748b",
+            }}
+          >
+            Cargando productos...
+          </div>
+        ) : (
+          <TablaProductos
+            productos={productosFiltrados}
+            onEditar={abrirModalEditar}
+            onEliminar={solicitarEliminar}
+          />
+        )}
       </div>
+
+      {/* MODAL AGREGAR / EDITAR */}
+      {mostrarModal && (
+        <ModalAgregarProducto
+          productoEditar={productoEditar}
+          onCerrar={cerrarModal}
+          onProductoCreado={cargarProductos}
+          onProductoGuardado={setNotificacion}
+        />
+      )}
+
+      {/* CONFIRMACIÓN DE ELIMINACIÓN */}
+      {productoEliminar && (
+        <ConfirmarEliminacion
+          nombreProducto={productoEliminar.nombre}
+          onConfirmar={confirmarEliminar}
+          onCancelar={() => setProductoEliminar(null)}
+        />
+      )}
+
+      {/* NOTIFICACIÓN */}
+      {notificacion && (
+        <Notificacion
+          mensaje={notificacion}
+          onCerrar={() => setNotificacion("")}
+        />
+      )}
     </main>
   );
 };

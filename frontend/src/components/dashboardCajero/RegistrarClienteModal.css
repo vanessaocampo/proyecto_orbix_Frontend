@@ -137,16 +137,6 @@
   color: #94a3b8;
 }
 
-.clic-error {
-  margin: 0;
-  padding: 10px 12px;
-  border-radius: 8px;
-  background-color: #fee2e2;
-  color: #991b1b;
-  font-size: 13px;
-  text-align: center;
-}
-
 /* Footer */
 .clic-modal-footer {
   display: flex;

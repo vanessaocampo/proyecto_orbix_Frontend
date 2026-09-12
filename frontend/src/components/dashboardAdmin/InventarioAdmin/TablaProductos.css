@@ -1,5 +1,6 @@
 .tabla-productos {
   margin: 0;
+  width: 100%;
   background-color: #ffffff;
   border: 1px solid #d9e0e8;
   border-radius: 18px;
@@ -7,18 +8,29 @@
 }
 
 /* ENCABEZADO Y FILAS */
-
 .tabla-productos-encabezado,
 .tabla-productos-fila {
   display: grid;
-  grid-template-columns: 123px 300px 155px 170px 1fr;
+
+  /* Distribución ajustada para que las acciones sean visibles */
+  grid-template-columns:
+    7%
+    18%
+    11%
+    10%
+    9%
+    8%
+    11%
+    10%
+    16%;
+
   align-items: center;
+  width: 100%;
 }
 
 /* ENCABEZADO */
-
 .tabla-productos-encabezado {
-  height: 46px;
+  min-height: 46px;
   background-color: #f1f5f9;
   border-bottom: 1px solid #d9e0e8;
   color: #64748b;
@@ -28,11 +40,10 @@
 }
 
 .tabla-productos-encabezado span {
-  padding: 0 18px;
+  padding: 0 10px;
 }
 
 /* FILAS */
-
 .tabla-productos-fila {
   min-height: 88px;
   border-bottom: 1px solid #d9e0e8;
@@ -43,7 +54,6 @@
 
 .tabla-productos-fila:hover {
   background-color: #f8fafc;
-  cursor: pointer;
 }
 
 .tabla-productos-fila:last-child {
@@ -51,11 +61,11 @@
 }
 
 .tabla-productos-fila > span {
-  padding: 10px 18px;
+  padding: 10px 10px;
+  min-width: 0;
 }
 
 /* CÓDIGO */
-
 .producto-codigo {
   color: #087c9c;
   font-size: 12px;
@@ -63,7 +73,6 @@
 }
 
 /* PRODUCTO */
-
 .producto-nombre {
   color: #0f172a;
   font-size: 14px;
@@ -71,7 +80,6 @@
 }
 
 /* CATEGORÍA */
-
 .producto-categoria {
   color: #64748b;
   font-size: 13px;
@@ -79,15 +87,13 @@
 }
 
 /* PRECIO */
-
 .producto-precio {
   color: #0f172a;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
 }
 
 /* STOCK */
-
 .producto-stock {
   color: #0f172a;
   font-size: 13px;
@@ -96,4 +102,67 @@
 
 .producto-stock.stock-bajo {
   color: #ef4444;
+}
+
+/* STOCK MÍNIMO */
+.producto-stock-minimo {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+/* PROVEEDOR */
+.producto-proveedor {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+/* ESTADO */
+.producto-estado {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 5px 8px !important;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.estado-disponible {
+  color: #047857;
+  background-color: #d1fae5;
+}
+
+.estado-bajo {
+  color: #b45309;
+  background-color: #fef3c7;
+}
+
+/* ACCIONES */
+.producto-accion {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.producto-accion button {
+  padding: 7px 8px;
+  border: 1px solid #d9e0e8;
+  border-radius: 7px;
+  background-color: #ffffff;
+  color: #58708c;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.producto-accion button:hover {
+  background-color: #f1f5f9;
+  border-color: #b9c7d6;
+  color: #087c9c;
 }

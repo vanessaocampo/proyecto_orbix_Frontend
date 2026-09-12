@@ -1,0 +1,714 @@
+.nueva-venta-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: rgba(7, 27, 47, 0.5);
+  box-sizing: border-box;
+}
+
+.nueva-venta-modal {
+  width: min(520px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border: 1px solid #d9e0e8;
+  border-radius: 18px;
+  padding: 20px 22px;
+  box-sizing: border-box;
+  box-shadow: 0 15px 40px rgba(7, 27, 47, 0.18);
+}
+
+/* HEADER */
+
+.nueva-venta-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.nueva-venta-titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #071b2f;
+}
+
+.nueva-venta-titulo svg {
+  color: #087c9c;
+}
+
+.nueva-venta-titulo h2 {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.nueva-venta-cerrar {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #58708c;
+  cursor: pointer;
+}
+
+.nueva-venta-cerrar:hover {
+  background: #f1f5f9;
+  color: #071b2f;
+}
+
+/* SECCIONES */
+
+.nueva-venta-seccion {
+  margin-bottom: 22px;
+}
+
+.nueva-venta-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: #071b2f;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.nueva-venta-label svg {
+  color: #087c9c;
+  width: 18px;
+  height: 18px;
+}
+
+/* CLIENTE */
+
+.nueva-venta-cliente-selector {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.nueva-venta-select {
+  width: 100%;
+  height: 52px;
+  padding: 0 14px;
+  border: 1px solid #d9e0e8;
+  border-radius: 11px;
+  background: #ffffff;
+  color: #071b2f;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.nueva-venta-select:focus {
+  border-color: #087c9c;
+}
+
+.nueva-venta-nuevo-cliente-btn {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0 13px;
+  border: 1px solid #087c9c;
+  border-radius: 11px;
+  background: #ffffff;
+  color: #087c9c;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.nueva-venta-nuevo-cliente-btn:hover {
+  background: #f1f8fa;
+}
+
+/* NUEVO CLIENTE */
+
+.nueva-venta-nuevo-cliente {
+  padding: 14px;
+  border: 1px solid #d9e0e8;
+  border-radius: 12px;
+  background: #fafcfe;
+  box-sizing: border-box;
+}
+
+.nueva-venta-nuevo-cliente-titulo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 13px;
+  color: #071b2f;
+  font-size: 14px;
+}
+
+.nueva-venta-cancelar-nuevo-cliente {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: #58708c;
+  cursor: pointer;
+}
+
+.nueva-venta-cancelar-nuevo-cliente:hover {
+  background: #f1f5f9;
+  color: #071b2f;
+}
+
+.nueva-venta-cliente-formulario {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.nueva-venta-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.nueva-venta-campo label {
+  color: #58708c;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.nueva-venta-campo input {
+  width: 100%;
+  height: 42px;
+  padding: 0 11px;
+  border: 1px solid #d9e0e8;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #071b2f;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.nueva-venta-campo input::placeholder {
+  color: #71859c;
+}
+
+.nueva-venta-campo input:focus {
+  border-color: #087c9c;
+  box-shadow: 0 0 0 2px rgba(8, 124, 156, 0.08);
+}
+
+.nueva-venta-nuevo-cliente-acciones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 13px;
+}
+
+.nueva-venta-cancelar-cliente-btn,
+.nueva-venta-guardar-cliente-btn {
+  height: 42px;
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nueva-venta-cancelar-cliente-btn {
+  border: 1px solid #d9e0e8;
+  background: #ffffff;
+  color: #58708c;
+}
+
+.nueva-venta-cancelar-cliente-btn:hover {
+  border-color: #087c9c;
+  color: #087c9c;
+}
+
+.nueva-venta-guardar-cliente-btn {
+  border: 1px solid #087c9c;
+  background: #087c9c;
+  color: #ffffff;
+}
+
+.nueva-venta-guardar-cliente-btn:hover {
+  background: #066d88;
+}
+
+.nueva-venta-cancelar-cliente-btn:disabled,
+.nueva-venta-guardar-cliente-btn:disabled,
+.nueva-venta-nuevo-cliente-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* PRODUCTOS */
+
+.nueva-venta-agregar-producto {
+  display: grid;
+  grid-template-columns: 1fr 75px auto;
+  gap: 8px;
+  align-items: center;
+}
+
+/* BUSCADOR */
+
+.nueva-venta-producto-buscador {
+  position: relative;
+  width: 100%;
+}
+
+.nueva-venta-producto-input {
+  width: 100%;
+  height: 52px;
+  padding: 0 40px 0 42px;
+  border: 1px solid #d9e0e8;
+  border-radius: 11px;
+  background: #ffffff;
+  color: #071b2f;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.nueva-venta-producto-input::placeholder {
+  color: #71859c;
+}
+
+.nueva-venta-producto-input:focus {
+  border-color: #087c9c;
+  box-shadow: 0 0 0 2px rgba(8, 124, 156, 0.08);
+}
+
+.nueva-venta-producto-icono {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #087c9c;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* LISTA DE PRODUCTOS */
+
+.nueva-venta-productos-lista {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 1500;
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 5px;
+  border: 1px solid #d9e0e8;
+  border-radius: 11px;
+  background: #ffffff;
+  box-shadow: 0 10px 25px rgba(7, 27, 47, 0.14);
+  box-sizing: border-box;
+}
+
+/* OPCIÓN */
+
+.nueva-venta-producto-opcion {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 11px 12px;
+  border: none;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #071b2f;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.nueva-venta-producto-opcion:hover {
+  background: #f1f8fa;
+}
+
+.nueva-venta-producto-opcion.seleccionado {
+  background: #e8f3f7;
+}
+
+.producto-opcion-nombre {
+  color: #071b2f;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.producto-opcion-info {
+  color: #71859c;
+  font-size: 12px;
+}
+
+.nueva-venta-producto-opcion.sin-stock {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.nueva-venta-producto-opcion.sin-stock:hover {
+  background: #ffffff;
+}
+
+/* SIN RESULTADOS */
+
+.nueva-venta-producto-sin-resultados {
+  padding: 18px 12px;
+  text-align: center;
+  color: #71859c;
+  font-size: 13px;
+}
+
+/* CANTIDAD */
+
+.nueva-venta-cantidad {
+  width: 100%;
+  height: 52px;
+  padding: 0 10px;
+  border: 1px solid #d9e0e8;
+  border-radius: 11px;
+  background: #ffffff;
+  color: #071b2f;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.nueva-venta-cantidad:focus {
+  border-color: #087c9c;
+}
+
+/* BOTÓN AGREGAR */
+
+.nueva-venta-agregar-producto-btn {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 11px;
+  background: #087c9c;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nueva-venta-agregar-producto-btn:hover {
+  background: #066d88;
+}
+
+/* CARRITO VACÍO */
+
+.nueva-venta-carrito-vacio {
+  min-height: 105px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+  padding: 15px;
+  border: 1px dashed #d9e0e8;
+  border-radius: 12px;
+  background: #fafcfe;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.nueva-venta-carrito-vacio strong {
+  color: #071b2f;
+  font-size: 14px;
+}
+
+.nueva-venta-carrito-vacio p {
+  margin: 6px 0 0;
+  color: #71859c;
+  font-size: 13px;
+}
+
+/* CARRITO */
+
+.nueva-venta-carrito {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.nueva-venta-producto {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #d9e0e8;
+  border-radius: 11px;
+  background: #f8fafc;
+}
+
+.nueva-venta-producto > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.nueva-venta-producto strong {
+  color: #071b2f;
+  font-size: 13px;
+}
+
+.nueva-venta-producto span {
+  color: #71859c;
+  font-size: 12px;
+}
+
+.nueva-venta-producto-controles {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.nueva-venta-producto-controles button {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d9e0e8;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #58708c;
+  cursor: pointer;
+}
+
+.nueva-venta-producto-controles button:hover {
+  border-color: #087c9c;
+  color: #087c9c;
+}
+
+.nueva-venta-producto-controles > span {
+  min-width: 18px;
+  color: #071b2f;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.nueva-venta-producto-controles > strong {
+  min-width: 70px;
+  color: #071b2f;
+  font-size: 13px;
+  text-align: right;
+}
+
+.nueva-venta-producto-controles .nueva-venta-eliminar {
+  border-color: #fecaca;
+  color: #dc2626;
+}
+
+.nueva-venta-producto-controles
+  .nueva-venta-eliminar:hover {
+  background: #fef2f2;
+  border-color: #dc2626;
+}
+
+/* MÉTODOS DE PAGO */
+
+.nueva-venta-metodos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.nueva-venta-metodo {
+  height: 46px;
+  border: 1px solid #d9e0e8;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #58708c;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nueva-venta-metodo:hover {
+  border-color: #087c9c;
+}
+
+.nueva-venta-metodo.activo {
+  background: #087c9c;
+  border-color: #087c9c;
+  color: #ffffff;
+}
+
+/* RESUMEN */
+
+.nueva-venta-resumen {
+  padding-top: 15px;
+  border-top: 1px solid #d9e0e8;
+}
+
+.nueva-venta-resumen > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 11px;
+}
+
+.nueva-venta-resumen span {
+  color: #58708c;
+  font-size: 14px;
+}
+
+.nueva-venta-resumen strong {
+  color: #071b2f;
+  font-size: 15px;
+}
+
+.nueva-venta-resumen > div:last-child {
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+
+.nueva-venta-resumen > div:last-child span {
+  color: #071b2f;
+  font-weight: 700;
+}
+
+.nueva-venta-resumen > div:last-child strong {
+  color: #087c9c;
+  font-size: 21px;
+}
+
+/* ACCIONES */
+
+.nueva-venta-acciones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.nueva-venta-pendiente,
+.nueva-venta-registrar {
+  height: 50px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.nueva-venta-pendiente {
+  border: 1px solid #087c9c;
+  background: #ffffff;
+  color: #087c9c;
+}
+
+.nueva-venta-pendiente:hover {
+  background: #f1f8fa;
+}
+
+.nueva-venta-registrar {
+  border: 1px solid #087c9c;
+  background: #087c9c;
+  color: #ffffff;
+}
+
+.nueva-venta-registrar:hover {
+  background: #066d88;
+}
+
+.nueva-venta-pendiente:disabled,
+.nueva-venta-registrar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ERROR */
+
+.nueva-venta-error {
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  border: 1px solid #fecaca;
+  border-radius: 9px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 650px) {
+  .nueva-venta-overlay {
+    padding: 10px;
+  }
+
+  .nueva-venta-modal {
+    padding: 18px;
+    border-radius: 15px;
+  }
+
+  .nueva-venta-cliente-selector {
+    grid-template-columns: 1fr;
+  }
+
+  .nueva-venta-nuevo-cliente-btn {
+    width: 100%;
+  }
+
+  .nueva-venta-cliente-formulario {
+    grid-template-columns: 1fr;
+  }
+
+  .nueva-venta-agregar-producto {
+    grid-template-columns: 1fr;
+  }
+
+  .nueva-venta-producto {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nueva-venta-producto-controles {
+    justify-content: space-between;
+  }
+
+  .nueva-venta-metodos,
+  .nueva-venta-acciones,
+  .nueva-venta-nuevo-cliente-acciones {
+    grid-template-columns: 1fr;
+  }
+}
