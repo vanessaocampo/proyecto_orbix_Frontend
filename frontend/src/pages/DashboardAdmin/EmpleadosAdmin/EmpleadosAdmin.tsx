@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Bell, Plus, Search } from "lucide-react";
 
-import Sidebar from "../../../components/dashboardAdmin/Sidebar";
-
 import "./EmpleadosAdmin.css";
 
 import CardsEmpleados from "../../../components/dashboardAdmin/EmpleadosAdmin/CardsEmpleados";

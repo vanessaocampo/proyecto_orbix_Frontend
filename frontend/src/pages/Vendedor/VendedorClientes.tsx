@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Plus, MapPin } from "lucide-react";
-import VendedorLayout from "../../components/dashboardCajero/VendedorLayout";
 import RegistrarClienteModal from "../../components/dashboardCajero/RegistrarClienteModal";
 import CargandoVendedor from "../../components/dashboardCajero/CargandoVendedor";
 import useVendedorData from "../../hooks/useVendedorData";
@@ -120,8 +119,7 @@ const VendedorClientes = () => {
   );
 
   return (
-    <VendedorLayout vista="Mis Clientes">
-      <div className="vclientes-flex">
+    <><div className="vclientes-flex">
         {cargando ? (
           <CargandoVendedor />
         ) : (
@@ -233,8 +231,7 @@ const VendedorClientes = () => {
         />
           </>
         )}
-      </div>
-    </VendedorLayout>
+      </div></>
   );
 };
 

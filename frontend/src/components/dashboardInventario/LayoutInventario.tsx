@@ -4,15 +4,22 @@ import { Outlet } from "react-router-dom";
 import SidebarInventario from "./SidebarInventario";
 import "../../pages/DashboardInventario/DashboardInventario.css";
 import { InventoryProvider } from "../../context/InventoryContext";
+import ProfileDropdown from "../ProfileDropdown";
 
 const LayoutInventario = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarPinned, setIsSidebarPinned] = useState(true);
 
   return (
     <main className="main-inv">
-      <SidebarInventario isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      <SidebarInventario 
+        isOpen={isSidebarOpen} 
+        onClose={() => setIsSidebarOpen(false)} 
+        isPinned={isSidebarPinned}
+        onTogglePin={() => setIsSidebarPinned(!isSidebarPinned)}
+      />
 
-      <div className="contenido-dashboard-inv">
+      <div className={`contenido-dashboard-inv ${isSidebarPinned ? 'pinned' : 'unpinned'}`}>
         <div className="barra-superior-inv">
           <div className="left-acciones-inv">
             <button className="menu-toggle-inv" onClick={() => setIsSidebarOpen(true)}>
@@ -32,7 +39,7 @@ const LayoutInventario = () => {
             <div className="notifi-inv">
               <Bell size={20} />
             </div>
-            <div className="usuario-inv">LH</div>
+            <ProfileDropdown />
           </div>
         </div>
 

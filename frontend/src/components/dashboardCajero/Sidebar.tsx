@@ -1,6 +1,5 @@
-import { LayoutGrid, ShoppingBag, Users, Receipt, Target } from "lucide-react";
+import { LayoutGrid, ShoppingBag, Users, Receipt, Target, Pin, PinOff } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import LogoutButton from "../LogoutButton";
 
 import "./Sidebar.css";
 
@@ -11,41 +10,16 @@ const ITEMS = [
   { path: "/dashboard/vendedor/ventas", label: "Mis Ventas", icon: Receipt },
 ];
 
-const obtenerUsuario = () => {
-  try {
-    const usuarioGuardado = localStorage.getItem("usuario");
+interface SidebarProps {
+  isPinned?: boolean;
+  onTogglePin?: () => void;
+}
 
-    if (!usuarioGuardado) {
-      return { nombre: "Vendedor", iniciales: "VD" };
-    }
-
-    const usuario = JSON.parse(usuarioGuardado);
-
-    const nombre: string = usuario?.nombre ?? "Vendedor";
-
-    const iniciales = nombre
-      .trim()
-      .split(/\s+/)
-      .map((palabra: string) => palabra[0])
-      .join("")
-      .slice(0, 2)
-      .toUpperCase();
-
-    return {
-      nombre,
-      iniciales: iniciales || "VD",
-    };
-  } catch {
-    return { nombre: "Vendedor", iniciales: "VD" };
-  }
-};
-
-const Sidebar = () => {
+const Sidebar = ({ isPinned = true, onTogglePin = () => {} }: SidebarProps) => {
   const { pathname } = useLocation();
-  const { nombre, iniciales } = obtenerUsuario();
 
   return (
-    <aside className="vendedor-sidebar">
+    <aside className={`vendedor-sidebar ${!isPinned ? "unpinned" : ""}`}>
       {/* Logo */}
       <div className="vendedor-sidebar-top">
         <div className="vendedor-logo">
@@ -55,11 +29,11 @@ const Sidebar = () => {
           <span className="vendedor-logo-nombre">Orbix</span>
         </div>
 
-        <span className="vendedor-badge-rol">Vendedor</span>
+        {isPinned && <span className="vendedor-badge-rol">Vendedor</span>}
       </div>
 
       {/* Navegación */}
-      <p className="vendedor-nav-label">MENÚ</p>
+      <p className="vendedor-nav-label">MENÚS</p>
       <nav className="vendedor-nav">
         {ITEMS.map(({ path, label, icon: Icon }) => {
           const activo = pathname === path;
@@ -72,16 +46,16 @@ const Sidebar = () => {
         })}
       </nav>
 
-      {/* Pie: usuario + cerrar perfil */}
+      {/* Pie: botón de anclar */}
       <div className="vendedor-sidebar-footer">
-        <div className="vendedor-usuario-info">
-          <div className="vendedor-avatar">{iniciales}</div>
-          <div className="vendedor-usuario-texto">
-            <strong>{nombre}</strong>
-            <span>Vendedor</span>
-          </div>
-        </div>
-        <LogoutButton />
+        <button 
+          className="btn-cambiar-perfil toggle-pin-btn" 
+          onClick={onTogglePin}
+          title={isPinned ? "Desanclar barra" : "Anclar barra"}
+        >
+          {isPinned ? <PinOff size={18} /> : <Pin size={18} />}
+          <span>{isPinned ? "Desanclar" : "Anclar barra"}</span>
+        </button>
       </div>
     </aside>
   );

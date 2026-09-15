@@ -1,22 +1,25 @@
+
 .vendedor-sidebar {
   width: 240px;
-  min-height: 100vh;
-  background-color: var(--sidebar);
-  color: var(--sidebar-foreground, #cbd5e1);
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
+  height: 100vh;
+  background-color: #0a1628;
+  color: rgba(203, 213, 225, 0.7);
   position: sticky;
   top: 0;
-  height: 100vh;
-  box-sizing: border-box;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
   user-select: none;
+  z-index: 50;
 }
 
-/* Logo */
 .vendedor-sidebar-top {
   padding: 24px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .vendedor-logo {
@@ -25,7 +28,105 @@
   gap: 10px;
 }
 
-.vendedor-logo-icono {
+.vendedor-logo-nombre {
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  font-size: 19px;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.vendedor-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  flex: 1;
+}
+
+.vendedor-nav-label {
+  padding: 16px 12px 6px;
+  margin: 0;
+  font-family: "Outfit", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.vendedor-nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-family: "Source Sans 3", sans-serif;
+  font-size: 15px;
+  color: rgba(203, 213, 225, 0.7);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.vendedor-nav a span {
+  white-space: nowrap;
+}
+
+.vendedor-nav a:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.vendedor-nav a.activo, .vendedor-nav a.active {
+  background-color: rgba(139, 92, 246, 0.18);
+  color: #c4b5fd;
+  font-weight: 600;
+}
+
+/* Pin/Unpin behavior for Sidebar */
+.vendedor-sidebar.unpinned {
+  width: 76px;
+}
+.vendedor-sidebar.unpinned .vendedor-logo-nombre,
+.vendedor-sidebar.unpinned .vendedor-nav-label,
+.vendedor-sidebar.unpinned .vendedor-nav a span,
+.vendedor-sidebar.unpinned .vendedor-sidebar-footer span,
+.vendedor-sidebar.unpinned .badge-inventario {
+  display: none;
+}
+
+.vendedor-sidebar.unpinned:hover {
+  width: 240px; 
+  z-index: 999;
+}
+
+.vendedor-sidebar.unpinned:hover .vendedor-logo-nombre,
+.vendedor-sidebar.unpinned:hover .vendedor-nav-label,
+.vendedor-sidebar.unpinned:hover .vendedor-nav a span,
+.vendedor-sidebar.unpinned:hover .vendedor-sidebar-footer span,
+.vendedor-sidebar.unpinned:hover .badge-inventario {
+  display: block;
+}
+
+.toggle-pin-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+.toggle-pin-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+/* El logo "O" (icono) adopta el color del rol */
+.vendedor-logo-icono, .logo-icon {
   width: 32px;
   height: 32px;
   border-radius: 8px;
@@ -35,17 +136,15 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  font-weight: bold;
 }
-
-.vendedor-logo-nombre {
-  font-family: "Outfit", sans-serif;
-  font-weight: 700;
-  font-size: 19px;
-  color: #ffffff;
-  letter-spacing: -0.01em;
+.logo-inner-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid white;
 }
-
-.vendedor-badge-rol {
+.vendedor-badge-rol, .badge-inventario {
   display: inline-block;
   margin-top: 10px;
   font-size: 11px;
@@ -55,56 +154,14 @@
   border-radius: 99px;
   background-color: rgba(139, 92, 246, 0.18);
   color: #c4b5fd;
+  margin-left: 10px;
 }
 
-/* Navegación */
-.vendedor-nav-label {
-  padding: 16px 24px 6px;
-  margin: 0;
-  font-family: "Outfit", sans-serif;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  color: rgba(203, 213, 225, 0.35);
-  font-weight: 600;
-}
-
-.vendedor-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 0 12px;
-}
-
-.vendedor-nav a {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-family: "Outfit", sans-serif;
-  font-size: 14px;
-  color: rgba(203, 213, 225, 0.7);
-  transition: background-color 0.15s ease, color 0.15s ease;
-}
-
-.vendedor-nav a:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.vendedor-nav a.activo {
-  background-color: rgba(139, 92, 246, 0.18);
-  color: #c4b5fd;
-  font-weight: 600;
-}
-
-/* Pie */
 .vendedor-sidebar-footer {
   margin-top: auto;
   padding: 16px;
   border-top: 1px solid rgba(255, 255, 255, 0.07);
 }
-
 .vendedor-usuario-info {
   display: flex;
   align-items: center;
@@ -112,7 +169,6 @@
   padding: 0 8px;
   margin-bottom: 12px;
 }
-
 .vendedor-avatar {
   width: 32px;
   height: 32px;
@@ -127,12 +183,10 @@
   justify-content: center;
   flex-shrink: 0;
 }
-
 .vendedor-usuario-texto {
   min-width: 0;
   line-height: 1.25;
 }
-
 .vendedor-usuario-texto strong {
   display: block;
   font-family: "Outfit", sans-serif;
@@ -143,24 +197,36 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 .vendedor-usuario-texto span {
   display: block;
   font-size: 11px;
   color: rgba(203, 213, 225, 0.45);
 }
-
-.vendedor-sidebar-footer .cerrar-perfil {
+.cerrar-perfil {
   margin: 0;
   width: 100%;
   height: 36px;
   border-color: rgba(255, 255, 255, 0.1);
+  background: transparent;
   border-radius: 8px;
   color: rgba(203, 213, 225, 0.55);
   font-size: 12px;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
-
-.vendedor-sidebar-footer .cerrar-perfil:hover {
+.cerrar-perfil:hover {
   background-color: rgba(255, 255, 255, 0.06);
   color: rgba(203, 213, 225, 0.85);
 }
+
+@media (max-width: 992px) {
+  .vendedor-sidebar {
+    position: fixed;
+    transform: translateX(-100%);
+    z-index: 1000;
+  }
+  .vendedor-sidebar.open {
+    transform: translateX(0);
+  }
+}
+  

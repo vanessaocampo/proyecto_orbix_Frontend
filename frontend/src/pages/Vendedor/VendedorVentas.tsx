@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Plus, Pencil, Trash2 } from "lucide-react";
-import VendedorLayout from "../../components/dashboardCajero/VendedorLayout";
 import CargandoVendedor from "../../components/dashboardCajero/CargandoVendedor";
 import DetalleVenta from "../../components/dashboardCajero/DetalleVenta";
 import RegistrarVenta from "./RegistrarVenta";
@@ -161,8 +160,7 @@ const VendedorVentas = () => {
 
   if (registroActivo) {
     return (
-      <VendedorLayout vista={editandoVenta ? "Modificar venta" : "Registrar venta"}>
-        {cargando ? (
+      <>{cargando ? (
           <CargandoVendedor />
         ) : (
           <RegistrarVenta
@@ -181,14 +179,12 @@ const VendedorVentas = () => {
               setEditandoVenta(null);
             }}
           />
-        )}
-      </VendedorLayout>
+        )}</>
     );
   }
 
   return (
-    <VendedorLayout vista="Mis Ventas">
-      {cargando ? (
+    <>{cargando ? (
         <CargandoVendedor />
       ) : (
       <div className="vventas-flex">
@@ -358,8 +354,7 @@ const VendedorVentas = () => {
           />
         )}
       </div>
-      )}
-    </VendedorLayout>
+      )}</>
   );
 };
 

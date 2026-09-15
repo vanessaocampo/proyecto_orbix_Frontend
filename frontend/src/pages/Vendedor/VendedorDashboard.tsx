@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import VendedorLayout from "../../components/dashboardCajero/VendedorLayout";
 import MetricCards, { type Metrica } from "../../components/dashboardCajero/MetricCards";
 import MetaMensual from "../../components/dashboardCajero/MetaMensual";
 import VentasChart from "../../components/dashboardCajero/VentasChart";
@@ -230,8 +229,7 @@ const VendedorDashboard = () => {
   };
 
   return (
-    <VendedorLayout vista="Mi Dashboard">
-      <div className="vdash-flex">
+    <><div className="vdash-flex">
         {cargando ? (
           <CargandoVendedor />
         ) : verDetalleMes ? (
@@ -267,8 +265,7 @@ const VendedorDashboard = () => {
         <ActividadReciente actividades={usandoMock ? undefined : actividades} />
         </>
         )}
-      </div>
-    </VendedorLayout>
+      </div></>
   );
 };
 

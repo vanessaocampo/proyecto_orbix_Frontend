@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import "./LoginForm.css";
 
-import Logo from "../assets/images/Logo.png";
+import { getImageUrl } from "../utils/assets";
 
 import authService from "../services/auth.services";
 
@@ -101,7 +101,7 @@ const LoginForm = ({ tipo }: LoginFormProps) => {
     <main className="main">
       <div className="login-container">
         <div className="panel-izquierdo">
-          <img src={Logo} alt="Logo de Orbix" className="logo-imagen" />
+          <img src={getImageUrl("/images/Logo.png")} alt="Logo de Orbix" className="logo-imagen" />
 
           <p className="panel-titulo">Gestión de tu negocio, más simple.</p>
 
@@ -185,3 +185,4 @@ const LoginForm = ({ tipo }: LoginFormProps) => {
 };
 
 export default LoginForm;
+

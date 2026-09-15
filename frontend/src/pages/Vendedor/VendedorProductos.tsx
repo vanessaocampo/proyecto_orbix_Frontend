@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
-import VendedorLayout from "../../components/dashboardCajero/VendedorLayout";
 import CargandoVendedor from "../../components/dashboardCajero/CargandoVendedor";
 import useVendedorData from "../../hooks/useVendedorData";
 
@@ -33,8 +32,7 @@ const VendedorProductos = () => {
   const disponibles = productos.filter((p) => p.stock > 0).length;
 
   return (
-    <VendedorLayout vista="Productos">
-      <div className="vproductos-flex">
+    <><div className="vproductos-flex">
         {cargando ? (
           <CargandoVendedor />
         ) : (
@@ -113,8 +111,7 @@ const VendedorProductos = () => {
         </div>
           </>
         )}
-      </div>
-    </VendedorLayout>
+      </div></>
   );
 };
 

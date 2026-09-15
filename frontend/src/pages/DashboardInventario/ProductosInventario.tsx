@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Search, Plus, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Search, Plus, X, RefreshCcw, Loader2, Edit, Trash2 } from "lucide-react";
 import "../../components/dashboardInventario/ModalInventario.css";
 import "./ProductosInventario.css";
 import { useInventory } from "../../context/InventoryContext";
@@ -8,7 +8,11 @@ const categories = ["Todas", "Electrónica", "Ropa y calzado", "Alimentos", "Hog
 const statuses = ["Todos", "Disponible", "Stock bajo", "Sin stock"];
 
 const ProductosInventario = () => {
-  const { productos, agregarProducto, modificarProducto } = useInventory();
+  const { productos, agregarProducto, modificarProducto, refrescar, loading } = useInventory();
+
+  useEffect(() => {
+    refrescar();
+  }, []);
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Todas");
@@ -127,6 +131,9 @@ const ProductosInventario = () => {
           <p>{filteredProductos.length} productos · valor total $ {totalValor.toLocaleString('es-AR')}</p>
         </div>
         <div className="productos-actions">
+          <button className="btn-outline" onClick={() => refrescar()} disabled={loading}>
+            {loading ? <Loader2 size={18} className="spin" /> : <RefreshCcw size={18} />} Actualizar
+          </button>
           <button className="btn-outline">Importar</button>
           <button className="btn-primary" onClick={() => setIsModalOpen(true)}>
             <Plus size={18} /> Agregar producto
@@ -397,3 +404,4 @@ const ProductosInventario = () => {
 };
 
 export default ProductosInventario;
+

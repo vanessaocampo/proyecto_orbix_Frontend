@@ -1,48 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Bell } from "lucide-react";
 import Sidebar from "./Sidebar";
 import BuscadorGlobal from "./BuscadorGlobal";
+import ProfileDropdown from "../ProfileDropdown";
+import { Outlet, useLocation } from "react-router-dom";
 
 import "./VendedorLayout.css";
 
-type VendedorLayoutProps = {
-  vista: string;
-  children: React.ReactNode;
-};
+const VendedorLayout = () => {
+  const [isSidebarPinned, setIsSidebarPinned] = useState(true);
+  const location = useLocation();
 
-const obtenerUsuario = () => {
-  try {
-    const usuarioGuardado = localStorage.getItem("usuario");
-
-    if (!usuarioGuardado) {
-      return { iniciales: "VD" };
-    }
-
-    const usuario = JSON.parse(usuarioGuardado);
-
-    const nombre: string = usuario?.nombre ?? "Vendedor";
-
-    const iniciales = nombre
-      .trim()
-      .split(/\s+/)
-      .map((palabra: string) => palabra[0])
-      .join("")
-      .slice(0, 2)
-      .toUpperCase();
-
-    return { iniciales: iniciales || "VD" };
-  } catch {
-    return { iniciales: "VD" };
-  }
-};
-
-const VendedorLayout = ({ vista, children }: VendedorLayoutProps) => {
-  const { iniciales } = obtenerUsuario();
+  let vista = "Mi Dashboard";
+  if (location.pathname.includes("productos")) vista = "Productos";
+  else if (location.pathname.includes("clientes")) vista = "Mis Clientes";
+  else if (location.pathname.includes("ventas")) vista = "Mis Ventas";
 
   return (
-    <main className="vendedor-app">
+    <main className={`vendedor-app ${isSidebarPinned ? 'sidebar-pinned' : 'sidebar-unpinned'}`}>
       {/* Sidebar */}
-      <Sidebar />
+      <Sidebar isPinned={isSidebarPinned} onTogglePin={() => setIsSidebarPinned(!isSidebarPinned)} />
 
       {/* Contenido */}
       <div className="vendedor-body">
@@ -67,12 +44,12 @@ const VendedorLayout = ({ vista, children }: VendedorLayoutProps) => {
             </div>
 
             {/* Usuario */}
-            <div className="vendedor-usuario-menu">{iniciales}</div>
+            <ProfileDropdown />
           </div>
         </header>
 
         {/* Contenido de la vista */}
-        <main className="vendedor-main">{children}</main>
+        <main className="vendedor-main"><Outlet /></main>
       </div>
     </main>
   );
