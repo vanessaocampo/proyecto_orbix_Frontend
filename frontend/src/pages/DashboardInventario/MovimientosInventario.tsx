@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, ChevronUp, ChevronDown, Minus, X } from "lucide-react";
 import "../../components/dashboardInventario/ModalInventario.css";
 import "./MovimientosInventario.css";
 import { useInventory } from "../../context/InventoryContext";
+import proveedoresService, { type Proveedor } from "../../services/proveedores.services";
 
 const types = ["Todos", "Entrada", "Salida", "Ajuste"];
 
@@ -11,6 +12,21 @@ const MovimientosInventario = () => {
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState("Todos");
+
+  // Proveedores
+  const [proveedores, setProveedores] = useState<Proveedor[]>([]);
+
+  useEffect(() => {
+    const fetchProveedores = async () => {
+      try {
+        const provs = await proveedoresService.obtenerProveedores();
+        setProveedores(provs);
+      } catch (error) {
+        console.error("Error cargando proveedores:", error);
+      }
+    };
+    fetchProveedores();
+  }, []);
 
   // Estado del Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,7 +37,8 @@ const MovimientosInventario = () => {
     cantidad: "",
     valor: "",
     responsable: "Luis Herrera",
-    nota: ""
+    nota: "",
+    proveedor: ""
   });
 
   // Lógica de filtrado
@@ -44,6 +61,14 @@ const MovimientosInventario = () => {
     e.preventDefault();
     const isEntrada = modalType === "Entrada";
     const signo = isEntrada ? "+" : "-";
+
+    let notaFinal = nuevoMovimiento.nota;
+    if (isEntrada && nuevoMovimiento.proveedor) {
+      const provSelect = proveedores.find(p => p.idProveedor === nuevoMovimiento.proveedor);
+      if (provSelect) {
+        notaFinal = notaFinal ? `${notaFinal} (Prov: ${provSelect.nombre})` : `Prov: ${provSelect.nombre}`;
+      }
+    }
     
     const movNuevo = {
       id: `MOV-00${movimientos.length + 45}`,
@@ -56,14 +81,15 @@ const MovimientosInventario = () => {
       isPositive: isEntrada,
       valor: Number(nuevoMovimiento.valor),
       responsable: nuevoMovimiento.responsable,
-      nota: nuevoMovimiento.nota
+      nota: notaFinal,
+      proveedor: nuevoMovimiento.proveedor
     };
 
     registrarMovimiento(movNuevo, nuevoMovimiento.sku, Number(nuevoMovimiento.cantidad), modalType);
     setIsModalOpen(false);
     
     // Resetear form
-    setNuevoMovimiento({ producto: "", sku: "", cantidad: "", valor: "", responsable: "Luis Herrera", nota: "" });
+    setNuevoMovimiento({ producto: "", sku: "", cantidad: "", valor: "", responsable: "Luis Herrera", nota: "", proveedor: "" });
   };
 
   // Calcular métricas
@@ -82,9 +108,6 @@ const MovimientosInventario = () => {
         <div className="mov-actions">
           <button className="btn-outline" onClick={() => abrirModal("Entrada")}>
             <ChevronUp size={18} /> Registrar entrada
-          </button>
-          <button className="btn-primary" onClick={() => abrirModal("Salida")}>
-            <ChevronDown size={18} /> Registrar salida
           </button>
         </div>
       </div>
@@ -263,6 +286,26 @@ const MovimientosInventario = () => {
                       value={nuevoMovimiento.nota} onChange={(e) => setNuevoMovimiento({...nuevoMovimiento, nota: e.target.value})} />
                   </div>
                 </div>
+
+                {modalType === "Entrada" && (
+                  <div className="form-row">
+                    <div className="form-group-inv" style={{ flex: 1 }}>
+                      <label>Proveedor</label>
+                      <select 
+                        required 
+                        value={nuevoMovimiento.proveedor} 
+                        onChange={(e) => setNuevoMovimiento({...nuevoMovimiento, proveedor: e.target.value})}
+                      >
+                        <option value="">Seleccionar proveedor</option>
+                        {proveedores.map(prov => (
+                          <option key={prov.idProveedor} value={prov.idProveedor}>
+                            {prov.nombre} - {prov.nit}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="modal-footer">
