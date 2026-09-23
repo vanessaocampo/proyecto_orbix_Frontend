@@ -90,18 +90,6 @@ const InventarioAdmin = () => {
     setProductoEditar(null);
   };
 
-  // PREPARAR ELIMINACIí“N
-  const solicitarEliminar = (idProducto: string) => {
-    const producto = productos.find(
-      (item) => item.idProducto === idProducto,
-    );
-
-    if (!producto) {
-      return;
-    }
-
-    setProductoEliminar(producto);
-  };
 
   // CONFIRMAR ELIMINACIí“N
   const confirmarEliminar = async () => {
@@ -241,7 +229,6 @@ const InventarioAdmin = () => {
           <TablaProductos
             productos={productosFiltrados}
             onEditar={abrirModalEditar}
-            onEliminar={solicitarEliminar}
           />
         )}
       </div>

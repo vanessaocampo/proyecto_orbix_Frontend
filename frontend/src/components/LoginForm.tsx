@@ -99,7 +99,9 @@ const LoginForm = ({ tipo }: LoginFormProps) => {
 
           <p className="panel-titulo">Gestión de tu negocio, más simple.</p>
 
-          <p>Administra inventario, ventas y clientes desde un solo lugar.</p>
+          <p>
+            Administra inventario, ventas y clientes desde un solo lugar.
+          </p>
         </div>
 
         <div className="panel-derecho">
@@ -166,7 +168,11 @@ const LoginForm = ({ tipo }: LoginFormProps) => {
 
             {error && <p className="login-error">{error}</p>}
 
-            <button type="submit" className="button-login" disabled={cargando}>
+            <button
+              type="submit"
+              className="button-login"
+              disabled={cargando}
+            >
               {cargando ? "Iniciando sesión..." : "Iniciar sesión"}
             </button>
 
@@ -177,6 +183,20 @@ const LoginForm = ({ tipo }: LoginFormProps) => {
             >
               ¿Olvidaste la contraseña?
             </button>
+
+            <div className="login-footer-link">
+              <button
+                type="button"
+                className="switch-login-type"
+                onClick={() =>
+                  navigate(tipo === "admin" ? "/login/opera" : "/login/admin")
+                }
+              >
+                {tipo === "admin"
+                  ? "¿Eres personal operativo? Inicia sesión aquí"
+                  : "¿Eres administrador? Inicia sesión aquí"}
+              </button>
+            </div>
           </form>
         </div>
       </div>

@@ -372,3 +372,27 @@
     font-size: 18px;
   }
 }
+
+.password-requisitos {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.password-requisitos p {
+  margin: 0 0 2px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.password-requisitos span {
+  transition: color 0.2s ease;
+}
+
+.password-requisitos span.valido {
+  color: #15803d;
+  font-weight: 500;
+}

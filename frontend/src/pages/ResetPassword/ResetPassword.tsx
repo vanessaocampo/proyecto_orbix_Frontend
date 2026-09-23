@@ -16,6 +16,13 @@ const ResetPassword = () => {
   const [error, setError] = useState("");
   const [cargando, setCargando] = useState(false);
 
+  const passwordValida =
+    passwordNueva.length >= 12 &&
+    /[A-Z]/.test(passwordNueva) &&
+    /[a-z]/.test(passwordNueva) &&
+    /[0-9]/.test(passwordNueva) &&
+    /[^A-Za-z0-9]/.test(passwordNueva);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -24,6 +31,13 @@ const ResetPassword = () => {
 
     if (!token) {
       setError("El enlace de recuperación no es válido.");
+      return;
+    }
+
+    if (!passwordValida) {
+      setError(
+        "La contraseña debe tener al menos 12 caracteres, una mayúscula, una minúscula, un número y un carácter especial."
+      );
       return;
     }
 
@@ -84,6 +98,36 @@ const ResetPassword = () => {
             }
             required
           />
+
+          <div className="password-requisitos">
+            <p>La contraseña debe tener:</p>
+
+            <span className={passwordNueva.length >= 12 ? "valido" : ""}>
+              {passwordNueva.length >= 12 ? "✓" : "•"} Mínimo 12 caracteres
+            </span>
+
+            <span className={/[A-Z]/.test(passwordNueva) ? "valido" : ""}>
+              {/[A-Z]/.test(passwordNueva) ? "✓" : "•"} Una letra mayúscula
+            </span>
+
+            <span className={/[a-z]/.test(passwordNueva) ? "valido" : ""}>
+              {/[a-z]/.test(passwordNueva) ? "✓" : "•"} Una letra minúscula
+            </span>
+
+            <span className={/[0-9]/.test(passwordNueva) ? "valido" : ""}>
+              {/[0-9]/.test(passwordNueva) ? "✓" : "•"} Un número
+            </span>
+
+            <span
+              className={
+                /[^A-Za-z0-9]/.test(passwordNueva)
+                  ? "valido"
+                  : ""
+              }
+            >
+              {/[^A-Za-z0-9]/.test(passwordNueva) ? "✓" : "•"} Un carácter especial
+            </span>
+          </div>
 
           <label htmlFor="confirmarPassword">
             Confirmar contraseña

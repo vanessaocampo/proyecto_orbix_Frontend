@@ -1,6 +1,6 @@
 import authService from "./auth.services";
 
-const BASE_URL = "/api/v1";
+import { BASE_URL } from "../config";
 
 export interface CrearUsuario {
   nombre: string;

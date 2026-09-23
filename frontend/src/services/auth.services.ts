@@ -1,4 +1,4 @@
-const BASE_URL = "/api/v1";
+import { BASE_URL } from "../config";
 
 const authService = {
   async login(

@@ -6,6 +6,7 @@ import {
   type ReactNode,
 } from "react";
 import authService from "../services/auth.services";
+import { BASE_URL } from "../config";
 
 export type Producto = {
   id: string;
@@ -142,10 +143,10 @@ export const InventoryProvider = ({
         // 0. Cargar categorías y proveedores
         const [resCat, resProv] = await Promise.all([
           fetchConRefresh(
-            "/api/v1/categorias"
+            `${BASE_URL}/categorias`
           ),
           fetchConRefresh(
-            "/api/v1/proveedores"
+            `${BASE_URL}/proveedores`
           ),
         ]);
 
@@ -171,7 +172,7 @@ export const InventoryProvider = ({
 
         // 1. Cargar productos reales
         const resProd = await fetchConRefresh(
-          "/api/v1/productos"
+          `${BASE_URL}/productos`
         );
 
         if (resProd.ok) {
@@ -209,7 +210,7 @@ export const InventoryProvider = ({
 
         // 2. Cargar movimientos reales
         const resMov = await fetchConRefresh(
-          "/api/v1/inventario/movimientos"
+          `${BASE_URL}/inventario/movimientos`
         );
 
         if (resMov.ok) {
@@ -310,7 +311,7 @@ export const InventoryProvider = ({
       };
 
       await fetchConRefresh(
-        "/api/v1/productos",
+        `${BASE_URL}/productos`,
         {
           method: "POST",
           headers: {
@@ -349,7 +350,7 @@ export const InventoryProvider = ({
         };
 
         await fetchConRefresh(
-          `/api/v1/productos/${prod.dbId}`,
+          `${BASE_URL}/productos/${prod.dbId}`,
           {
             method: "PATCH",
             headers: {
@@ -428,7 +429,7 @@ export const InventoryProvider = ({
               : "ajuste";
 
         await fetchConRefresh(
-          `/api/v1/inventario/${endpointTipo}`,
+          `${BASE_URL}/inventario/${endpointTipo}`,
           {
             method: "POST",
             headers: {

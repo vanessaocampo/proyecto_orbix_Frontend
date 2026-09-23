@@ -43,7 +43,7 @@ type ProductoCarrito = {
   cantidad: number;
 };
 
-const BASE_URL = "/api/v1";
+import { BASE_URL } from "../../../config";
 
 let refreshPromise: Promise<void> | null = null;
 

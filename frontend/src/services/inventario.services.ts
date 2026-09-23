@@ -1,6 +1,6 @@
 import authService from "./auth.services";
 
-const BASE_URL = "/api/v1";
+import { BASE_URL } from "../config";
 
 export type ProductoInventario = {
   idProducto: string;
@@ -80,12 +80,6 @@ async function fetchConRefresh(
     options,
     true
   );
-}
-
-function invalidarCacheProductos() {
-  productosCache = null;
-  productosPromise = null;
-  productosVersion++;
 }
 
 async function obtenerProductos(): Promise<ProductoInventario[]> {

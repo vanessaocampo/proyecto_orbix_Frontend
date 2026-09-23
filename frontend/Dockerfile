@@ -8,8 +8,10 @@ RUN npm ci
 
 COPY . .
 
-RUN npx vite build
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
 
+RUN npx vite build
 
 FROM nginx:1.27-alpine AS runtime
 

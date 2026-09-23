@@ -4,6 +4,7 @@ import { X, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import "./ProfileDropdown.css";
 import authService from "../services/auth.services";
+import { BASE_URL } from "../config";
 
 interface ProfileData {
   idUsuario: string;
@@ -124,7 +125,7 @@ const ProfileDropdown = () => {
   const fetchProfile = async () => {
     try {
       const res = await fetchConRefresh(
-        "/api/v1/auth/me",
+        `${BASE_URL}/auth/me`,
         {
           method: "GET",
         }
@@ -150,6 +151,11 @@ const ProfileDropdown = () => {
     }
   };
 
+  // Cargar el perfil real al entrar al dashboard
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
   const handleToggle = () => {
     if (!isOpen && !profileData) {
       fetchProfile();
@@ -161,7 +167,7 @@ const ProfileDropdown = () => {
   const handleSaveProfile = async () => {
     try {
       const res = await fetchConRefresh(
-        "/api/v1/auth/me",
+        `${BASE_URL}/auth/me`,
         {
           method: "PATCH",
           headers: {
