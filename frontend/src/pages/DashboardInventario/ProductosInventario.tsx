@@ -68,6 +68,23 @@ const ProductosInventario = () => {
     e.preventDefault();
     if (!productoAEditar) return;
     
+    if (!nuevoProducto.nombre.trim()) {
+      alert("El nombre del producto es obligatorio.");
+      return;
+    }
+    if (nuevoProducto.precio === "" || Number(nuevoProducto.precio) <= 0) {
+      alert("El precio de venta debe ser mayor a 0.");
+      return;
+    }
+    if (nuevoProducto.stock === "" || Number(nuevoProducto.stock) < 0) {
+      alert("El stock no puede estar vacío ni ser negativo.");
+      return;
+    }
+    if (nuevoProducto.stockMin === "" || Number(nuevoProducto.stockMin) < 0) {
+      alert("El stock mínimo no puede estar vacío ni ser negativo.");
+      return;
+    }
+
     const pPrecio = Number(nuevoProducto.precio);
     const pStock = Number(nuevoProducto.stock);
     
@@ -92,6 +109,24 @@ const ProductosInventario = () => {
 
   const handleAgregarProducto = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!nuevoProducto.nombre.trim()) {
+      alert("El nombre del producto es obligatorio.");
+      return;
+    }
+    if (nuevoProducto.precio === "" || Number(nuevoProducto.precio) <= 0) {
+      alert("El precio de venta debe ser mayor a 0.");
+      return;
+    }
+    if (nuevoProducto.stock === "" || Number(nuevoProducto.stock) < 0) {
+      alert("El stock no puede estar vacío ni ser negativo.");
+      return;
+    }
+    if (nuevoProducto.stockMin === "" || Number(nuevoProducto.stockMin) < 0) {
+      alert("El stock mínimo no puede estar vacío ni ser negativo.");
+      return;
+    }
+
     const nuevoId = nuevoProducto.sku || `PRD-00${productos.length + 1}`;
     const pPrecio = Number(nuevoProducto.precio);
     const pStock = Number(nuevoProducto.stock);

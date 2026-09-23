@@ -233,6 +233,27 @@ const ModalAgregarProducto = ({
   ) => {
     e.preventDefault();
 
+    if (!nombre.trim()) {
+      setError("El nombre del producto es obligatorio.");
+      return;
+    }
+    if (precioCompra === "" || Number(precioCompra) <= 0) {
+      setError("El precio de compra debe ser mayor a 0.");
+      return;
+    }
+    if (precio === "" || Number(precio) <= 0) {
+      setError("El precio de venta debe ser mayor a 0.");
+      return;
+    }
+    if (stock === "" || Number(stock) < 0) {
+      setError("El stock no puede estar vacío ni ser negativo.");
+      return;
+    }
+    if (stockMinimo === "" || Number(stockMinimo) < 0) {
+      setError("El stock mínimo no puede estar vacío ni ser negativo.");
+      return;
+    }
+
     try {
       setGuardando(true);
       setError("");
